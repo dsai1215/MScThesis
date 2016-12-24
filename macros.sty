@@ -1,0 +1,53 @@
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{macros}
+\usepackage{algorithmic}
+%\usepackage{algorithm}
+
+\newcommand{\alert}[1]{\textcolor{red}{#1}}
+\newcommand{\placeholder}{\alert{[PLACE HOLDER]}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\newcounter{subequation}[equation]
+\newcommand{\thesubequationonly}{\alph{subequation}}
+\renewcommand{\thesubequation}{\text{\theequation(\thesubequationonly)}}
+\newcommand{\subequationitem}{\refstepcounter{subequation}(\thesubequationonly)\thinspace}
+
+% Needed for \subequationitem
+\def\mathdisplay#1{%
+  \ifmmode \@badmath
+  \else
+    $$\def\@currenvir{#1}%
+    \let\dspbrk@context\z@
+    \let\tag\tag@in@display \SK@equationtrue %\let\label\label@in@display
+    \global\let\df@label\@empty \global\let\df@tag\@empty
+    \global\tag@false
+    \let\mathdisplay@push\mathdisplay@@push
+    \let\mathdisplay@pop\mathdisplay@@pop
+    \if@fleqn
+      \edef\restore@hfuzz{\hfuzz\the\hfuzz\relax}%
+      \hfuzz\maxdimen
+      \setbox\z@\hbox to\displaywidth\bgroup
+        \let\split@warning\relax \restore@hfuzz
+        \everymath\@emptytoks \m@th $\displaystyle
+    \fi
+%   \fi
+}
+
+
+%\newcommand{\algorithmicinput}{\textbf{Input:} }
+%\newcommand{\INPUT}{\item[\algorithmicinput]}
+%\newcommand{\algorithmicoutput}{\textbf{Output:} }
+%\newcommand{\OUTPUT}{\item[\algorithmicoutput]}
+%\newcounter{algostep}
+%\newcommand{\Step}[1][\STATE]{#1\textbf{\refstepcounter{algostep}\thealgostep}. }
+
+\newenvironment{nonfloatalgorithm}[1]{\vspace{1ex}\hrule\vspace{0.5ex} \textbf{Algorithm \refstepcounter{algorithm}\thealgorithm}\hspace{1em} #1 \vspace{0.5ex}\hrule\addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}{\ignorespaces #1}}}{\hrule\vspace{1.5ex}\setcounter{algostep}{0}}
+
+\newcounter{acalgorithm}
+
+\newenvironment{nonfloatactorcriticalgorithm}[1]{\vspace{1ex}\hrule\vspace{0.5ex} \textbf{Actor-Critic Algorithm \refstepcounter{acalgorithm}\theacalgorithm}\hspace{1em} #1 \vspace{0.5ex}\hrule\addcontentsline{loa}{algorithm}{\protect\numberline{\theacalgorithm}{\ignorespaces #1}}}{\hrule\vspace{1.5ex}\setcounter{algostep}{0}}

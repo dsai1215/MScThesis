@@ -1,0 +1,123 @@
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage[numbers]{natbib}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+%\usepackage{algorithm}
+\usepackage[ruled]{algorithm2e}
+
+%\renewcommand{\algorithmcfname}{ALGORITHM}
+
+\usepackage{dsfont}
+\usepackage{algorithmic}
+\usepackage{placeins}
+\usepackage{enumerate}
+\usepackage{cancel}
+\usepackage{mathrsfs}
+% \usepackage{sfgame}
+\usepackage{color}
+\usepackage[compact]{titlesec}
+\usepackage{mdwlist}
+\usepackage{tikz}
+\usepackage{varwidth}
+\usepackage[vertfit]{breakurl}
+\usepackage{datetime}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usetikzlibrary{plotmarks}
+\usepackage{pgfplots}
+\usetikzlibrary{decorations.pathmorphing}  
+\usetikzlibrary{decorations.shapes}  
+\usetikzlibrary{fadings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{arrows,shapes,shadows}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning} 
+\tikzset{
+    %Define standard arrow tip
+    >=stealth',	
+    %Define style for boxes
+    punkt/.style={
+           rectangle,
+           rounded corners,
+           draw=black, thick,
+           text width=6.5em,
+           minimum height=2em,
+           text centered},
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick,
+           shorten <=2pt,
+           shorten >=2pt,}
+}
+
+% \usepackage{biblatex}
+\usetikzlibrary{shapes,arrows, trees}
+
+
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{compatibility=false}
+\usepackage{macros}
+\usepackage{float}
+\usepackage{morefloats}
+%\extrafloats{100}
+\usepackage{xcolor}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+\DeclareGraphicsExtensions{.png,.jpg,.jpeg,.eps}
+\DeclareGraphicsRule{.pdftex}{pdf}{*}{}
+% \graphicspath{ {images_folder/}{other_folder/}{third_folder/} }
+%\graphicspath{{./results-pricing/case1}{./results-pricing/case2}{./results-pricing/case3}}
+%\DeclareGraphicsRule{.pdftex}{pdf}{*}{}
+% \counterwithout{figure}{chapter}
+\newtheorem{mydef}{Definition}
+\newtheorem{remark}{Remark}
+\numberwithin{remark}{chapter}
+\newtheorem{proposition}{Proposition}
+\numberwithin{proposition}{chapter}
+\newtheorem{theorem}{Theorem}
+\numberwithin{theorem}{chapter}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\amin}[1]{\underset{#1}{\arg\min}}
+\newcommand{\amax}[1]{\underset{#1}{\arg\max}}
+
+% uncomment later the following definition
+% \newcommand{\E}[1]{\,\mathbb{E}\,{\left[#1\right]}}
+\newtheorem{assumption}{Assumption}
+\numberwithin{assumption}{chapter}
+\newtheorem{lemma}{Lemma}
+\numberwithin{lemma}{chapter}
+\newtheorem{corollary}{Corollary}
+\numberwithin{corollary}{chapter}
+
+\newcounter{mycounter}
+\allowdisplaybreaks	% important for page breaking in align* environments
+
+\pdfmapline{+eufb10 EUFB10 <eufb10.pfb}   %%%% This is a saviour.. had trouble finding the map file for this font
+\pgfplotsset{
+every axis label/.append style={font=\large},
+% tick label style={font=\Large},
+}
+
+\newcommand{\algorithmicinput}{\textbf{Input:} }
+\newcommand{\INPUT}{\item[\algorithmicinput]}
+\newcommand{\algorithmicoutput}{\textbf{Output:} }
+\newcommand{\OUTPUT}{\item[\algorithmicoutput]}
+% \newcounter{algostep}
+% \newcommand{\Step}[1][\STATE]{#1\textbf{\refstepcounter{algostep}\thealgostep}. }
+% 
+% \newenvironment{nonfloatalgorithm}[1]{\vspace{1ex}\hrule\vspace{0.5ex} \textbf{Algorithm \refstepcounter{algorithm}\thealgorithm}\hspace{1em} #1 \vspace{0.5ex}\hrule\addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}{\ignorespaces #1}}}{\hrule\vspace{1.5ex}\setcounter{algostep}{0}}
+% 
+% \newcounter{acalgorithm}
+% 
+% \newenvironment{nonfloatactorcriticalgorithm}[1]{\vspace{1ex}\hrule\vspace{0.5ex} \textbf{Actor-Critic Algorithm \refstepcounter{acalgorithm}\theacalgorithm}\hspace{1em} #1 \vspace{0.5ex}\hrule\addcontentsline{loa}{algorithm}{\protect\numberline{\theacalgorithm}{\ignorespaces #1}}}{\hrule\vspace{1.5ex}\setcounter{algostep}{0}}
