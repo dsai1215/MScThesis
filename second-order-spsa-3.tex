@@ -1,0 +1,249 @@
+ \chapter{Second-order spsa with improved hessian estimation (2SPSA-3-IH)}
+\label{sec:2spsa-3-ih}
+The second-order SPSA-3 with improved Hessian estimate performs an update iteration similar to that of 2RDSA-IH proposed in section \ref{sec:2rdsa-ih} (See \eqref{eq:e2rdsa} and \eqref{eq:2rdsa-H}). The main difference in the iterates is that 2SPSA-3-IH uses gradient and Hessian estimates according to \eqref{eq:grad-spsa} and \eqref{eq:2spsa-ber}. In this section we present the improvements to 2SPSA-3 Hessian recursion \eqref{eq:2spsa-3-ih} by incorporating the zero-mean feedback term and general step-size. Note that though these ideas of improving the Hessian recursion is similar to the ideas presented in section \ref{sec:2rdsa-ih} for 2RDSA-IH, the derivation of feedback term does not follow from it. We show that the proposed improvements to Hessian estimation in 2SPSA-3 are such  that the resulting 2SPSA-3-IH algorithm is provably convergent, in particular, the Hessian estimate $\overline H_n$ of 2SPSA-3-IH converges almost surely to the true Hessian. Moreover, we show, for the special case of a quadratic objective in noise-free setting, that 2SPSA-3 scheme along with proposed improvement to Hessian estimation (henceforth referred to as 2SPSA-3-IH) results in a convergence rate that is on par with the corresponding rate for 2SPSA with Hessian estimation improvements (2SPSA-IH) \cite{spall-jacobian}. The advantage with 2SPSA-3-IH is that it requires only 75\% of the simulation cost per-iteration for 2SPSA-IH.
+
+%The recursion \eqref{eq:e2rdsa} is identical to that in 2RDSA, while the Hessian estimation recursion \eqref{eq:2rdsa-H} differs as follows:\\
+%\begin{inparaenum}[\bfseries (i)]
+%\item  $\widehat \Psi_n$ is a zero-mean feedback term that reduces the error in Hessian estimate; and\\
+%\item $b_n$ is a general step-size that we optimize to improve the Hessian estimate.
+%\end{inparaenum}
+%
+%On the other hand, $\widehat H_n$ is identical to that in 2RDSA, i.e., it estimates the true Hessian in each iteration using $3$ function evaluations. For the sake of completeness, we provide below the construction for $\widehat\nabla f(\theta_n)$ and $\widehat H_n$ using asymmetric Bernoulli perturbations, before we present the feedback term that reduces the error in $\widehat H_n$.
+\begin{algorithm}[!htp]
+\KwIn{initial parameter $\theta_0 \in \R^N$, perturbation constants $\delta_n>0$, step-sizes $\{a_n, b_n\}$, operator $\Upsilon$.}
+
+\begin{enumerate}
+
+ \item \textbf{Execution}: \\
+ \For{$n \gets 0,1,2, \ldots, $} {
+ \begin{itemize}
+ \item Generate $\{\Delta_n^{i}, i=1,\ldots,N\}$,$\{\widehat\Delta_n^{i}, i=1,\ldots,N\}$ independent of $\{\Delta_m,\widehat\Delta_m, m=0,1,\ldots,n-1\}$.  
+ \item For any $i=1,\ldots,N$, $\Delta_n^{i}$,$\widehat\Delta_n^{i}$  satisfy condition (C16) (most popular distribution being used is symmetric Bernoulli distribution, $\pm 1$ w.p. $1/2$).
+\begin{itemize}
+\item \textbf{\emph {Function evaluation 1} }\\ \hspace{4em} Obtain $y_n^+ = f(\theta_n+\delta_n \Delta_n +\delta_n \widehat\Delta_n) + \xi_n^+$.
+\item \textbf{\emph {Function evaluation 2} }\\ \hspace{4em} Obtain $y_n^- = f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) + \xi_n^-$.
+\item \textbf{\emph {Function evaluation 3} }\\ \hspace{4em} Obtain $y_n = f(\theta_n) + \xi_n$.
+\item \textbf{\emph {Newton step}}\\ \hspace{4.2em} Update the parameter and Hessian as follows:
+%\begin{align*}
+%		\theta_{n+1} = & \; \theta_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(\theta_n), \\
+%\overline H_n = &\; (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n),
+%\end{align*}
+\begin{align} \label{eq:2spsa-3-theta}
+\theta_{n+1} = \,& \theta_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(\theta_n),\\
+\overline H_n =\,& (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n).\label{eq:2spsa-3-ih}
+\end{align}
+where $\widehat H_n$ and $\widehat \Psi_n$ are chosen according to \eqref{eq:2spsa-ber} and \eqref{eq:psinhatspsa3}, respectively. 
+\end{itemize}
+
+\end{itemize}
+}
+\Return{$\theta_n.$}
+\end{enumerate}
+
+\caption{Structure of 2SPSA-3-IH algorithm.}
+\label{alg:spsa-3-ih-structure}
+\end{algorithm}
+
+Algorithm \ref{alg:spsa-3-ih-structure} presents the pseudocode and we describe the individual component of 2RDSA-IH below.
+\section{Function evaluations}
+Let $y_n$, $y_n^+$ and $y_n^-$ denote the function evaluations at $\theta_n$, $\theta_n+\delta_n \Delta_n+\delta_n \widehat \Delta_n$ and $\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n$ respectively, i.e., 
+$y_n = f(\theta_n) + \xi_n$, $y_n^+ = f(\theta_n+\delta_n \Delta_n +\delta_n \widehat\Delta_n) + \xi_n^+$ and 
+$y_n^- = f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) + \xi_n^-$,
+where the noise terms $\xi_n, \xi_n^+, \xi_n^-$ satisfy $\E\left[\left.\xi_n^+ + \xi_n^- - 2\xi_n \right| \F_n, \Delta_n, \widehat \Delta_n\right] = 0$ with $\F_n = \sigma(\theta_m,m <  n)$ denoting the underlying sigma-field.
+
+Further, $\delta_n, n\geq 0$ is a sequence of diminishing positive real numbers and $\Delta_n = (\Delta_n^1,\ldots,\Delta_n^N)\tr$ , $\widehat\Delta_n = (\widehat\Delta_n^1,\ldots,\widehat\Delta_n^N)\tr$ are the perturbation random vector at instant $n$ with $\Delta_n^i,i=1,\ldots,N$, and $\widehat\Delta_n^i,i=1,\ldots,N$ are independent identically distributed (i.i.d), mean-zero random varibles having finite inverse movements of order greater than 2 and satisfy the conditions (C16), C(21).  
+
+\section{Gradient estimate}
+The SPSA estimate of the gradient $\nabla f(\theta_n)$ is given by
+\begin{align}
+\label{eq:grad-spsa}
+\widehat\nabla_{(i)} f(\theta_n) =  \left[ \dfrac{y_n^+ - y_n^-}{2\delta_n \Delta_n^{(i)}}\right],
+\end{align}
+where the perturbations $\Delta_n^i$, $i=1,\ldots,N$ are i.i.d. and as mentioned above.
+
+%Note that $E d_n^i = 0$, $E (d_n^i)^2 = 1+\epsilon$ and $E (d_n^i)^4 = \dfrac{(1+\epsilon)(1+(1+\epsilon)^3)}{(2+\epsilon)}$.
+
+\section{Hessian estimate}
+The $i,j$th entry of the Hessian estimate in this case is given by
+\begin{align}
+\label{eq:2spsa-ber}
+&\left(\widehat H_n\right)_{ij} =  \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{2\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}}\right), 
+\end{align}
+%%%%%% Feedback
+\section{Feedback term $\widehat \Psi_n$}
+The $i,j$th term of the Hessian estimate $\widehat H_n$ can be simplified as follows: 
+\begin{align}
+\left(\widehat H_n \right)_{ij} & =  \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{2\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}}\right) \nonumber \\
+%& =  \left[\left(\dfrac{f(\theta_n+\delta_n \Delta_n+\delta_n \widehat \Delta_n) + f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) - 2 f(\theta_n)}{\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}}\right) \right.\nonumber \\&\hspace{10em}+\left. \left(\dfrac{\xi_n^+ + \xi_n^- - 2 \xi_n}{\delta_n^2}\right)\right] \nonumber \\
+& = \left( \frac{(\Delta_n+ \widehat \Delta_n)\tr \nabla^2 f(\theta_n) (\Delta_n+ \widehat \Delta_n)}{2\Delta_n^{(i)} \widehat \Delta_n^{(j)}} +  O(\delta_n^2) + \right.\left.\left(\dfrac{\xi_n^+ + \xi_n^- - 2 \xi_n}{2\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}} \right)\right).\label{eq:h3}
+%& = M_n \left(d_n\tr \nabla^2 f(\theta_n) d_n +  O(\delta_n^2) + O(\delta_n^{-2})\right). \label{eq:h0}
+\end{align}
+For the first term on the RHS above, note that
+\begin{align}
+\E\left[\left.  \frac{(\Delta_n+ \widehat \Delta_n)\tr \nabla^2 f(\theta_n) (\Delta_n+ \widehat \Delta_n)}{2\Delta_n^{(i)} \widehat \Delta_n^{(j)}}  \right | \F_n\right] &=\E\left[\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \Delta_n^m}{2\Delta_n^i \widehat\Delta_n^j} + \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j}  \right.\nonumber \\&\hspace{2.5cm}+\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \left. \frac{\widehat\Delta_n^l \nabla^2_{lm} f(\theta_n)\widehat \Delta_n^m}{2\Delta_n^i \widehat\Delta_n^j}\right| \F_n\right].\label{eq:2spsaexp}
+\end{align}
+In analysing the RHS of the above expression, the first an the third terms are mean-zero (See Proposition 4.2 in \cite{bhatnagar2015simultaneous}):
+\begin{align}
+\E\left[\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \Delta_n^m}{\Delta_n^i \widehat\Delta_n^j} \right | \F_n\right] = 0 \hspace{0.2cm} and \hspace{0.2cm}\E\left[\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\widehat\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j }\right | \F_n\right] = 0.
+\end{align}
+%\begin{align}
+%\E\left[\left. \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j} \right | \F_n\right] = \nabla^2_{ij} f(\theta_n) \hspace{0.3cm}a.s..
+%\end{align}
+From the above equations the  terms that are in expectation, denoted by  $\Psi_n^1(\nabla^2 f(\theta_n))$, can be written in matrix form as follows:
+\begin{align}
+\Psi_n^1(\nabla^2 f(\theta_n)) =\frac{1}{2} M_n \left[\Delta_n\tr \nabla^2 f(\theta_n) \Delta_n + \widehat\Delta_n\tr \nabla^2 f(\theta_n) \widehat\Delta_n\right].
+\end{align}
+where $M_n = [1/\Delta_n^1, \ldots ,1/\Delta_n^N]\tr [1/\Delta_n^1, \ldots ,1/\Delta_n^N]$.
+Now consider the second term in RHS of the \eqref{eq:2spsaexp}. It can be re-written as follows:
+\begin{align}
+\E\left[\left. \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j} \right | \F_n\right] = \E\left[\left.\nabla^2_{ij} f(\theta_n) + \frac{1}{\Delta_n^i \widehat\Delta_n^j} \mathop{\sum_{l=1}^N \sum_{m=1}^{N}}_{lm \neq ij} \Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m \right | \F_n\right]
+\end{align}
+In analysing the RHS of the above expression, the second term in the expectation  is mean-zero term:  
+\begin{align}
+\E\left[\left. \frac{1}{\Delta_n^i \widehat\Delta_n^j} \mathop{\sum_{l=1}^N \sum_{m=1}^{N}}_{lm \neq ij} \Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m \right | \F_n\right] = 0.
+\end{align}
+The term on the LHS above, can be denoted by $\Psi_n^2(\nabla^2 f(\theta_n))$, can be written in the matrix form as follows:
+\begin{align}
+\Psi_n^2(\nabla^2 f(\theta_n)) = \widehat N_n\tr \nabla^2 f(\theta_n) N_n  + \widehat N_n\tr \nabla^2 f(\theta_n) + \nabla^2 f(\theta_n) N_n.
+\end{align}
+where $N_n,\widehat N_n$ are defined as follows $N_n = \Delta_n \left[\frac{1}{\Delta_n^1},\ldots,\frac{1}{\Delta_n^N}\right] - I_N$ and $\widehat N_n = \widehat \Delta_n \left [\frac{1}{\widehat\Delta_n^1},\ldots,\frac{1}{\widehat \Delta_n^N}\right] - I_N$ and $I_N$ is  identity matrix of size $N \times N$.
+From the foregoing, the per-iteration Hessian estimate $\widehat H_n$ can be re-written as follows:
+\begin{align}
+\widehat H_n = & \nabla^2 f(\theta_n) + \Psi_{n}(\nabla^2 f(\theta_n)) +  O(\delta_n^2) + O(\delta_n^{-2})  \label{eq:spsahnhat}
+\end{align}
+where, for any matrix $H$, 
+\begin{align}
+\Psi_{n}(H) &=  \Psi_{n}^{1}(H) + \Psi_{n}^{2}(H)\nonumber\\
+&=  \frac{1}{2}M_n \left[\Delta_n\tr H \Delta_n + \widehat\Delta_n\tr H \widehat\Delta_n\right] + \widehat N_n\tr H N_n + \widehat N_n\tr H + H N_n.\label{eq:spsapsi}
+\end{align}
+Given that we operate in a simulation optimization setting, which implies $\nabla^2 f$ is not known, we construct the feedback term $\widehat \Psi_n$ in \eqref{eq:2spsa-3-ih} by using $\overline H_{n-1}$ as a proxy for $\nabla^2 f$, i.e.,
+\begin{align}
+\widehat \Psi_n = \Psi_{n} (\overline H_{n-1}).
+\label{eq:psinhatspsa3}
+\end{align}
+
+\paragraph{\textbf{Optimizing the step-sizes }$b_n$}
+
+The optimal choice for $b_n$ in \eqref{eq:2rdsa-H}  is the following:
+\begin{align}
+\label{eq:spsawieghts}
+b_i  = \delta_i^{4}/\sum\limits_{j=0}^{i} \delta_j^{4}.
+\end{align}
+The main idea behind the above choice is provided below.
+From \eqref{eq:spsahnhat}, we can infer that
+\begin{align*}
+\E \parallel \widehat H_n \parallel^2 \le \dfrac{C}{\delta_n^4} \text{ for some } C<\infty. 
+\end{align*} 
+This is because the third term in \eqref{eq:spsahnhat} vanishes asymptotically, while the fourth term there dominates asymptotically. Moreover, the noise factors in the fourth term in \eqref{eq:spsahnhat} are bounded above due to (C21)  and independent of $n$, leaving the $\delta_n^2$ term in the denominator there. 
+
+So, the optimization problem to be solved at instant $n$ is as follows:
+\begin{align}
+\sum \limits_{i=0}^{n} (\tilde b_k)^2 \delta_i^{-4}, \text{ subject to} \label{eq:spsawn-opt}\\
+\tilde b_i \geq 0 ~\forall i \text{ and }\sum \limits_{i=0}^{n} \tilde b_i = 1.
+\end{align}
+The optimization variable $\tilde b_i$ from the above is related to the Hessian recursion \eqref{eq:2spsa-3-ih} as follows:
+\begin{align}
+\label{eq:spsahess}
+\overline H_n = \sum\limits_{i=0}^{n} \tilde b_k(\widehat H_i -\widehat \Psi_i).
+\end{align}
+The solution to \eqref{eq:spsawn-opt} is achieved for $\tilde b_i^* = \delta_i^{4}/\sum \limits_{j=0}^{n} \delta_j^{4}, i=1,\ldots,n$. The optimal choice $\tilde b_i^*$ can be translated to the step-sizes $b_i$, leading to \eqref{eq:spsawieghts}.
+
+
+
+\section{Convergence analysis for 2SPSA-3-IH}
+\label{sec:2spsa-results}
+We make the same assumptions as those used in the analysis of \cite{prashanth2015rdsa}, with a few minor alterations. The assumptions are listed below:
+\begin{enumerate}[label=(\textbf{C\arabic*}),resume]
+\item  The function
+$f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1 i_2 i_3 i_4} f(\theta)$ denotes the $(i_1 i_2 i_3 i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
+
+%\item  For some $\rho>0$  and almost all $\theta_n$, the function $f$ is four-times differentiable with a uniformly (in $n$) bounded fourth derivative for all $x$ such that $\left\| \theta_n - x\right\| \le \rho$. 
+
+\item For each $n$ and all $x$, there exists a $\rho>0$ not dependent on $n$ and $\theta$, such that $(\theta-\theta^*)\tr \bar f_n(\theta) \ge \rho \left\| \theta_n - \theta\right\|$, where $\bar f_n(\theta) = \Upsilon(\overline H_n)^{-1} \nabla f(\theta)$.
+
+\item $\{\xi_n, \xi_n^+,\xi_n^-, n=1,2,\ldots\}$ are such that, for all $n$, $\E\left[\left. \xi_n^+ + \xi_n^- - 2 \xi_n \right| \F_n, \Delta_n, \widehat \Delta_n \right] = 0$, where $\mathcal{F}_n = \sigma(\theta_m,m < n)$ denotes the underlying sigma-field.. 
+
+\item $\{\Delta_n^i,\widehat\Delta_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d independent of $\F_n$ and for some $\alpha_0 > 0$ and for all $n,l$ $|\Delta_{nl}|\le \alpha_0$, $\Delta_{nl}$ is symmetrically distributed about 0, $\Delta_{nl}$ are mutually independent across $n$ and $l$ and they satisfy $\E (\Delta_{nl}^{-2})$,$\E (\widehat\Delta_{nl}^{-2}) \le \alpha_0$.
+
+\item  The step-sizes $a_n$ and perturbation constants $\delta_n$ are positive, for all $n$ and satisfy
+$$\hspace{-1.7em} a_n, \delta_n \rightarrow 0\text{ as } n \rightarrow \infty, 
+\sum_n a_n=\infty \text{ and } \sum_n \left(\frac{a_n}{\delta_n}\right)^2 <\infty.$$
+
+\item For each $i=1,\ldots,N$ and any $\rho>0$, 
+$P(\{ \bar f_{ni} (\theta_n) \ge 0 \text{ i.o}\} \cap \{ \bar f_{ni} (\theta_n) < 0 \text{ i.o}\} \mid \{ |\theta_{ni} - \theta^*_i| \ge \rho\quad \forall n\}) =0.$
+
+\item The operator $\Upsilon$ satisfies $\delta_n^2 \Upsilon(H_n)^{-1} \rightarrow 0$ a.s. and  $E(\left\| \Upsilon(H_n)^{-1}\right\|^{2+\zeta}) \le \rho$ for some $\zeta, \rho>0$.
+
+\item For any $\tau >0$ and nonempty $S \subseteq \{1,\ldots,N\}$, there exists a $\rho'(\tau,S)>\tau$ such that 
+$$ \limsup_{n\rightarrow \infty} \left| \dfrac{\sum_{i \notin S} (\theta-\theta^*)_i \bar f_{ni}(\theta)}{\sum_{i \in S} (\theta-\theta^*)_i \bar f_{ni}(\theta)}               \right| < 1 \text{ a.s.}$$
+for all $|(\theta-\theta^*)_i| < \tau$ when $i \notin S$ and $|(\theta-\theta^*)_i| \ge \rho'(\tau,S)$ when $i\in S$.
+\item For some $\alpha_0, \alpha_1, \alpha_2 >0$ and for all $n,l,m$, $\E {\xi_n}^{2} \le \alpha_0$, $\E {\xi_n^{\pm}}^{2} \le \alpha_0$, $\E f(\theta_n)^{2} \le \alpha_1$,  $\E f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)^{2},\E f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)^{2} \le \alpha_1$, 
+%$\E \left[ f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)^{2}/ (\Delta_{nl}\widehat\Delta_{nm})^2 \mid \F_n\right]$,
+$\E \left[| f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)/ (\Delta_{nl}\widehat\Delta_{nm})|^{2+\alpha_2} \mid \F_n\right]$,
+%$\E \left[ f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)^{2}/ (\Delta_{nl}\widehat\Delta_{nm})^2 \mid \F_n\right]$,
+$\E \left[ |f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)/ (\Delta_{nl}\widehat\Delta_{nm})|^{2+\alpha_2} \mid \F_n\right]$,
+ $\E\left[\left. (\xi_n^+ + \xi_n^- - 2 \xi_n)^2/(\Delta_{nl}\widehat\Delta_{nm})^2 \right| \F_n \right] \le \alpha_1$ 
+and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
+\item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
+\end{enumerate}
+The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C13)-(C20) are identical to that in \cite{prashanth2015rdsa}, while (C21) and (C22) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired by \cite{spall-jacobian}.
+
+\begin{lemma}(\textbf{2SPSA-3-IH Bias in Hessian estimate})
+\label{lemma:2spsa-bias}
+Under (C13)-(C22), with $\widehat H_n$ defined according to  \eqref{eq:2spsa-ber} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+\begin{align}
+\left|\E\left[
+\left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).
+\end{align} 
+\end{lemma}
+\begin{proof}
+See Proposition 4.2 in \cite{bhatnagar2015simultaneous}.
+\end{proof}
+
+
+\begin{theorem}(\textbf{2SPSA-3-IH Strong Convergence of Hessian})
+\label{thm:2spsa-H}
+Under (C13)-(C22), we have that 
+$$\theta_n \rightarrow \theta^*, \overline H_n \rightarrow \nabla^2 f(\theta^*) \text{ a.s. as } n\rightarrow \infty.$$ 
+In the above, $\theta_n$ and $\overline H_n$ are updated according to \eqref{eq:2spsa-3-theta} and \eqref{eq:2spsa-3-ih}, respectively, $\widehat H_n$ defined according to \eqref{eq:2spsa-ber} and the step-sizes $b_n$ are chosen as suggested in \eqref{eq:spsawieghts}. 
+\end{theorem}
+\begin{proof}
+This proof is similar to the proof of the theorem \ref{thm:2rdsa-H}
+\end{proof}
+
+We next present a convergence rate result for the special case of a quadratic objective function under the following additional assumptions:
+\begin{enumerate}[label=(\textbf{C\arabic*}),resume]
+\item  $f$ is quadratic and $\nabla^2 f(x^*) > 0$. 
+\item The operator $\Upsilon$ is chosen such that $\E(\parallel \Upsilon(\overline H_n) - \overline H_n\parallel^2) = o(e^{-2wn^{1-r}/(1-r)})$ and $\parallel \Upsilon(H) - H \parallel^2 / (1+\parallel H \parallel^2)$ is uniformly bounded.
+\end{enumerate}
+\begin{theorem}(\textbf{2SPSA-3-IH Quadratic case - Convergence rate})
+\label{thm:spsaquad-bound}
+Assume (C16), (C22), (C23) and (C24) and also that the setting is noise-free. 
+Let $b_n = b_0/n^r$, $n=1,2,\ldots,k$, where $1/2 < r < 1$ and $0 < b_0 \leq 1$. For notational simplicity, let $H^*=\nabla^2 f(x^*)$. Letting $\Lambda_k = \overline H_k - H^*$, we have 
+\begin{align}
+\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}}).
+\label{eq:spsaquad-bigo}
+\end{align}
+\end{theorem}
+\begin{proof}
+Since the setting is noise-free with a quadratic objective, we can rewrite \eqref{eq:spsahnhat} as follows:
+\begin{align}
+ \widehat H_n =    \nabla^2 f(\theta_n) +\Psi_{n}(\nabla^2 f(\theta_n)),\label{eq:spsahnhat-ext}
+\end{align}
+where $\Psi_n(H)$ is defined in \eqref{eq:psinhatspsa3}.
+The proof involves the following steps:
+\begin{description}
+  \item[Step 1:] Here we prove the MSE convergence of $\overline H_k$, i.e., $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0$ a.s. as $n\rightarrow \infty$.
+  \item[Step 2:] We unroll the recursion \eqref{eq:2rdsa-H} and then derive convenient representation for $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$.
+  \item[Step 3:] We derive the main result in \eqref{eq:quad-bigo} using a proof by contradiction. 
+\end{description}
+\noindent\textbf{Step 1: MSE convergence of $\overline H_n$} \\
+This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jacobian}.\\
+\noindent\textbf{Step 2: Representation of $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$} \\
+This part in exactly the same manner as part (ii) in Theorem 3 of \cite{spall-jacobian}.\\
+\noindent\textbf{Step 3: The big-O result on $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$ convergence} \\
+This part in exactly the same manner as part (iii) in Theorem 3 of \cite{spall-jacobian}.\\
+\end{proof}
+
+
+

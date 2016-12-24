@@ -1,0 +1,196 @@
+\chapter{Generalised RDSA }
+\label{sec:2rdsa-gen}
+Our work in chapter  is centred on generalising the 2RDSA scheme of \cite{prashanth2015rdsa}. In \cite{prashanth2015rdsa}, 2RDSA scheme involving only two perturbation distributions was proposed, those are uniform and asymmetric Bernoulli distributions. We propose gradient and Hessian estimation schemes which are independent of the perturbation distributions. However, perturbations have to satisfy the i.i.d, mean-zero assumptions. Apart from these common assumptions  one additional assumption like difference between the second moment square  and fourth moment should be non zero for Hessian estimation is also required. This generalisation of distributions of random variables for perturbations is important because it enhances the scope of improving the performance of the 1RDSA and 2RDSA schemes by incorporating several other distributions. Some well known distribution that can used for these schemes as a result of generalisation are Normal (0,1) and Cauchy distributions. We will prove the  gradient and Hessian estimates as a result of generalisation are indeed asymptotically unbiased estimates.
+ The improved Hessian estimation scheme proposed in chapter \ref{sec:2rdsa-ih} for 2RDSA algorithm with uniform and asymmetric Bernoulli distributions can be easily extended to the generalised RDSA scheme.
+
+\section{Function evaluations}
+Let $\delta_n, n\geq 0$ denote a sequence of diminishing positive real numbers and $d_n = (d_n^1,\ldots,d_n^N)\tr$ denote a random perturbation vector at instant $n$,
+where the perturbations $\{d_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are any i.i.d., mean zero random varibles. 
+%\begin{equation}
+%\label{eq:det-proj}
+% d_n^i =
+%  \begin{cases}
+%   -1 &  \text{ w.p. } \dfrac{(1+\epsilon)}{(2+\epsilon)}, \\
+%   1+\epsilon &  \text{ w.p. } \dfrac{1}{(2+\epsilon)},
+%  \end{cases}
+%\end{equation}
+%with $\epsilon>0$ being a constant that can be chosen to be arbitrarily small.
+
+The 2RDSA-IH algorithm obtains three function samples $y_n$, $y_n^+$ and $y_n^-$ at $\theta_n$, $\theta_n+\delta_n d_n$ and $\theta_n - \delta_n d_n$, respectively, i.e.,
+$y_n = f(\theta_n) + \xi_n$, $y_n^+ = f(\theta_n+\delta_n d_n) + \xi_n^+$ and 
+$y_n^- = f(\theta_n-\delta_n d_n) + \xi_n^-$,
+where the noise terms $\xi_n, \xi_n^+, \xi_n^-$ satisfy $\E\left[\left.\xi_n^+ + \xi_n^- - 2\xi_n \right| \F_n\right] = 0$ with $\F_n = \sigma(\theta_m,m\le n)$ denoting the underlying sigma-field. 
+
+\section{Generalised RDSA gradient estimate}
+The RDSA estimate of the gradient $\nabla f(\theta_n)$ is given by
+\begin{align}
+\label{eq:grad-gen}
+\widehat\nabla f(\theta_n) = \frac1{\lambda} d_n \left[ \dfrac{y_n^+ - y_n^-}{2\delta_n}\right],
+\end{align}
+where $\lambda = \E(d_n^i)^2 $ and the perturbations $d_n^i$, $i=1,\ldots,N$ are i.i.d and zero-mean random variables. 
+%Note that $E d_n^i = 0$, $E (d_n^i)^2 = 1+\epsilon$ and $E (d_n^i)^4 = \dfrac{(1+\epsilon)(1+(1+\epsilon)^3)}{(2+\epsilon)}$.
+
+\section{Generalised RDSA Hessian estimate}
+\begin{align}
+\label{eq:2rdsa-estimate-gen}
+&\widehat H_n = M_n \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{\delta_n^2}\right), \text{ where }\\
+& M_n =
+\left[
+\begin{array}{ccc}
+\frac{1}{\kappa}\left((d_n^1)^2\!-\lambda\right) & \cdots & \frac{1}{2 \lambda^2}d_n^1 d_n^N\\
+\frac{1}{2 \lambda^2}d_n^2 d_n^1  &  \cdots & \frac{1}{2 \lambda^2}d_n^2 d_n^N\\
+\cdots&\cdots&\cdots\\
+\frac{1}{2 \lambda^2}d_n^N d_n^1 & \cdots &  \frac{1}{\kappa}\left((d_n^N)^2-\lambda\right) \\
+\end{array}
+\right],\nonumber
+\end{align}
+where $\lambda = \E(d_n^i)^2 $ , $\tau = E (d_n^i)^4$, and $\kappa = \left(\tau - \lambda^2\right)$ for any $i=1,\ldots,N$.
+From the above Hessian estimation scheme it is easy to see that perturbations $d_n^i$, $i=1,\ldots,N$ should satisfy  $\kappa \neq 0$. However, many distributions of the random variables satisfy this requirement. 
+
+
+%%%%%%%%%%%%%%%%%%%% LEMMA 
+\begin{enumerate}[label=(\textbf{A\arabic*}),resume]
+\item For some $\alpha_1, \alpha_2,\zeta >0$ and for all $n$, 
+$\E \left|\xi_n^{\pm}\right|^{2+\zeta} \le \alpha_1$, $\E \left|f(x_n\pm \delta_n d_n)\right|^{2+\zeta} \le \alpha_2$. 
+\item $\{d_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d., zero-mean and independent of $\F_n$. For some $\eta_1,\eta_2,\zeta >0$ and for all $n$, $\E(d_n^i)^{2+\zeta} \le \eta_1,\E(d_n^i)^{4+\zeta} \le \eta_2$.
+\end{enumerate}
+
+
+\begin{lemma}(\textbf{Bias in the gradient estimate})
+\label{lemma:1rdsa-bias}
+%Almost surely, as $\delta_n \rightarrow 0$, we have that
+Under (A1),(A2),(A4),(A5),(A13),(A14) for $\widehat\nabla f(x_n)$ defined according to  \eqref{eq:grad-gen} , we have a.s. that\footnote{Here $\widehat\nabla_i f(x_n)$ and $\nabla_i f(x_n)$ denote the $i$th coordinates in the gradient estimate $\widehat\nabla f(x_n)$ and true gradient $\nabla f(x_n)$, respectively.}
+\begin{align}
+ \left| \E\left[\left.\widehat\nabla_i f(x_n)\right| \F_n \right] - \nabla_i f(x_n)\right| = O(\delta_n^2),  \quad \text{ for } i=1,\ldots,N.
+\end{align} 
+\end{lemma}
+
+\begin{proof}
+We use the proof techniques of \cite{spall},\cite{prashanth2015rdsa} (see Lemma 1) in order to prove the main claim here.
+ 
+Notice that
+\begin{align*}
+&\E\left[\left.\dfrac{y_n^+ - y_n^-}{2\delta_n} \right| \F_n\right] \\
+%= &\E\left[d_n\left.\left(\dfrac{f(x_n+\delta_n d_n) - f(x_n-\delta_n d_n)}{2\delta_n}\right) \right| \F_n\right] + \E\left[  d_n\left.\left(\dfrac{\xi_n^+ - \xi_n^-}{2\delta_n}\right) \right| \F_n\right]\\
+= & \E\left[d_n\left.\left(\dfrac{f(x_n+\delta_n d_n) - f(x_n-\delta_n d_n)}{2\delta_n}\right) \right| \F_n\right].
+\end{align*}
+The last equality above follows from the fact that $\E\left[  d_n\left.\left(\dfrac{\xi_n^+ - \xi_n^-}{2\delta_n}\right) \right| \F_n\right]=0$ from (A2) and (A13). We now analyse the term on the RHS above.
+Let $\nabla^2 f(\cdot)$ denote the Hessian of $f$.
+By Taylor's series expansions, we obtain, a.s.,
+\begin{align*}
+f(x_n \pm \delta_n d_n) =& f(x_n) \pm \delta_n d_n\tr \nabla f(x_n) + \frac{\delta_n^2}{2} d_n\tr \nabla^2 f(x_n) d_n \\
+& \pm  \frac{\delta_n^3}{6} \nabla^3 f(\tilde  x_n^+)(d_n \otimes d_n \otimes d_n),
+\end{align*}
+where $\otimes$ denotes the Kronecker product and $\tilde x_n^+$ (resp. $\tilde x_n^-$) are on the line segment between $x_n$ and $(x_n + \delta_n d_n)$ (resp. $(x_n - \delta_n d_n)$).
+Hence,
+\begin{align}
+&\E\left[d_n\left.\left(\dfrac{f(x_n+\delta_n d_n) - f(x_n-\delta_n d_n)}{2\delta_n}\right)\right| \F_n \right] \nonumber\\
+&= \E\left[d_n d_n\tr \left.\nabla f(x_n)\right| \F_n\right]\nonumber \\
+& +   \E\left[\left.\frac{\delta_n^2}{12} d_n (\nabla^3 f(\tilde  x_n^+)+\nabla^3 f(\tilde  x_n^-))(d_n \otimes d_n \otimes d_n)\right| \F_n\right]. \label{eq:l1}
+\end{align}
+The first term on the RHS above can be simplified as follows:
+\begin{align}
+\E\left[d_n d_n\tr \left.\nabla f(x_n)\right| \F_n\right] = &\E\left[d_n d_n\tr \right] \nabla f(x_n) \nonumber\\
+% = & \E\left[
+%\begin{array}{cccc}
+%(d_n^1)^2 & d_n^1 d_n^2 & \cdots & d_n^1 d_n^N\\
+%d_n^2 d_n^1 &(d_n^2)^2 &  \cdots & d_n^2 d_n^N\\
+%d_n^N d_n^1 & d_n^N d_n^2 & \cdots &  (d_n^N)^2 \\
+%\end{array}
+%\right]\nabla f(x_n) 
+= &  \lambda \nabla f(x_n). \label{eq:l1-a}
+\end{align}
+In the above, the first equality follows from (A14) and the last equality in \eqref{eq:l1-a} follows from $\E[(d_n^i)^2] = \lambda$ and $\E[d_n^i d_n^j] = \E[d_n^i] \E[d_n^j] = 0$ for $i\ne j$.
+
+Now, the $l$th coordinate of the second term in the RHS of \eqref{eq:l1} can be upper-bounded as follows:
+\begin{align}
+&\E\left[\left.\frac{\delta_n^2}{12} d_n^l (\nabla^3 f(\tilde  x_n^+)+\nabla^3 f(\tilde  x_n^-))(d_n \otimes d_n \otimes d_n)\right| \F_n\right]\nonumber\\
+\le & \dfrac{\alpha_0 \delta_n^2}{6} \sum_{i_1=1}^N\sum_{i_2=1}^N\sum_{i_3=1}^N \E\left( d_n^l d_n^{i_1} d_n^{i_2} d_n^{i_3}\right)\nonumber\\
+\le & \dfrac{\alpha_0 \delta_n^2\eta N^3}{6}.\label{eq:l2}
+\end{align}
+The first inequality above follows from (A1), while the second inequality follows from (A14) and considering $\eta = \max \{\eta_1^2, \eta_2\}$. The claim follows by plugging \eqref{eq:l1-a} and \eqref{eq:l2} into \eqref{eq:l1} .\\
+\end{proof}
+
+\begin{enumerate}[label=(\textbf{C\arabic*}),resume]
+\item $\{d_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d., zero-mean and independent of $\F_n$. For some $\eta_1,\eta_2,\zeta >0$ and for all $n$, $\E(d_n^i)^{2+\zeta} \le \eta_1,\E(d_n^i)^{4+\zeta} \le \eta_2$.
+\end{enumerate}
+
+
+\begin{lemma}(\textbf{Bias in Hessian estimate})
+\label{lemma:2rdsa-bias}
+Under (C1)-(C3),(C5)-(C10),(C15) with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-gen} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+\begin{align}
+\left|\E\left[
+\left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).
+\end{align} 
+\end{lemma}
+\begin{proof}
+We use the proof techniques of \cite{prashanth2015rdsa} (see Lemma 4) in order to prove the main claim here. However, we provide proof for general RDSA scheme in which perturbations need not be asymmetric Bernoulli or uniform as in the case of \cite{prashanth2015rdsa}.
+
+By a Taylor's series expansion, we obtain
+\begin{align*}
+f(\theta_n \pm \delta_n d_n) = f(\theta_n) \pm \delta_n d_n\tr \nabla f(\theta_n) + \frac{\delta_n^2}{2} d_n\tr \nabla^2 f(\theta_n) d_n &\pm \frac{\delta_n^3}{6} \nabla^3 f(\theta_n) (d_n \otimes d_n \otimes d_n) \\
+ & +  \frac{\delta_n^4}{24} \nabla^4 f(\tilde  \theta_n^+)(d_n \otimes d_n \otimes d_n \otimes d_n).
+\end{align*}
+The fourth-order term in each of the expansions above can be shown to be of order $O(\delta_n^4)$ using (C1) and arguments similar to that in Lemma 3.1. Hence,
+\begin{align*}
+\dfrac{f(\theta_n+\delta_n d_n) + f(\theta_n-\delta_n d_n) - 2 f(\theta_n)}{\delta_n^2}
+ = &\,\, d_n\tr \nabla^2 f(\theta_n) d_n +  O(\delta_n^2)\\
+= & \sum\limits_{i=1}^N\sum\limits_{j=1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) + O(\delta_n^2)\\
+= & \sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n) + 2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) + O(\delta_n^2).
+\end{align*}
+Now, taking the conditional expectation of the Hessian estimate $\widehat{H_n}$ and observing that $\E[\xi_n^+ + \xi_n^- - 2\xi_n \mid \F_n, d_n] = 0$ by (C3), we obtain the following:
+\begin{align}
+\E[\widehat H_n \mid \F_n] =  \E\left[\left. M_n \left(\sum\limits_{i=1}^{N-1} (d_n^i)^2 \nabla^2_{ii} f(\theta_n) \right.\right.\right.\left.\left.\left.+ 2\sum\limits_{i=1}^N\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) + O(\delta_n^2)\right)\right| \F_n\right]. \label{eq:h1}
+\end{align}
+
+Note that the $O(\delta_n^2)$ term inside the conditional expectation above remains $O(\delta_n^2)$ even after the multiplication with $M_n$.
+We analyse the diagonal and off-diagonal terms in the multiplication of the matrix $M_n$ with the scalar above, ignoring the $O(\delta_n^2)$ term. 
+
+\subsection*{Diagonal terms in \eqref{eq:h1}:}
+
+Consider the $lth$ diagonal term inside the conditional expectation in \eqref{eq:h1}:
+\begin{align}
+\dfrac{1}{\kappa} & \left((d_n^l)^2-\lambda\right) \left(\sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n)\right. \left. + 2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n)\right)
+=\dfrac{1}{\kappa} (d_n^l)^2 \sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n) \nonumber\\
+& + \dfrac{2}{\kappa} (d_n^l)^2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) - \dfrac{ \lambda}{\kappa} \sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n) - \dfrac{2 \lambda}{ \kappa} \sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n).\label{eq:h2}
+\end{align}
+From the distributions of $d_n^i,d_n^j$ and the fact that $d_n^i$ is independent of $d_n^j$ for $i<j$, it is easy to see that $\E\left(\left. (d_n^l)^2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) \right| \F_n\right) = 0$ and $\E\left(\left.\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) \right| \F_n\right) = 0$. Thus, the conditional expectations of the second and fourth terms on the RHS of \eqref{eq:h2} are both zero. 
+
+The first term on the RHS of \eqref{eq:h2} with the conditional expectation can be simplified as follows:
+\begin{align}\label{eq:term1lem1}
+\dfrac{1}{\kappa} \E\left(\left. (d_n^l)^2 \sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n) \right| \F_n\right)
+= & \dfrac{1}{\kappa} \E\left((d_n^l)^4 \nabla^2_{ll} f(\theta_n) + \sum\limits_{i=1,i\ne l}^N (d_n^l)^2(d_n^i)^2 \nabla^2_{ii} f(\theta_n) \right)\nonumber\\
+= & \dfrac{1}{\kappa} \left( \tau \nabla^2_{ll} f(\theta_n) + \lambda^2 \sum\limits_{i=1,i\ne l}^N  \nabla^2_{ii} f(\theta_n) \right), \text{ a.s.}
+\end{align} 
+For the second equality above, we have used the fact that $\E[(d_n^l)^4] =  \tau$ and $\E[(d_n^l)^2 (d_n^i)^2] = \E[(d_n^l)^2] \E[(d_n^i)^2] = \lambda^2$, $\forall l \ne i$.
+
+The third term in \eqref{eq:h2} with the conditional expectation and without the negative sign can be simplified as follows: 
+\begin{align}\label{eq:term3lem1}
+\dfrac{ \lambda}{\kappa} \E\left(\left. \sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n) \right| \F_n\right)
+= &\dfrac{ \lambda}{\kappa} \sum\limits_{i=1}^N \E \left[(d_n^i)^2\right] \nabla^2_{ii} f(\theta_n) \nonumber \\
+=  &\dfrac{\lambda^2}{\kappa} \sum\limits_{i=1}^N \nabla^2_{ii} f(\theta_n), \text{ a.s.}
+\end{align} 
+Combining the above followed by some algebra, i.e., $\eqref{eq:term1lem1}-\eqref{eq:term3lem1}$, we obtain
+\begin{align*}
+\frac{1}{\kappa} (\tau - \lambda^2) \nabla^2_{ll} f(\theta_n)
+\end{align*} 
+By using the fact that $\kappa = \tau - \lambda^2$, we obtain
+\begin{align*}
+\dfrac{1}{\kappa}  \E\left[\left. \left((d_n^l)^2-\lambda\right) \left(\sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n) 
++ 2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n)\right)\right| \F_n\right] = \nabla^2_{ll} f(\theta_n), \text{ a.s.}
+\end{align*}
+
+\subsection*{Off-diagonal terms in \eqref{eq:h1}:}
+
+We now consider the $(k,l)$th term in \eqref{eq:h1}: Assume w.l.o.g that $k<l$. Then,
+\begin{align}
+ &\dfrac{1}{2 \lambda^2} \E\left[\left.d_n^k d_n^l \left(\sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n)  
++ 2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n)\right)\right| \F_n \right] \nonumber\\
+&=\dfrac{1}{2 \lambda^2} \sum\limits_{i=1}^N \E \left(d_n^k d_n^l (d_n^i)^2 \right)\nabla^2_{ii} f(\theta_n) + \dfrac{1}{\lambda^2}\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N \E\left(d_n^k d_n^l d_n^i d_n^j\right) \nabla^2_{ij} f(\theta_n) \label{eq:crossh}\\
+&=  \nabla^2_{kl} f(\theta_n).\nonumber
+\end{align}
+The last equality follows from the fact that the first term in \eqref{eq:crossh} is $0$ since $k\ne l$, while the second term in \eqref{eq:crossh} can be seen to be equal to $\dfrac{1}{\lambda^2} \E\left((d_n^k)^2 (d_n^l)^2\right) \nabla^2_{kl} f(\theta_n) = \nabla^2_{kl} f(\theta_n)$. \\
+\end{proof}
+
+

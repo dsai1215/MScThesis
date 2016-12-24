@@ -1,0 +1,844 @@
+\chapter{Second-order RDSA with improved hessian estimation (2RDSA-IH)}
+\label{sec:2rdsa-ih}
+The second-order RDSA with improved Hessian estimate performs an update iteration as follows:
+\begin{align}
+\label{eq:e2rdsa}
+\theta_{n+1} = & \; \theta_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(\theta_n), \\
+\overline H_n = & \; (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n),\label{eq:2rdsa-H}
+\end{align}
+where $\widehat\nabla f(\theta_n)$ is the estimate of $\nabla f(\theta_n)$, 
+ %and this corresponds to  the uniform  and   asymmetric Bernoulli variant gradient estimates proposed in \cite{prashanth2015rdsa}.
+$\overline H_n$ is an estimate of the true Hessian ${\nabla}^2 f(\cdot)$, $\Upsilon(\cdot)$ projects any matrix onto the set of positive definite matrices and $\{a_n, n\ge 0\}$ is a step-size sequence that satisfies standard stochastic approximation conditions. There are standard procedures such as Cholesky factorization, see \cite{bert22}, for projecting a given square matrix to set of positive definite matrices. Moreover, in the vicinity of a local minimum, one expects the Hessian to be positive definite. In such a case, $\Upsilon$ will represent the identity operator.
+
+The recursion \eqref{eq:e2rdsa} is identical to that in 2RDSA, while the Hessian estimation recursion \eqref{eq:2rdsa-H} differs as follows:\\
+\begin{inparaenum}[\bfseries (i)]
+\item  $\widehat \Psi_n$ is a zero-mean feedback term that reduces the error in Hessian estimate; and\\
+\item $b_n$ is a general step-size that we optimize to improve the Hessian estimate.
+\end{inparaenum}
+
+On the other hand, $\widehat H_n$ is identical to that in 2RDSA, i.e., it estimates the true Hessian in each iteration using $3$ function evaluations. %Further, $\widehat H_0 = I$. 
+For the sake of completeness, we provide below the construction for $\widehat\nabla f(\theta_n)$ and $\widehat H_n$ using asymmetric Bernoulli perturbations, before we present the feedback term that reduces the error in $\widehat H_n$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\algblock{PEval}{EndPEval}
+%\algnewcommand\algorithmicPEval{\textbf{\em Function evaluation 1}}
+% \algnewcommand\algorithmicendPEval{}
+%\algrenewtext{PEval}[1]{\algorithmicPEval\ #1}
+%\algrenewtext{EndPEval}{\algorithmicendPEval}
+%
+%\algblock{PEvalPrime}{EndPEvalPrime}
+%\algnewcommand\algorithmicPEvalPrime{\textbf{\em Function evaluation 2}}
+% \algnewcommand\algorithmicendPEvalPrime{}
+%\algrenewtext{PEvalPrime}[1]{\algorithmicPEvalPrime\ #1}
+%\algrenewtext{EndPEvalPrime}{\algorithmicendPEvalPrime}
+%
+%\algblock{PImp}{EndPImp}
+%\algnewcommand\algorithmicPImp{\textbf{\em Gradient descent}}
+% \algnewcommand\algorithmicendPImp{}
+%\algrenewtext{PImp}[1]{\algorithmicPImp\ #1}
+%\algrenewtext{EndPImp}{\algorithmicendPImp}
+%
+%\algtext*{EndPEval}
+%\algtext*{EndPEvalPrime}
+%\algtext*{EndPImp}
+%%%%%%%%%%%%%%%%% alg-custom-block %%%%%%%%%%%%
+%\algblock{PEvalPrimeDouble}{EndPEvalPrimeDouble}
+%\algnewcommand\algorithmicPEvalPrimeDouble{\textbf{\em Function evaluation 3}}
+% \algnewcommand\algorithmicendPEvalPrimeDouble{}
+%\algrenewtext{PEvalPrimeDouble}[1]{\algorithmicPEvalPrimeDouble\ #1}
+%\algrenewtext{EndPEvalPrimeDouble}{\algorithmicendPEvalPrimeDouble}
+%\algtext*{EndPEvalPrimeDouble}
+%
+%\algblock{PImpNewton}{EndPImpNewton}
+%\algnewcommand\algorithmicPImpNewton{\textbf{\em Newton step}}
+% \algnewcommand\algorithmicendPImpNewton{}
+%\algrenewtext{PImpNewton}[1]{\algorithmicPImpNewton\ #1}
+%\algrenewtext{EndPImpNewton}{\algorithmicendPImpNewton}
+%
+%\algtext*{EndPImpNewton}
+%
+%%%%%%%%%%%%%%%%%%%%
+%
+%\begin{algorithm}[t]
+%\begin{algorithmic}
+%\State {\bf Input:} 
+%initial parameter $x_0 \in \R^N$, perturbation constants $\delta_n>0$, step-sizes $\{a_n, b_n\}$, operator $\Upsilon$.
+%\For{$n = 0,1,2,\ldots$}	
+%	\State Generate $\{d_n^{i}, i=1,\ldots,N\}$, independent of $\{d_m, m=0,1,\ldots,n-1\}$. 
+%	\State For any $i=1,\ldots,N$, $d_n^{i}$ is distributed either as an asymmetric Bernoulli (see \eqref{eq:det-proj}) or Uniform $U[-\eta,\eta]$ for some $\eta >0$ (see Remark \ref{remark:unif}). 
+%	\PEval
+%	    \State Obtain $y_n^+ = f(x_n+\delta_n d_n) + \xi_n^+$.
+%  \EndPEval
+%	    \PEvalPrime
+%	    \State Obtain $y_n^- = f(x_n-\delta_n d_n) + \xi_n^-$.
+%	    \EndPEvalPrime
+%	    	    \PEvalPrimeDouble
+%	    \State Obtain $y_n = f(x_n) + \xi_n$.
+%	    \EndPEvalPrimeDouble
+%	    \PImpNewton
+%		\State Update the parameter and Hessian as follows:
+%		\begin{align*}
+%		x_{n+1} = & \; x_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(x_n), \\
+%\overline H_n = &\; (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n),
+%\end{align*}
+%where $\widehat H_n$ and $\widehat \Psi_n$ are chosen according to \eqref{eq:2rdsa-estimate-ber} and \eqref{eq:psinhat}, respectively. 
+%		\EndPImpNewton
+%\EndFor
+%\State {\bf Return} $x_n.$
+%\end{algorithmic}
+%\caption{Structure of 2RDSA-IH algorithm.}
+%\label{alg:structure}
+%\end{algorithm}
+%
+\begin{algorithm}[!htp]
+\KwIn{initial parameter $\theta_0 \in \R^N$, perturbation constants $\delta_n>0$, step-sizes $\{a_n, b_n\}$, operator $\Upsilon$.}
+%\KwOut{Policy parameter $\theta$, value function parameter $r$ and feature $\Phi$ }
+\begin{enumerate}
+
+ \item \textbf{Execution}: \\
+ \For{$n \gets 0,1,2, \ldots, $} {
+ \begin{itemize}
+ \item Generate $\{d_n^{i}, i=1,\ldots,N\}$, independent of $\{d_m, m=0,1,\ldots,n-1\}$.  
+ \item For any $i=1,\ldots,N$, $d_n^{i}$ is distributed either as an asymmetric Bernoulli (see \eqref{eq:det-proj}) or Uniform $U[-\eta,\eta]$ for some $\eta >0$ (see Remark \ref{remark:unif}).
+\begin{itemize}
+\item \textbf{\emph {Function evaluation 1} }\\ \hspace{4em} Obtain $y_n^+ = f(\theta_n+\delta_n d_n) + \xi_n^+$.
+\item \textbf{\emph {Function evaluation 2} }\\ \hspace{4em} Obtain $y_n^- = f(\theta_n-\delta_n d_n) + \xi_n^-$.
+\item \textbf{\emph {Function evaluation 3} }\\ \hspace{4em} Obtain $y_n = f(\theta_n) + \xi_n$.
+\item \textbf{\emph {Newton step}}\\ \hspace{4.2em} Update the parameter and Hessian as follows:
+%\begin{align*}
+%		x_{n+1} = & \; x_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(x_n), \\
+%\overline H_n = &\; (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n),
+%\end{align*}
+\begin{align*} 
+\theta_{n+1} = \,& \theta_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(\theta_n),\\
+\overline H_n =\,& (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n).
+\end{align*}
+where $\widehat H_n$ and $\widehat \Psi_n$ are chosen according to \eqref{eq:2rdsa-estimate-ber} and \eqref{eq:psinhat}, respectively. 
+\end{itemize}
+
+\end{itemize}
+}
+\Return{$x_n.$}
+\end{enumerate}
+
+\caption{Structure of 2RDSA-IH algorithm.}
+\label{alg:structure}
+\end{algorithm}
+
+Algorithm \ref{alg:structure} presents the pseudocode and we describe the individual component of 2RDSA-IH below.
+\section{Function evaluations}
+Let $\delta_n, n\geq 0$ denote a sequence of diminishing positive real numbers and $d_n = (d_n^1,\ldots,d_n^N)\tr$ denote a random perturbation vector at instant $n$,
+where the perturbations $\{d_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d. and distributed  as follows: 
+\begin{equation}
+\label{eq:det-proj}
+ d_n^i =
+  \begin{cases}
+   -1 &  \text{ w.p. } \dfrac{(1+\epsilon)}{(2+\epsilon)}, \\
+   1+\epsilon &  \text{ w.p. } \dfrac{1}{(2+\epsilon)},
+  \end{cases}
+\end{equation}
+with $\epsilon>0$ being a constant that can be chosen to be arbitrarily small.
+
+The 2RDSA-IH algorithm obtains three function samples $y_n$, $y_n^+$ and $y_n^-$ at $\theta_n$, $\theta_n+\delta_n d_n$ and $\theta_n - \delta_n d_n$, respectively, i.e.,
+$y_n = f(\theta_n) + \xi_n$, $y_n^+ = f(\theta_n+\delta_n d_n) + \xi_n^+$ and 
+$y_n^- = f(\theta_n-\delta_n d_n) + \xi_n^-$,
+where the noise terms $\xi_n, \xi_n^+, \xi_n^-$ satisfy $\E\left[\left.\xi_n^+ + \xi_n^- - 2\xi_n \right| \F_n\right] = 0$ with $\F_n = \sigma(\theta_m,m\le n)$ denoting the underlying sigma-field. 
+
+\section{Gradient estimation}
+The RDSA estimate of the gradient $\nabla f(\theta_n)$ is given by
+\begin{align}
+\label{eq:grad-ber}
+\widehat\nabla f(\theta_n) = \frac1{1+\epsilon} d_n \left[ \dfrac{y_n^+ - y_n^-}{2\delta_n}\right],
+\end{align}
+%Note that $E d_n^i = 0$, $E (d_n^i)^2 = 1+\epsilon$ and $E (d_n^i)^4 = \dfrac{(1+\epsilon)(1+(1+\epsilon)^3)}{(2+\epsilon)}$.
+
+\section{Hessian estimation}
+\begin{align}
+\label{eq:2rdsa-estimate-ber}
+&\widehat H_n = M_n \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{\delta_n^2}\right), \text{ where }\\
+& M_n =
+\left[
+\begin{array}{ccc}
+\frac{1}{\kappa}\left((d_n^1)^2\!-(1+\epsilon)\right) & \cdots & \frac{1}{2(1+\epsilon)^2}d_n^1 d_n^N\\
+\frac{1}{2(1+\epsilon)^2}d_n^2 d_n^1  &  \cdots & \frac{1}{2(1+\epsilon)^2}d_n^2 d_n^N\\
+\cdots&\cdots&\cdots\\
+\frac{1}{2(1+\epsilon)^2}d_n^N d_n^1 & \cdots &  \frac{1}{\kappa}\left((d_n^N)^2-(1+\epsilon)\right) \\
+\end{array}
+\right],\nonumber
+\end{align}
+where $\kappa = \tau \left(1- \dfrac{(1+\epsilon)^2}{\tau}\right)$ and $\tau = E (d_n^i)^4= \dfrac{(1+\epsilon)(1+(1+\epsilon)^3)}{(2+\epsilon)}$, for any $i=1,\ldots,N$. 
+%%%%%% Feedback
+
+\section{Improved Hessian estimation}
+The Hessian estimate $\widehat H_n$ can be simplified as follows: 
+\begin{align}
+\widehat H_n & = M_n \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{\delta_n^2}\right) \nonumber \\
+& =  M_n \left[\left(\dfrac{f(\theta_n+\delta_n d_n) + f(\theta_n-\delta_n d_n) - 2 f(\theta_n)}{\delta_n^2}\right) \right. +\left. \left(\dfrac{\xi_n^+ + \xi_n^- - 2 \xi_n}{\delta_n^2}\right)\right] \nonumber \\
+& = M_n \left(d_n\tr \nabla^2 f(\theta_n) d_n +  O(\delta_n^2) + \left(\dfrac{\xi_n^+ + \xi_n^- - 2 \xi_n}{\delta_n^2} \right)\right).\label{eq:h0}
+%& = M_n \left(d_n\tr \nabla^2 f(x_n) d_n +  O(\delta_n^2) + O(\delta_n^{-2})\right). \label{eq:h0}
+\end{align}
+For the first term on the RHS above, note that 
+\begin{align}
+&\E[M_n \left(d_n\tr \nabla^2 f(\theta_n) d_n\right) \mid \F_n] =   \E\left[\left. M_n \times\right.\right.\left.\left.\left(\sum\limits_{i=1}^{N-1} (d_n^i)^2 \nabla^2_{ii} f(\theta_n) + 2\sum\limits_{i=1}^N\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) \right)\right| \F_n\right]. \label{eq:h1}
+\end{align}
+In analyzing the $l$th diagonal term of the above expression, the following zero-mean term appears (see the proof of Lemma 4 in \cite{prashanth2015rdsa}):
+\begin{align}
+& \E\left[\left. \left([M_n]_{D}\right)_{l,l} \left(2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n)\right)\right| \F_{n}\right] = 0,\label{eq:diagzero}
+\end{align}
+where for any matrix $M$, $[M]_{D}$ refers to a matrix that retains only the diagonal entries of $M$ and replaces all the remaining  entries with zero, and $\left([M]_{D}\right)_{i,j}$ refers to the $(i,j)$th entry in $[M]_D$. We shall also use $[M]_{N}$ to refer to a matrix that retains only the off-diagonal entries of $M$, while replaces all the diagonal entries with zero.
+
+The term on the LHS in \eqref{eq:diagzero}, denoted by $\Psi_{n}^{1}(\nabla^2 f(\theta_n))$, can be written in matrix form as follows: 
+\begin{align}\label{eq:digmat}
+\Psi_{n}^{1}(\nabla^2 f(\theta_n)) = [M_n]_{D}\left(d_{n}\tr \, [\nabla^2 f(\theta_n)]_{N} \, d_{n}\right).
+\end{align}
+
+In analyzing the off-diagonal term ($(k,l)$ where $k < l$) of \eqref{eq:h1}, the following zero-mean term appears:
+\begin{align}
+& \E\left[\left.\left([M_n]_{N}\right)_{k,l}   \left(\sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n)\right)\right| \F_n \right] = 0. 
+\end{align}
+The term on the LHS above, denoted by $\Psi_{n}^{2}(\nabla^2 f(\theta_n))$, can be written in matrix form as follows: 
+\begin{align}\label{eq:ndmat}
+\Psi_{n}^{2}(\nabla^2 f(\theta_n)) = [M_n]_{N}\left(d_{n}\tr \, [\nabla^2 f(\theta_n)]_{D} \, d_{n}\right).
+\end{align}
+From the foregoing, the per-iteration Hessian estimate $\widehat H_n$ can be re-written as follows:
+\begin{align}
+ \E\left[\left.\widehat H_n\right| \F_n\right] = & \nabla^2 f(\theta_n) + \E\left[\left.\Psi_{n}(\nabla^2 f(\theta_n))\right| \F_n\right]  +  O(\delta_n^2)+\E\left[\left.\left(\dfrac{\xi_n^+ + \xi_n^- - 2 \xi_n}{\delta_n^2} \right)\right| \F_n\right], \label{eq:hnhat}
+\end{align}
+where, for any matrix $H$, 
+\begin{align}
+\Psi_{n}(H) &= \Psi_{n}^{1}(H) + \Psi_{n}^{2}(H)\nonumber\\
+&= [M_n]_{D}\left(d_{n}\tr \, [H]_{N} \, d_{n}\right) +  [M_n]_{N}\left(d_{n}\tr \, [H]_{D} \, d_{n}\right).\label{eq:psi}
+\end{align}
+In the RHS of \eqref{eq:hnhat}, it is easy to see that  the second term involving $\Psi_{n}$ and the last term involving the noise are zero-mean. Moreover, since the noise is bounded by assumption, the last term in \eqref{eq:hnhat} vanishes asymptotically at the rate $O(\delta_n^{-2})$. So, the error in estimating the Hessian is due to the second term, which involves the perturbations $d_n$. This motivates the term $\widehat \Psi_n$ in the update rule \eqref{eq:e2rdsa}. 
+ %and using the fact that $\E\left[\left.\xi_n^+ + \xi_n^- - 2\xi_n \right| \F_n\right] = 0$
+
+
+Given that we operate in a simulation optimization setting, which implies $\nabla^2 f$ is not known, we construct the feedback term $\widehat \Psi_n$ in \eqref{eq:e2rdsa} by using $\overline H_{n-1}$ as a proxy for $\nabla^2 f$, i.e.,
+\begin{align}
+\widehat \Psi_n = \Psi_{n} (\overline H_{n-1}).
+\label{eq:psinhat}
+\end{align}
+
+\section{Step-size optimization}
+Unlike the feedback term, adapting the idea of optimizing the step-sizes for 2RDSA is relatively straightforward from the corresponding approach for 2SPSA in \cite{spall-jacobian}. The difference here is that there exists only one $N$-dimensional perturbation vector $d_n$ in our setting, while 2SPSA required two such vectors. This in turn implies that only the perturbation constant $\delta_n$ is needed in optimizing $b_n$.
+
+The optimal choice for $b_n$ in \eqref{eq:2rdsa-H} is the following:
+\begin{align}
+\label{eq:wieghts}
+b_i  = \delta_i^{4}/\sum\limits_{j=0}^{i} \delta_j^{4}.
+\end{align}
+The main idea behind the above choice is provided below.
+From \eqref{eq:hnhat}, we can infer that
+\begin{align*}
+\E \parallel \widehat H_n \parallel^2 \le \dfrac{C}{\delta_n^4} \text{ for some } C<\infty. 
+\end{align*} 
+This is because the third term in \eqref{eq:hnhat} vanishes asymptotically, while the fourth term there dominates asymptotically. Moreover, the noise factors in the fourth term in \eqref{eq:hnhat} are bounded above due to (C9) and independent of $n$, leaving the $\delta_n^2$ term in the denominator there. 
+
+So, the optimization problem to be solved at instant $n$ is as follows:
+\begin{align}
+\min_{ \{\tilde b_k\} } \sum \limits_{i=0}^{n} (\tilde b_k)^2 \delta_i^{-4}, \text{ subject to} \label{eq:wn-opt}\\
+\tilde b_i \geq 0 ~\forall i \text{ and }\sum \limits_{i=0}^{n} \tilde b_i = 1.
+\end{align}
+The optimization variable $\tilde b_i$ from the above is related to the Hessian recursion \eqref{eq:2rdsa-H} as follows:
+\begin{align}
+\label{eq:hess}
+\overline H_n = \sum\limits_{i=0}^{n} \tilde b_k(\widehat H_i -\widehat \Psi_i).
+\end{align}
+The solution to \eqref{eq:wn-opt} is achieved for $\tilde b_i^* = \delta_i^{4}/\sum \limits_{j=0}^{n} \delta_j^{4}, i=1,\ldots,n$. The optimal choice $\tilde b_i^*$ can be translated to the step-sizes $b_i$, leading to \eqref{eq:wieghts}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{remark}\textbf{\textit{(Uniform perturbations)}}
+\label{remark:unif}
+In \cite{prashanth2015rdsa}, the authors suggest two alternatives for the distribution of random perturbations $d_n$: the asymmetric Bernoulli, which we described earlier and uniform that we outline next.
+
+Choose $d_n^i$, $ i=1,\ldots,N$ to be i.i.d. $U[-\eta,\eta]$ for some $\eta>0$, where $U[-\eta,\eta]$ denotes the uniform distribution on the interval $[-\eta,\eta]$.
+Then, the RDSA estimate of the gradient is given by
+\begin{align}
+\label{eq:grad-unif}
+\widehat\nabla f(\theta_n) = \frac3{\eta^2} d_n \left[ \dfrac{y_n^+ - y_n^-}{2\delta_n}\right].
+\end{align}
+
+The Hessian estimate in this case is given by
+\begin{align}
+\label{eq:2rdsa-estimate-unif}
+&\widehat H_n =  M_n \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{\delta_n^2}\right), \text{ where } \\
+& M_n =
+\dfrac{9}{2\eta^4}\left[
+\begin{array}{cccc}
+\frac{5}{2}\left((d_n^1)^2-\frac{\eta^2}{3}\right) & \cdots & d_n^1 d_n^N\\
+d_n^2 d_n^1  &  \cdots & d_n^2 d_n^N\\
+\cdots&\cdots&\cdots\\
+d_n^N d_n^1 & \cdots &  \frac{5}{2}\left((d_n^N)^2-\frac{\eta^2}{3}\right) \\
+\end{array}
+\right].\nonumber
+\end{align}
+
+The feedback term in \eqref{eq:psinhat} can be easily extended to the case of uniform perturbations by using the $M_n$ as defined above instead of that for the asymmetric Bernoulli case.
+\end{remark}
+%Henceforth, we shall refer to algorithm \eqref{eq:2rdsa}--\eqref{eq:2rdsa-H} with Hessian estimate \eqref{eq:2rdsa-estimate} as 2RDSA.
+
+\section{Convergence analysis}
+\label{sec:2rdsa-results}
+We make the same assumptions as those used in the analysis of \cite{prashanth2015rdsa}, with a few minor alterations. The assumptions are listed below:
+\begin{enumerate}[label=(\textbf{C\arabic*})]
+\item  The function
+$f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1 i_2 i_3 i_4} f(\theta)$ denotes the $(i_1 i_2 i_3 i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
+
+%\item  For some $\rho>0$  and almost all $x_n$, the function $f$ is four-times differentiable with a uniformly (in $n$) bounded fourth derivative for all $x$ such that $\left\| x_n - x\right\| \le \rho$. 
+
+\item For each $n$ and all $\theta$, there exists a $\rho>0$ not dependent on $n$ and $\theta$, such that $(\theta-\theta^*)\tr \bar f_n(\theta) \ge \rho \left\| \theta_n - \theta\right\|$, where $\bar f_n(\theta) = \Upsilon(\overline H_n)^{-1} \nabla f(\theta)$.
+
+\item $\{\xi_n, \xi_n^+,\xi_n^-, n=1,2,\ldots\}$ are such that, for all $n$, $\E\left[\left. \xi_n^+ + \xi_n^- - 2 \xi_n \right| \F_n\right] = 0$, where $\mathcal{F}_n = \sigma(\theta_m,m\le n)$ denotes the underlying sigma-field.. 
+
+\item $\{d_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d. and independent of $\F_n$.
+
+\item  The step-sizes $a_n$ and perturbation constants $\delta_n$ are positive, for all $n$ and satisfy
+$$\hspace{-1.7em} a_n, \delta_n \rightarrow 0\text{ as } n \rightarrow \infty, 
+\sum_n a_n=\infty \text{ and } \sum_n \left(\frac{a_n}{\delta_n}\right)^2 <\infty.$$
+
+\item For each $i=1,\ldots,N$ and any $\rho>0$, 
+$P(\{ \bar f_{ni} (\theta_n) \ge 0 \text{ i.o}\} \cap \{ \bar f_{ni} (\theta_n) < 0 \text{ i.o}\} \mid \{ |\theta_{ni} - x^*_i| \ge \rho\quad \forall n\}) =0.$
+
+\item The operator $\Upsilon$ satisfies $\delta_n^2 \Upsilon(H_n)^{-1} \rightarrow 0$ a.s. and  $E(\left\| \Upsilon(H_n)^{-1}\right\|^{2+\zeta}) \le \rho$ for some $\zeta, \rho>0$.
+
+\item For any $\tau >0$ and nonempty $S \subseteq \{1,\ldots,N\}$, there exists a $\rho'(\tau,S)>\tau$ such that 
+$$ \limsup_{n\rightarrow \infty} \left| \dfrac{\sum_{i \notin S} (x-x^*)_i \bar f_{ni}(x)}{\sum_{i \in S} (x-x^*)_i \bar f_{ni}(x)}               \right| < 1 \text{ a.s.}$$
+for all $|(x-x^*)_i| < \tau$ when $i \notin S$ and $|(x-x^*)_i| \ge \rho'(\tau,S)$ when $i\in S$.
+\item For some $\alpha_0, \alpha_1>0$ and for all $n$, $\E {\xi_n}^{2} \le \alpha_0$, $\E {\xi_n^{\pm}}^{2} \le \alpha_0$, $\E f(\theta_n)^{2} \le \alpha_1$,  $\E f(\theta_n\pm \delta_n d_n)^{2} \le \alpha_1$ and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
+\item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
+\end{enumerate}
+The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C1)-(C8) are identical to that in \cite{prashanth2015rdsa}, while (C9) and (C10) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired by \cite{spall-jacobian}.
+
+\begin{lemma}(\textbf{Bias in Hessian estimate})
+\label{lemma:2rdsa-bias}
+Under (C1)-(C10), with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-ber}, we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+\begin{align}
+\left|\E\left[
+\left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).
+\end{align} 
+\end{lemma}
+\begin{proof}
+See Lemma 4 in \cite{prashanth2015rdsa}.
+\end{proof}
+
+\begin{theorem}(\textbf{Strong Convergence of Hessian})
+\label{thm:2rdsa-H}
+Under (C1)-(C10), we have that 
+$$\theta_n \rightarrow \theta^*, \overline H_n \rightarrow \nabla^2 f(\theta^*) \text{ a.s. as } n\rightarrow \infty.$$ 
+In the above, $\theta_n$ and $\overline H_n$ are updated according to \eqref{eq:e2rdsa} and \eqref{eq:2rdsa-H}, respectively, $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-ber} and the step-sizes $b_n$ are chosen as suggested in \eqref{eq:wieghts}. 
+\end{theorem}
+\begin{proof}
+The first part of the claim regarding $\theta_n$ follows in exactly the same fashion as the proof of Theorem 5 in \cite{prashanth2015rdsa}.  
+For proving the claim regarding $\overline H_n$, we closely follow the approach used to prove a corresponding result for 2SPSA (see Theorem 1 in \cite{spall-jacobian}). 
+The first step is to prove the following:
+\begin{align}
+\sum_{k=0}^n \dfrac{\delta_k^4 \left(\widehat H_k - \widehat \Psi_k - \E(\widehat H_k \mid \F_k)\right)}{\sum_{i=0}^n \delta_i^4} \rightarrow 0.
+\label{eq:step1}
+\end{align}
+
+By a completely parallel argument to that used in the proof of Theorem 1 in \cite{spall-jacobian}, we obtain: For any $i,j = 1,\ldots,N$,
+\begin{align*}
+\E \left[\left((\widehat {H}_k)_{i,j} - (\widehat {\Psi}_k)_{i,j} - \E((\widehat {H}_k)_{i,j} \mid \F_k)\right)^2\right] = O(\delta_k^{-4}).
+\end{align*}
+Now \eqref{eq:step1} follows by an application of Kronecker's Lemma along with the martingale convergence theorem (see Theorem 6.2.1 of \cite{lahaprobability}).
+
+From Lemma \ref{lemma:2rdsa-bias}, we have 
+$$ \E[ \widehat H_k \mid \F_k] = \nabla^2 f(\theta_n) + O(\delta_n^2) \text{ a.s.}$$
+Since the Hessian is continuous near $\theta_n$ and $\theta_n$ converges almost surely to $\theta^*$, we have
+% \footnote{Since assumptions (C1)-(C10) here are similar to that in \cite{prashanth2015rdsa}, Theorem 5 of \cite{prashanth2015rdsa} holds here as well. In particular, this implies almost sure convergence of $x_n$ to $x^*$.}
+\begin{align*}
+\sum_{k=0}^n \dfrac{\delta_k^4 \left(\E(\widehat H_k \mid \F_k)\right)}{\sum_{i=0}^n \delta_i^4} 
+=&\sum_{k=0}^n \dfrac{\delta_k^4 \left(\nabla^2 f(\theta_n) + O(\delta_n^2)\right)}{\sum_{i=0}^n \delta_i^4}\\
+=&\sum_{k=0}^n \dfrac{\delta_k^4 \left(\nabla^2 f(x^*) + o(1)\right)}{\sum_{i=0}^n \delta_i^4}\\
+&\rightarrow \nabla^2 f(x^*) \text{ a.s. as } n \rightarrow \infty.
+\end{align*}
+The last step above follows from Toeplitz Lemma (see p. 89 of \cite{lahaprobability}) after observing that $\sum_{i=0}^n \delta_i^4 \rightarrow \infty$ due to (C10). 
+The main claim now follows since 
+$$ \overline H_n = \sum_{k=0}^n \dfrac{\delta_k^4 \left(\widehat H_k - \Psi_k \right)}{\sum_{i=0}^n \delta_i^4}.$$
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%% Quadratic case
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We next present a convergence rate result for the special case of a quadratic objective function under the following additional assumptions:
+\begin{enumerate}[label=(\textbf{C\arabic*}),resume]
+\item  $f$ is quadratic and $\nabla^2 f(x^*) > 0$. 
+\item The operator $\Upsilon$ is chosen such that $\E(\parallel \Upsilon(\overline H_n) - \overline H_n\parallel^2) = o(e^{-2wn^{1-r}/(1-r)})$ and $\parallel \Upsilon(H) - H \parallel^2 / (1+\parallel H \parallel^2)$ is uniformly bounded.
+\end{enumerate}
+\begin{theorem}(\textbf{Quadratic case - Convergence rate})
+\label{thm:quad-bound}
+Assume (C4), (C10), (C11) and (C12) and also that the setting is noise-free. 
+Let $b_n = b_0/n^r$, $n=1,2,\ldots,k$, where $1/2 < r < 1$ and $0 < b_0 \leq 1$. For notational simplicity, let $H^*=\nabla^2 f(x^*)$. Letting $\Lambda_k = \overline H_k - H^*$, we have 
+\begin{align}
+\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}}).
+\label{eq:quad-bigo}
+\end{align}
+\end{theorem}
+\begin{proof}
+Since the setting is noise-free with a quadratic objective, we can rewrite \eqref{eq:hnhat} as follows:
+\begin{align}
+ \widehat H_n =    \Phi_n(\nabla^2 f(\theta_n)) &+\Psi_{n}(\nabla^2 f(\theta_n)),\label{eq:hnhat-ext}
+\end{align}
+where $\Psi_n(H)$ is defined in \eqref{eq:psi} and for any matrix $H$, 
+$$\Phi_{n}(H) = [M_n]_{D}\left(d_{n}\tr \, [H]_{D} \, d_{n}\right) +  [M_n]_{N}\left(d_{n}\tr \, [H]_{N} \, d_{n}\right).$$
+The proof involves the following steps:
+\begin{description}
+  \item[Step 1:] Here we prove the MSE convergence of $\overline H_k$, i.e., $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0$ a.s. as $n\rightarrow \infty$.
+  \item[Step 2:] We unroll the recursion \eqref{eq:2rdsa-H} and then derive convenient representation for $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$.
+  \item[Step 3:] We derive the main result in \eqref{eq:quad-bigo} using a proof by contradiction. 
+\end{description}
+\noindent\textbf{Step 1: MSE convergence of $\overline H_n$} \\
+This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jacobian}.\\
+\noindent\textbf{Step 2: Representation of $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$} \\
+ From \eqref{eq:2rdsa-H} and \eqref{eq:hnhat-ext},  we have
+ \begin{align}
+ \Lambda_n &= \Lambda_{n-1} - b_n ( \overline H_{n-1} - \hat H_n + \hat \Psi_n) \nonumber\\
+&= (1-b_n) \Lambda_{n-1} - b_n (H^* + \hat \Psi_n - \hat H_n ) \nonumber\\&= (1-b_n) \Lambda_{n-1} - b_n (H^*+\hat \Psi_n -\Phi_n(H^*) - \Psi_n(H^*)\nonumber\\&= (1-b_n) \Lambda_{n-1} - b_n \Psi_n(\Upsilon(\overline H_{n-1})) + b_n (\Phi_n(H^*) - H^*)\nonumber\\
+&= (1-b_n) \Lambda_{n-1} - b_n\Psi_n(\Lambda_{n-1}')+ b_n (\Phi_n(H^*) - H^*),\label{eq:step1last}
+ \end{align}
+where $\Lambda_n' = \Upsilon(\overline H_n) - H^*$.
+The equality in \eqref{eq:step1last} follows from \eqref{eq:psi}. 
+Unrolling the recursion \eqref{eq:step1last}, we obtain 
+ \begin{align}\label{lambda-exp}
+  \Lambda_n  = \left[ \prod_{k=1}^n (1-b_k) \right]\Lambda_0 
+&- \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right] b_k \Psi_k(\Lambda_{k-1}') \nonumber\\
+&+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right] b_k (\Phi_k(H^*) - H^*) \hspace{0.2cm} a.s.
+ \end{align}
+ %%(note : $\prod_{j=n+1}^n (1-b_j) = 1$ for all n).
+ %%Let us  characterise $trace[\E(\Lambda_n\tr \Lambda_n)]$ using \eqref{lambda-exp}. From independence of $d_k$ along k, \eqref{lambda-exp} represent martingale difference sequence, leading to 
+Squaring on both sides and taking expectations, we obtain
+ \begin{align}
+  \E (\Lambda_n \tr \Lambda_n) =  &\left[ \prod_{k=1}^n (1-b_k) \right]^2 \E (\Lambda_0 \tr \Lambda_0) + \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2   \E (\Psi_k(\Lambda_{k-1}') \tr \Psi_k(\Lambda_{k-1}'))  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \times \E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*)) \nonumber\\
+&-2 \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2 \E\left(\Psi_k(\Lambda_{k-1}) \tr (\Phi_k(H^*) - H^*)\right).\label{eq:exp-lambda2}
+ \end{align}
+The equality above uses the fact that $\E(\Psi_k(\Lambda_{k-1}'))=0$, $\E(\Phi_k(H^*) - H^*)=0$, which get rid of the corresponding cross terms with the first term on RHS of \eqref{lambda-exp}. Notice that there are only $n$ terms in the last term in the RHS of \eqref{eq:exp-lambda2} because $d_k$ are identically distributed for each $k$ and across $k$.  
+% %
+We now characterize $\text{trace}[\E(\Lambda_n\tr \Lambda_n)]$ using \eqref{eq:exp-lambda2} as follows:
+%From the independence of $d_k$'s and $\Lambda_{k-1}'$ and using Cauchy-Schwartz inequality we get 
+ \begin{align}\label{eq:trace}
+ \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] = &\left[ \prod_{k=1}^n (1-b_k) \right]^2 \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  + \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2   \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]  \nonumber\\ &- 2 \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \times \text{trace} \left[\E\left(\Psi_k(\Lambda_{k-1}) \tr (\Phi_k(H^*) - H^*)\right)\right].
+ \end{align}
+ % \begin{align}\label{eq:trace}
+% & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] \leq \left[ \prod_{k=1}^n (1-b_k) \right]^2 \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \nonumber\\&  \hspace{0.5cm}\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] + \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2   \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2} \nonumber\\&  \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]^{1/2}.
+% \end{align}
+
+As in the proof of Theorem 3 of \cite{spall-jacobian}, observe that $1-b_k = e^{-b_k}(1-O(b_k^2))$ and since $0 < b_k <1$, we have that the $O(b_k^2)$ term is strictly positive. 
+Letting $\Gamma_{ij} = \sum_{k=i}^j b_k$ with $\Gamma_{nn} = 1$ and $\beta_{kn} = \left[\prod_{i=k+1}^n (1- O(b_i^2))\right]^2$, we can simplify \eqref{eq:trace} as follows:
+\begin{align}\label{eq:wij}
+ \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] = &e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  + e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ &+ e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] \nonumber\\ &- 2 e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2   \times \text{trace} \left[\E\left(\Psi_k(\Lambda_{k-1}) \tr (\Phi_k(H^*) - H^*)\right)\right] .
+ \end{align} 
+% \begin{align}\label{eq:wij}
+% & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] \leq e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ &+ e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ &+ e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \nonumber\\&  \hspace{0.5cm}\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] \nonumber\\ &+ e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2} \nonumber\\&  \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]^{1/2}.
+% \end{align} 
+Comparing the sum with integrals, we obtain
+\begin{align*}
+\Gamma_{ij} = \int_i^j \frac{b_0}{x^r} dx + O(1) &= \left(\frac{b_0}{1-r}\right)(j^{1-r}-i^{1-r}) +O(1),
+\end{align*}
+where we have used the facts that $0 < b_k < 1, \forall k \ge 2$ and 
+$\sum_{k=i}^j b_k \to \infty$ as $j-i \to \infty$ since 
+$b_k = b_0/k^r$ with $r > 0.5$.
+Observing that $\beta_{kn}$ are uniformly upper-bounded, say by $\bar \beta_n$, we have
+\begin{align}\label{eq:thmwts}
+ & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] =  e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ 
+&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ 
+&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}} \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] \nonumber\\ &- 2 \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}   \times \text{trace} \left[\E\left(\Psi_k(\Lambda_{k-1}) \tr (\Phi_k(H^*) - H^*)\right)\right].
+\end{align} 
+\begin{align}\label{eq:thmcomb}
+& \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] =  e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ 
+&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ 
+&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \text{trace}\left[\E [((\Phi_k(H^*) - H^*) - 2 \Psi_k(\Lambda_{k-1}))\tr  (\Phi_k(H^*) - H^*)]\right] .
+\end{align} 
+%
+%\begin{align}\label{eq:thmwts}
+% & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] =  e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ 
+%&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}} \nonumber\\
+%& \hspace{3.5cm} \times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ 
+%&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \nonumber\\
+%&  \hspace{0.5cm}\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] \nonumber\\ &+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \nonumber\\&\hspace{3.5cm}\times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2}\nonumber\\&\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]^{1/2}.
+%\end{align}
+\noindent\textbf{Step 3: The big-O result on $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$ convergence} \\
+In comparison to Eq. (7.6) in \cite{spall-jacobian} that corresponds to \eqref{eq:thmwts} for the N-SPSA-4 setting, there are two extra terms - the third and the fourth - in the RHS of \eqref{eq:thmwts}. 
+Consider the third term on the RHS of \eqref{eq:thmwts}. As a consequence of (C9) and the construction of random perturbations $d_k$, it can be seen that $\text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]$ is uniformly bounded above, say by $\top$, independent of $k$. Thus, the third term is equivalent to the following:
+\begin{align}
+ \bar c_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \frac{b_0^2}{k^{2 r}} \top.
+\label{eq:term3}
+\end{align}
+Now by moving out side exponential term to inside and changing the summation to integration, we can rewrite the above equation as follows
+\begin{align}
+  \overline{\overline{c_n}}  \int_1^n  \frac{1}{k^{2 r}} .
+\label{eq:term3}
+\end{align}
+Where $\overline{\overline{c_n}}$ is a constant. By above equation we can conclude that the third term is of $O(\frac{1}{k^{2 r -1}})$
+%Now, observe that $\lim_{n\rightarrow \infty} \sum_{k=1}^n \frac{1}{k^{2 r}} < \infty$ as $1/2 < r < 1$ and $e^{2 b_0 k^{1-r}/(1-r)}$ diverges as $n\rightarrow \infty$ and hence, by Kronecker's Lemma, the term in \eqref{eq:term3} vanishes asymptotically. 
+%
+%Now consider the fourth term. By using the uniform upper-bound $\top$ on $\text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]$, we can rewrite  the fourth term in \eqref{eq:thmwts} as follows: 
+% \begin{align}\label{eq:fourthterm}
+% \bar c_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \frac{b_0^2}{k^{2 r}} \sqrt{\top} \nonumber \\ \hspace{3cm}\times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2},
+% \end{align}
+%where, as in the proof of Theorem 3 of \cite{spall-jacobian}, $\tau(\cdot)$ transforms the $\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')$ in a linear fashion and then returns the trace of the resulting $N\times N$ matrix.
+
+\textbf{Part (iii) needed fix} 
+%of Theorem 3 in \cite{spall-jacobian} uses a proof by contradiction to show that the first and second terms in \eqref{eq:thmwts} are both of the order $O(e^{-2b_0n^{1-r} / {1-r}})$. By a completely parallel argument to that used for the second term in \cite{spall-jacobian}, it can be seen that the fourth term in our setting vanishes at a faster rate than the second term.  The claim follows. 
+\end{proof}
+
+
+\section{Simulation experiments}
+\label{sec:expts}
+\subsection{Implementation}
+We test the performance of 2RDSA-Unif, 2RDSA-AsymBer and 2SPSA, with/without improved Hessian estimation. 
+2SPSA algorithm uses Bernoulli $\pm 1$-valued perturbations, while 2RDSA/2RDSA-IH come in two variants - one that uses $U[-1,1]$ distributed perturbations (referred to as 2RDSA-Unif/2RDSA-IH-Unif) and the other that uses asymmetric Bernoulli perturbations (referred to as 2RDSA-AsymBer/2RDSA-IH-AsymBer)\footnote{The implementation is available at \url{https://github.com/prashla/RDSA/archive/master.zip}.}.
+
+For the empirical evaluations, we use the following two loss functions in $N=10$ dimensions:
+\paragraph{Quadratic loss}
+\begin{align}
+f(x) = \theta\tr A \theta+ b\tr \theta.\label{eq:quadratic}
+\end{align} 
+The optimum $\theta^*$ for the above $f$ is such that each coordinate of $\theta^*$ is $-0.9091$, with $f(\theta^*) = -4.55$.
+
+\paragraph{Fourth-order loss}
+\begin{align} 
+f(x) = \theta\tr A\tr A \theta + 0.1 \sum_{j=1}^N (A\theta)^3_j + 0.01 \sum_{j=1}^N (A\theta)^4_j.\label{eq:4thorder}
+ \end{align} 
+The optimum $\theta^*$ for above $f$ is $\theta^*=0$, with $f(\theta^*) = 0$. 
+
+In both functions, $A$ is such that $NA$ is an upper triangular matrix with each entry one, $b$ is the $N$-dimensional vector of ones and the noise structure is similar to that used in \cite{spall_adaptive}. For any $\theta$, the noise is $[\theta\tr, 1]z$, where $z \approx \N(0,\sigma^2 I_{11\times11})$. We perform experiments for noisy as well as noise-less settings, with $\sigma=0.1$ for the noisy case. 
+
+
+
+For all algorithms, we set $\delta_n = 3.8/n^{0.101}$ and $a_n = 1/n^{0.6}$, while $b_n$ are set according to \eqref{eq:wieghts}. These choices have been used  for 2SPSA implementations before (see \cite{spall_adaptive}) and have demonstrated good finite-sample performance empirically, while satisfying the theoretical requirements needed for asymptotic convergence.  For all the algorithms, the initial point $\theta_0$ is the $N$-dimensional vector of ones.  For both 2SPSA and 2RDSA/2RDSA-IH, an initial $20\%$ of the  simulation budget was used up by 1SPSA/1RDSA and the resulting iterate was used to initialize 2SPSA/2RDSA. The distribution parameter $\epsilon$ is set to $0.0001$ for 2RDSA and to $0.01$ for 1RDSA. 
+
+\subsection{Results}
+We use normalized loss and normalized MSE (NMSE) as performance metrics for evaluating the algorithms. 
+NMSE is the ratio $\l \theta_{n_\text{end}} - \theta^* \r^2 / \l \theta_0 - \theta^*\r^2$, while normalized loss is the ratio $f(\theta_{n_\text{end}})/f(\theta_0)$.  Here $n_\text{end}$ denotes the iteration number when the algorithm stopped updating its parameter. Note that $n_\text{end}$ is a function of the simulation budget. 2RDSA/2RDSA-IH use only three simulations per-iteration and hence, $n_\text{end}$ is $1/3$rd of the simulation budget, while it is $1/4$th of the simulation budget for 2SPSA, since the latter algorithm uses four simulations per-iteration. 
+
+\begin{table}
+\centering
+ \caption{Normalized loss values for fourth-order  objective \eqref{eq:4thorder} with and without noise: standard error from $500$ replications shown after $\pm$}
+\label{tab:norloss-4thf}
+\begin{tabular}{|c|c|c|}
+\toprule
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0.1$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.132 \pm 0.0267$ & $0.104 \pm 0.0355$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.115 \pm 0.0214$ & $0.0271 \pm 0.0538$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.0471 \pm 0.021$& $\bm{0.0099 \pm 0.0014}$\\
+ \bottomrule
+ %%%%%%%%%%%%2nd ordr
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.0795 \pm 0.0234$ & $0.0628 \pm 0.0234$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.0813 \pm 0.0275$ & $0.0214 \pm 0.00376$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.0199 \pm 0.0114$& $\bm{0.0098 \pm 0.00147}$\\
+ \bottomrule
+\end{tabular}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Quadratic
+\begin{table}
+\centering
+ \caption{Normalized loss values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications shown after $\pm$}
+\label{tab:norloss-quadratic}
+\adjustbox{max height=\dimexpr\textheight-10cm\relax,
+           max width=\textwidth}{
+\begin{tabular}{|c|c|c|}
+\toprule
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0.1$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $-0.0062 \pm 0.1164$ & $-0.1229 \pm 0.1374$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.0485 \pm 0.1465$ & $-0.259 \pm 0.0398$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $-0.2564 \pm 0.068$& $\bm{-0.2877 \pm 0.0051}$\\
+ \bottomrule
+ %%%%%%%%%%%%2nd ordr
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $-0.0785 \pm 0.1178$ & $-0.1716 \pm 0.1339$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.0326 \pm 0.1599$ & $-0.2672 \pm 0.0299$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $-0.2777 \pm 0.0488$& $\bm{-0.2881 \pm 0.0012}$\\
+ \bottomrule
+\end{tabular}}
+
+\end{table}
+
+%%%%%%%%%%%%%% NMSE for quadratic
+\begin{table}
+\centering
+ \caption{NMSE values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications shown after $\pm$}
+\label{tab:nmse-quadratic}
+\adjustbox{max height=\dimexpr\textheight-10cm\relax,
+           max width=\textwidth}{
+\begin{tabular}{|c|c|c|}
+\toprule
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0.1$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.9491 \pm 0.0131$ & $0.5495 \pm 0.0217$\\
+&&\\
+\textbf{2RDSA-Unif} &$1.0073 \pm 0.0140$ & $0.1953 \pm 0.0095$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.1667 \pm 0.0095$& $\bm{0.0324 \pm 0.0007}$\\
+ \bottomrule
+ %%%%%%%%%%%%2nd ordr
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.7325 \pm 0.0180$ & $0.3939 \pm 0.0230$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.9834 \pm 0.0170$ & $0.1623 \pm 0.0086$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.0686 \pm 0.0078$& $\bm{0.0316 \pm 0.0006}$\\
+ \bottomrule
+\end{tabular}}
+\end{table}
+
+
+\newcommand{\errorband}[5][]{ % x column, y column, error column, optional argument for setting style of the area plot
+\pgfplotstableread[col sep=comma, skip first n=2]{#2}\datatable
+    % Lower bound (invisible plot)
+    \addplot [draw=none, stack plots=y, forget plot] table [
+        x={#3},
+        y expr=\thisrow{#4}-2*\thisrow{#5}
+    ] {\datatable};
+
+    % Stack twice the error, draw as area plot
+    \addplot [draw=none, fill=gray!40, stack plots=y, area legend, #1] table [
+        x={#3},
+        y expr=4*\thisrow{#5}
+    ] {\datatable} \closedcycle;
+
+    % Reset stack using invisible plot
+    \addplot [forget plot, stack plots=y,draw=none] table [x={#3}, y expr=-(\thisrow{#4}+2*\thisrow{#5})] {\datatable};
+}
+
+ \begin{figure}
+    \centering
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Normalized loss vs. number of simulations for fourth-order loss \eqref{eq:4thorder} with $\sigma=0.1$ for 2SPSA, 2RDSA-Unif and 2RDSA-AsymBer algorithms with/without improved Hessian estimation: bands around the curves represent standard error from $500$ replications. }
+      \label{fig:norlossvssims} 
+\end{figure} 
+
+
+Tables \ref{tab:norloss-4thf}--\ref{tab:norloss-quadratic} present the normalized loss values observed for the three algorithms - 2SPSA, 2RDSA-Unif and 2RDSA-AsymBer - with/without improved Hessian estimation scheme and for the fourth-order and quadratic loss functions, respectively. Table \ref{tab:nmse-quadratic} presents the NMSE values obtained for the aforementioned algorithms with the quadratic loss. The results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} are obtained after running all the algorithms with a budget of $10000$ function evaluations.
+ Figure \ref{fig:norlossvssims} plots the normalized loss as a function of the simulation budget with the fourth-order loss objective with $\sigma=0.1$ 
+%  (see Figures \ref{fig:norlossvssimsNoiseless}--\ref{fig:norlossvssimsNoiseless} in the appendix for similar results with $\sigma = 0$ for fourth-order loss and $\sigma=0.1$ for quadratic loss). 
+ From the results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} and Fig \ref{fig:norlossvssims}, we make the following observations:
+ 
+\textit{\textbf{Observation 1:} Among 2RDSA schemes, 2RDSA-IH performs better than regular 2RDSA, for both perturbation choices.}
+
+\textit{\textbf{Observation 2:} 2RDSA-IH variants outperform both 2SPSA and 2SPSA-IH, with 2RDSA-IH-AsymBer performing the best overall.}
+
+\begin{figure}[h]
+    \centering
+		\begin{tabular}{c}
+		\begin{subfigure}{0.5\textwidth}
+\tabl{c}{\scalebox{0.8}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {norloss_vs_simulations.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {norloss_vs_simulations.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {norloss_vs_simulations.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {norloss_vs_simulations.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {norloss_vs_simulations.csv};
+			%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {norloss_vs_simulations.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Fourth-order loss \eqref{eq:4thorder} with $\sigma=0$. }
+      \label{fig:norlossvssimsNoiseless} 
+\end{subfigure} 
+\\
+\\
+%%%%%%% Norloss-Quadratic-noisy %%%%%%%%%%%%%%
+\begin{subfigure}{0.5\textwidth}
+\tabl{c}{\scalebox{0.8}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Quadratic loss \eqref{eq:quadratic} with $\sigma=0.1$. }
+      \label{fig:QuadnorlossvssimsNoisy} 
+\end{subfigure} 
+		\end{tabular}
+			\caption{Normalized loss vs. number of simulations in two different loss settings for all the algorithms. }
+      \label{fig:extras} 
+		\end{figure}
+
+%%%%%% Norloss-Quadratic-noisefree %%%%%%%%%%%%%%
+\begin{figure}
+    \centering
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %%legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%%%% With IH
+      %2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {quad_norloss_vs_simulations.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {quad_norloss_vs_simulations.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Normalized loss vs. number of simulations for quadratic loss \eqref{eq:quadratic} with $\sigma=0$ for 2SPSA, 2RDSA-Unif and 2RDSA-AsymBer algorithms with/without improved Hessian estimation. }
+      \label{fig:QuadnorlossvssimsNoiseless} 
+\end{figure} 
+
+
+
+
+
+
+
+
+
