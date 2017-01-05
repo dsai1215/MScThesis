@@ -1,0 +1,363 @@
+\chapter{Simulation experiments}
+\label{sec:expts}
+\section{Implementation}
+We test the performance of 2RDSA-Unif, 2RDSA-AsymBer, 2SPSA-3 and 2SPSA, with/without improved Hessian estimation. 
+2SPSA and 2SPSA-3 algorithm uses Bernoulli $\pm 1$-valued perturbations, while 2RDSA/2RDSA-IH come in two variants - one that uses $U[-1,1]$ distributed perturbations (referred to as 2RDSA-Unif/2RDSA-IH-Unif) and the other that uses asymmetric Bernoulli perturbations (referred to as 2RDSA-AsymBer/2RDSA-IH-AsymBer)\footnote{The implementation is available at \url{https://github.com/prashla/RDSA/archive/master.zip}.}.
+
+For the empirical evaluations, we use the following two loss functions in $N=10$ dimensions:
+\paragraph{Quadratic loss}
+\begin{align}
+f(x) = \theta\tr A \theta+ b\tr \theta.\label{eq:quadratic}
+\end{align} 
+The optimum $\theta^*$ for the above $f$ is such that each coordinate of $\theta^*$ is $-0.9091$, with $f(\theta^*) = -4.55$.
+
+\paragraph{Fourth-order loss}
+\begin{align} 
+f(x) = \theta\tr A\tr A \theta + 0.1 \sum_{j=1}^N (A\theta)^3_j + 0.01 \sum_{j=1}^N (A\theta)^4_j.\label{eq:4thorder}
+ \end{align} 
+The optimum $\theta^*$ for above $f$ is $\theta^*=0$, with $f(\theta^*) = 0$. 
+
+In both functions, $A$ is such that $NA$ is an upper triangular matrix with each entry one, $b$ is the $N$-dimensional vector of ones and the noise structure is similar to that used in \cite{spall_adaptive}. For any $\theta$, the noise is $[\theta\tr, 1]z$, where $z \approx \N(0,\sigma^2 I_{11\times11})$. We perform experiments for noisy as well as noise-less settings, with $\sigma=0.1$ for the noisy case. 
+
+
+
+For all algorithms, we set $\delta_n = 3.8/n^{0.101}$ and $a_n = 1/n^{0.6}$, while $b_n$ are set according to \eqref{eq:wieghts}. These choices have been used  for 2SPSA implementations before (see \cite{spall_adaptive}) and have demonstrated good finite-sample performance empirically, while satisfying the theoretical requirements needed for asymptotic convergence.  For all the algorithms, the initial point $\theta_0$ is the $N$-dimensional vector of ones.  For  2SPSA, 2SPSA-3 and 2RDSA/2RDSA-IH, an initial $20\%$ of the  simulation budget was used up by 1SPSA/1RDSA and the resulting iterate was used to initialize 2SPSA, 2SPSA-3/2RDSA. The distribution parameter $\epsilon$ is set to $0.0001$ for 2RDSA and to $0.01$ for 1RDSA. 
+
+\section{Results}
+We use normalized loss and normalized MSE (NMSE) as performance metrics for evaluating the algorithms. 
+NMSE is the ratio $\l \theta_{n_\text{end}} - \theta^* \r^2 / \l \theta_0 - \theta^*\r^2$, while normalized loss is the ratio $f(\theta_{n_\text{end}})/f(\theta_0)$.  Here $n_\text{end}$ denotes the iteration number when the algorithm stopped updating its parameter. Note that $n_\text{end}$ is a function of the simulation budget. 2RDSA/2RDSA-IH, 2SPSA-3/2SPSA-3-IH use only three simulations per-iteration and hence, $n_\text{end}$ is $1/3$rd of the simulation budget, while it is $1/4$th of the simulation budget for 2SPSA, since the latter algorithm uses four simulations per-iteration. 
+
+\begin{table}
+\centering
+ \caption{Normalized loss values for fourth-order  objective \eqref{eq:4thorder} with and without noise: standard error from $500$ replications shown after $\pm$}
+\label{tab:norloss-4thf}
+\scalebox{0.9}{
+\begin{tabular}{|c|c|c|}
+\toprule
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0.1$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.132 \pm 0.0267$ & $0.104 \pm 0.0355$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.115 \pm 0.0214$ & $0.0271 \pm 0.0538$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.0471 \pm 0.021$& $\bm{0.0099 \pm 0.0014}$\\
+ \bottomrule
+ %%%%%%%%%%%%2nd ordr
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.0795 \pm 0.0234$ & $0.0628 \pm 0.0234$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.0813 \pm 0.0275$ & $0.0214 \pm 0.00376$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.0199 \pm 0.0114$& $\bm{0.0098 \pm 0.00147}$\\
+ \bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Quadratic
+\begin{table}
+\centering
+ \caption{Normalized loss values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications shown after $\pm$}
+\label{tab:norloss-quadratic}
+\scalebox{0.9}{
+\begin{tabular}{|c|c|c|}
+\toprule
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0.1$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $-0.0062 \pm 0.1164$ & $-0.1229 \pm 0.1374$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.0485 \pm 0.1465$ & $-0.259 \pm 0.0398$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $-0.2564 \pm 0.068$& $\bm{-0.2877 \pm 0.0051}$\\
+ \bottomrule
+ %%%%%%%%%%%%2nd ordr
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $-0.0785 \pm 0.1178$ & $-0.1716 \pm 0.1339$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.0326 \pm 0.1599$ & $-0.2672 \pm 0.0299$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $-0.2777 \pm 0.0488$& $\bm{-0.2881 \pm 0.0012}$\\
+ \bottomrule
+\end{tabular}}
+
+\end{table}
+
+%%%%%%%%%%%%%% NMSE for quadratic
+\begin{table}
+\centering
+ \caption{NMSE values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications shown after $\pm$}
+\label{tab:nmse-quadratic}
+\scalebox{0.9}{
+\begin{tabular}{|c|c|c|}
+\toprule
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0.1$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.9491 \pm 0.0131$ & $0.5495 \pm 0.0217$\\
+&&\\
+\textbf{2RDSA-Unif} &$1.0073 \pm 0.0140$ & $0.1953 \pm 0.0095$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.1667 \pm 0.0095$& $\bm{0.0324 \pm 0.0007}$\\
+ \bottomrule
+ %%%%%%%%%%%%2nd ordr
+\rowcolor{gray!20}
+\multicolumn{3}{||c|}{\multirow{2}{*}{\textbf{Noise parameter $\sigma=0$}}}\\[1em]
+%&&&\\
+\midrule
+  & \multirow{2}{*}{\textbf{Regular}} & \textbf{Improved Hessian}  \\
+  & & \textbf{ estimation} \\
+ \midrule
+\textbf{2SPSA} & $0.7325 \pm 0.0180$ & $0.3939 \pm 0.0230$\\
+&&\\
+\textbf{2RDSA-Unif} &$0.9834 \pm 0.0170$ & $0.1623 \pm 0.0086$\\ 
+&&\\
+\textbf{2RDSA-AsymBer}& $0.0686 \pm 0.0078$& $\bm{0.0316 \pm 0.0006}$\\
+ \bottomrule
+\end{tabular}}
+\end{table}
+
+
+\newcommand{\errorband}[5][]{ % x column, y column, error column, optional argument for setting style of the area plot
+\pgfplotstableread[col sep=comma, skip first n=2]{#2}\datatable
+    % Lower bound (invisible plot)
+    \addplot [draw=none, stack plots=y, forget plot] table [
+        x={#3},
+        y expr=\thisrow{#4}-2*\thisrow{#5}
+    ] {\datatable};
+
+    % Stack twice the error, draw as area plot
+    \addplot [draw=none, fill=gray!40, stack plots=y, area legend, #1] table [
+        x={#3},
+        y expr=4*\thisrow{#5}
+    ] {\datatable} \closedcycle;
+
+    % Reset stack using invisible plot
+    \addplot [forget plot, stack plots=y,draw=none] table [x={#3}, y expr=-(\thisrow{#4}+2*\thisrow{#5})] {\datatable};
+}
+
+ \begin{figure}
+    \centering
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+			%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {norloss_vs_simulations_noisycase.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Normalized loss vs. number of simulations for fourth-order loss \eqref{eq:4thorder} with $\sigma=0.1$ for 2SPSA, 2RDSA-Unif and 2RDSA-AsymBer algorithms with/without improved Hessian estimation: bands around the curves represent standard error from $500$ replications. }
+      \label{fig:norlossvssims} 
+\end{figure} 
+
+%%%%%% Norloss-Quadratic-noisefree %%%%%%%%%%%%%%
+\begin{figure}
+    \centering
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %%legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%%%% With IH
+      %2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {quad_norloss_vs_simulations.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {quad_norloss_vs_simulations.csv};
+			%%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {quad_norloss_vs_simulations.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Normalized loss vs. number of simulations for quadratic loss \eqref{eq:quadratic} with $\sigma=0$ for 2SPSA, 2RDSA-Unif and 2RDSA-AsymBer algorithms with/without improved Hessian estimation. }
+      \label{fig:QuadnorlossvssimsNoiseless} 
+\end{figure} 
+
+
+
+\begin{figure}[h]
+    \centering
+		\begin{tabular}{c}
+		\begin{subfigure}{0.5\textwidth}
+\tabl{c}{\scalebox{0.8}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {norloss_vs_simulations.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {norloss_vs_simulations.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {norloss_vs_simulations.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {norloss_vs_simulations.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {norloss_vs_simulations.csv};
+			%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {norloss_vs_simulations.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Fourth-order loss \eqref{eq:4thorder} with $\sigma=0$. }
+      \label{fig:norlossvssimsNoiseless} 
+\end{subfigure} 
+\\
+\\
+%%%%%%% Norloss-Quadratic-noisy %%%%%%%%%%%%%%
+\begin{subfigure}{0.5\textwidth}
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2RDSA-Unif,,2RDSA-Unif-IH,,2RDSA-AsymBer,,2RDSA-AsymBer-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{7}{8}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{9}{10}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=9,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+
+
+      % 2RDSA-AsymBer
+      \errorband[green!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{5}{6}
+      \addplot [thick, darkgreen,mark=square*,mark options={scale=0.7}] table [x index=0, y index=5,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+			%%% With IH	
+      % 2RDSA-AsymBer
+      \errorband[violet!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{11}{12}
+      \addplot [thick, violet, mark=*,mark options={scale=0.75}] table [x index=0, y index=11,col sep=comma] {quad_norloss_vs_simulations_noisycase.csv};
+      \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Quadratic loss \eqref{eq:quadratic} with $\sigma=0.1$. }
+      \label{fig:QuadnorlossvssimsNoisy} 
+\end{subfigure} 
+		\end{tabular}
+			\caption{Normalized loss vs. number of simulations in two different loss settings for all the algorithms. }
+      \label{fig:extras} 
+		\end{figure}
+
+
+
+
+
+Tables \ref{tab:norloss-4thf}--\ref{tab:norloss-quadratic} present the normalized loss values observed for the three algorithms - 2SPSA, 2RDSA-Unif and 2RDSA-AsymBer - with/without improved Hessian estimation scheme and for the fourth-order and quadratic loss functions, respectively. Table \ref{tab:nmse-quadratic} presents the NMSE values obtained for the aforementioned algorithms with the quadratic loss. The results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} are obtained after running all the algorithms with a budget of $10000$ function evaluations.
+ Figure \ref{fig:norlossvssims} plots the normalized loss as a function of the simulation budget with the fourth-order loss objective with $\sigma=0.1$ 
+%  (see Figures \ref{fig:norlossvssimsNoiseless}--\ref{fig:norlossvssimsNoiseless} in the appendix for similar results with $\sigma = 0$ for fourth-order loss and $\sigma=0.1$ for quadratic loss). 
+ From the results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} and Fig \ref{fig:norlossvssims}, we make the following observations:
+ 
+\textit{\textbf{Observation 1:} Among 2RDSA schemes, 2RDSA-IH performs better than regular 2RDSA, for both perturbation choices.}
+
+\textit{\textbf{Observation 2:} 2RDSA-IH variants outperform both 2SPSA and 2SPSA-IH, with 2RDSA-IH-AsymBer performing the best overall.}
+
+
+
+
+
+
+
+
+

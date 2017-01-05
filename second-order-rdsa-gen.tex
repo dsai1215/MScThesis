@@ -1,6 +1,6 @@
 \chapter{Generalised RDSA }
 \label{sec:2rdsa-gen}
-Our work in chapter  is centred on generalising the 2RDSA scheme of \cite{prashanth2015rdsa}. In \cite{prashanth2015rdsa}, 2RDSA scheme involving only two perturbation distributions was proposed, those are uniform and asymmetric Bernoulli distributions. We propose gradient and Hessian estimation schemes which are independent of the perturbation distributions. However, perturbations have to satisfy the i.i.d, mean-zero assumptions. Apart from these common assumptions  one additional assumption like difference between the second moment square  and fourth moment should be non zero for Hessian estimation is also required. This generalisation of distributions of random variables for perturbations is important because it enhances the scope of improving the performance of the 1RDSA and 2RDSA schemes by incorporating several other distributions. Some well known distribution that can used for these schemes as a result of generalisation are Normal (0,1) and Cauchy distributions. We will prove the  gradient and Hessian estimates as a result of generalisation are indeed asymptotically unbiased estimates.
+Our work in this chapter  is centred on generalising the 2RDSA scheme of \cite{prashanth2015rdsa}. In \cite{prashanth2015rdsa}, 2RDSA scheme involving only two perturbation distributions was proposed, those are uniform and asymmetric Bernoulli distributions. We propose gradient and Hessian estimation schemes which are independent of the perturbation distributions. However, perturbations have to satisfy the i.i.d, mean-zero assumptions. Apart from these common assumptions  one additional assumption like difference between the second moment square  and fourth moment should be non zero for Hessian estimation is also required. This generalisation of distributions of random variables for perturbations is important because it enhances the scope of improving the performance of the 1RDSA and 2RDSA schemes by incorporating several other distributions. Some well known distribution that can used for these schemes as a result of generalisation are Normal (0,1) and Cauchy distributions. We will prove the  gradient and Hessian estimates as a result of generalisation are indeed asymptotically unbiased estimates.
  The improved Hessian estimation scheme proposed in chapter \ref{sec:2rdsa-ih} for 2RDSA algorithm with uniform and asymmetric Bernoulli distributions can be easily extended to the generalised RDSA scheme.
 
 \section{Function evaluations}
@@ -47,7 +47,8 @@ where $\lambda = \E(d_n^i)^2 $ and the perturbations $d_n^i$, $i=1,\ldots,N$ are
 where $\lambda = \E(d_n^i)^2 $ , $\tau = E (d_n^i)^4$, and $\kappa = \left(\tau - \lambda^2\right)$ for any $i=1,\ldots,N$.
 From the above Hessian estimation scheme it is easy to see that perturbations $d_n^i$, $i=1,\ldots,N$ should satisfy  $\kappa \neq 0$. However, many distributions of the random variables satisfy this requirement. 
 
-
+\section{Convergence analysis}
+\label{sec:2rdsa-gen-results}
 %%%%%%%%%%%%%%%%%%%% LEMMA 
 \begin{enumerate}[label=(\textbf{A\arabic*}),resume]
 \item For some $\alpha_1, \alpha_2,\zeta >0$ and for all $n$, 
@@ -59,7 +60,7 @@ $\E \left|\xi_n^{\pm}\right|^{2+\zeta} \le \alpha_1$, $\E \left|f(x_n\pm \delta_
 \begin{lemma}(\textbf{Bias in the gradient estimate})
 \label{lemma:1rdsa-bias}
 %Almost surely, as $\delta_n \rightarrow 0$, we have that
-Under (A1),(A2),(A4),(A5),(A13),(A14) for $\widehat\nabla f(x_n)$ defined according to  \eqref{eq:grad-gen} , we have a.s. that\footnote{Here $\widehat\nabla_i f(x_n)$ and $\nabla_i f(x_n)$ denote the $i$th coordinates in the gradient estimate $\widehat\nabla f(x_n)$ and true gradient $\nabla f(x_n)$, respectively.}
+Under (A1),(A2),(A4),(A5),(A11),(A12) for $\widehat\nabla f(x_n)$ defined according to  \eqref{eq:grad-gen} , we have a.s. that\footnote{Here $\widehat\nabla_i f(x_n)$ and $\nabla_i f(x_n)$ denote the $i$th coordinates in the gradient estimate $\widehat\nabla f(x_n)$ and true gradient $\nabla f(x_n)$, respectively.}
 \begin{align}
  \left| \E\left[\left.\widehat\nabla_i f(x_n)\right| \F_n \right] - \nabla_i f(x_n)\right| = O(\delta_n^2),  \quad \text{ for } i=1,\ldots,N.
 \end{align} 
@@ -74,7 +75,7 @@ Notice that
 %= &\E\left[d_n\left.\left(\dfrac{f(x_n+\delta_n d_n) - f(x_n-\delta_n d_n)}{2\delta_n}\right) \right| \F_n\right] + \E\left[  d_n\left.\left(\dfrac{\xi_n^+ - \xi_n^-}{2\delta_n}\right) \right| \F_n\right]\\
 = & \E\left[d_n\left.\left(\dfrac{f(x_n+\delta_n d_n) - f(x_n-\delta_n d_n)}{2\delta_n}\right) \right| \F_n\right].
 \end{align*}
-The last equality above follows from the fact that $\E\left[  d_n\left.\left(\dfrac{\xi_n^+ - \xi_n^-}{2\delta_n}\right) \right| \F_n\right]=0$ from (A2) and (A13). We now analyse the term on the RHS above.
+The last equality above follows from the fact that $\E\left[  d_n\left.\left(\dfrac{\xi_n^+ - \xi_n^-}{2\delta_n}\right) \right| \F_n\right]=0$ from (A2) and (A11). We now analyse the term on the RHS above.
 Let $\nabla^2 f(\cdot)$ denote the Hessian of $f$.
 By Taylor's series expansions, we obtain, a.s.,
 \begin{align*}
@@ -100,7 +101,7 @@ The first term on the RHS above can be simplified as follows:
 %\right]\nabla f(x_n) 
 = &  \lambda \nabla f(x_n). \label{eq:l1-a}
 \end{align}
-In the above, the first equality follows from (A14) and the last equality in \eqref{eq:l1-a} follows from $\E[(d_n^i)^2] = \lambda$ and $\E[d_n^i d_n^j] = \E[d_n^i] \E[d_n^j] = 0$ for $i\ne j$.
+In the above, the first equality follows from (A12) and the last equality in \eqref{eq:l1-a} follows from $\E[(d_n^i)^2] = \lambda$ and $\E[d_n^i d_n^j] = \E[d_n^i] \E[d_n^j] = 0$ for $i\ne j$.
 
 Now, the $l$th coordinate of the second term in the RHS of \eqref{eq:l1} can be upper-bounded as follows:
 \begin{align}
@@ -108,7 +109,7 @@ Now, the $l$th coordinate of the second term in the RHS of \eqref{eq:l1} can be 
 \le & \dfrac{\alpha_0 \delta_n^2}{6} \sum_{i_1=1}^N\sum_{i_2=1}^N\sum_{i_3=1}^N \E\left( d_n^l d_n^{i_1} d_n^{i_2} d_n^{i_3}\right)\nonumber\\
 \le & \dfrac{\alpha_0 \delta_n^2\eta N^3}{6}.\label{eq:l2}
 \end{align}
-The first inequality above follows from (A1), while the second inequality follows from (A14) and considering $\eta = \max \{\eta_1^2, \eta_2\}$. The claim follows by plugging \eqref{eq:l1-a} and \eqref{eq:l2} into \eqref{eq:l1} .\\
+The first inequality above follows from (A1), while the second inequality follows from (A12) and considering $\eta = \max \{\eta_1^2, \eta_2\}$. The claim follows by plugging \eqref{eq:l1-a} and \eqref{eq:l2} into \eqref{eq:l1} .\\
 \end{proof}
 
 \begin{enumerate}[label=(\textbf{C\arabic*}),resume]
@@ -118,7 +119,7 @@ The first inequality above follows from (A1), while the second inequality follow
 
 \begin{lemma}(\textbf{Bias in Hessian estimate})
 \label{lemma:2rdsa-bias}
-Under (C1)-(C3),(C5)-(C10),(C15) with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-gen} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+Under (C1)-(C3),(C5)-(C10),(C13) with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-gen} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
 \begin{align}
 \left|\E\left[
 \left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).

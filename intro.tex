@@ -43,7 +43,7 @@ Now we consider sub-class of multi-stage problems having infinite number of stag
 \begin{align}\label{eq:long}
  f(\theta) = \lim_{n \to \infty} \frac{1}{n} ~ E \left[ \sum_{i=1}^{n} h_{i}(X_{i})\right ] ,
 \end{align}
-where $X_{i}$ is defined same as before and we assume it depends on parameter $\theta$. Objective function \eqref{eq:long} in most cases is not known analytically. In such cases it makes difficult for the search procedure to update the search parameter with out estimating the cost over infinite long trajectory. Another subclassifications of optimization problems is based on feasible region $\Theta$, see \eqref{eq:opt}.
+where $X_{i}$ is defined same as before and we assume it depends on parameter $\theta$. Objective function \eqref{eq:long} in most cases is not known analytically. In such cases it makes difficult for the search procedure to update the search parameter with out estimating the cost over infinite long trajectory. This kind of objective functions are very common in reinforcement learning applications. Another subclassifications of optimization problems is based on feasible region $\Theta$, see \eqref{eq:opt}.
 
 \section{Classification of optimization problems based on feasible region}
 Consider the basic optimization problem in \eqref{eq:opt}. Optimization problems can be classified based on the structure of feasible region $\Theta$. Where set $\Theta$ can be of following types:
