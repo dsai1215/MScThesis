@@ -43,7 +43,7 @@ NMSE is the ratio $\l \theta_{n_\text{end}} - \theta^* \r^2 / \l \theta_0 - \the
  \midrule
 \textbf{2SPSA} & $0.132 \pm 0.0267$ & $0.104 \pm 0.0355$\\
 &&\\
-\textbf{2SPSA-3} & $0.080 \pm 0.0053$ & $0.043 \pm 0.0015$\\
+\textbf{2SPSA-3} & $0.0893 \pm 0.001$ & $0.0457 \pm 0.0004$\\
 &&\\
 \textbf{2RDSA-Unif} &$0.115 \pm 0.0214$ & $0.0271 \pm 0.0538$\\ 
 &&\\
@@ -174,6 +174,16 @@ anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
 			\caption{Normalized loss vs. number of simulations for fourth-order loss \eqref{eq:4thorder} with $\sigma=0.1$ for 2SPSA, 2RDSA-Unif and 2RDSA-AsymBer algorithms with/without improved Hessian estimation: bands around the curves represent standard error from $500$ replications. }
       \label{fig:norlossvssims} 
 \end{figure} 
+
+
+
+
+
+
+
+
+
+
 
 %%%%%% Norloss-Quadratic-noisefree %%%%%%%%%%%%%%
 \begin{figure}
@@ -356,18 +366,171 @@ anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
 
 Tables \ref{tab:norloss-4thf}--\ref{tab:norloss-quadratic} present the normalized loss values observed for the four algorithms - 2SPSA, 2SPSA-3, 2RDSA-Unif and 2RDSA-AsymBer - with/without improved Hessian estimation scheme and for the fourth-order and quadratic loss functions, respectively. Table \ref{tab:nmse-quadratic} presents the NMSE values obtained for the aforementioned algorithms with the quadratic loss. The results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} are obtained after running all the algorithms with a budget of $10000$ function evaluations.
 
- Figure \ref{fig:norlossvssims} plots the normalized loss as a function of the simulation budget with the fourth-order loss objective with $\sigma=0.1$. Figure \ref{fig:QuadnorlossvssimsNoiseless} plots the normalized loss as a function of the simulation budget with the quadratic loss objective with $\sigma=0$. See Figures \ref{fig:norlossvssimsNoiseless}--\ref{fig:norlossvssimsNoiseless}  for similar results with $\sigma = 0$ for fourth-order loss and $\sigma=0.1$ for quadratic loss. 
- From the results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} and Fig \ref{fig:norlossvssims}, we make the following observations:
+ Figures \ref{fig:norlossvssims}, \ref{fig:norlossvssimsspsa-3} plots the normalized loss as a function of the simulation budget with the fourth-order loss objective with $\sigma=0.1$ for algorithms 2RDSA and 2SPSA-3 respectively when compared with 2SPSA. Figures \ref{fig:QuadnorlossvssimsNoiseless}, \ref{fig:QuadnorlossvssimsNoiselessspsa3} plots the normalized loss as a function of the simulation budget with the quadratic loss objective with $\sigma=0$ for algorithms 2RDSA and 2SPSA-3 respectively when compared with 2SPSA. See Figures \ref{fig:norlossvssimsNoiseless}-- \ref{fig:QuadnorlossvssimsNoisy} and \ref{fig:norlossvssimsNoiselessspsa3}-- \ref{fig:QuadnorlossvssimsNoisyspsa3} for similar results with $\sigma = 0$ for fourth-order loss and $\sigma=0.1$ for quadratic loss. 
+ From the results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} and Figures, we make the following observations:
  
- \textit{\textbf{Observation 1:} Among 2RDSA schemes, 2RDSA-IH performs better than regular 2RDSA, for both perturbation choices.}
+ \textit{\textbf{Observation 1:} Schemes with improved Hessian estimation performs better than their respective regular schemes.}
  
-\textit{\textbf{Observation 2:} 2RDSA-IH variants outperform both 2SPSA and 2SPSA-IH, with 2RDSA-IH-AsymBer performing the best overall.}
+\textit{\textbf{Observation 2:} 2RDSA-IH variants outperform both 2SPSA and 2SPSA-IH.}
+
+\textit{\textbf{Observation 3:} 2SPSA-3-IH variants outperform both 2SPSA and 2SPSA-IH.}
+
+\textit{\textbf{Observation 4:} 2RDSA-IH-AsymBer performing the best overall.}
 
 
 
 
 
+\begin{figure}
+    \centering
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2SPSA-3,,2SPSA-3-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {norloss_vs_simulations_noisycase_spsa3.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{5}{6}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=5,col sep=comma] {norloss_vs_simulations_noisycase_spsa3.csv};
+			
+      % 2SPSA-3
+      \errorband[blue!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {norloss_vs_simulations_noisycase_spsa3.csv};
+			%%% With IH
+      % 2SPSA-3
+      \errorband[magenta!50!white, opacity=0.3]{norloss_vs_simulations_noisycase.csv}{0}{7}{8}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {norloss_vs_simulations_noisycase_spsa3.csv};
 
+
+            \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Normalized loss vs. number of simulations for fourth-order loss \eqref{eq:4thorder} with $\sigma=0.1$ for 2SPSA, 2SPSA-3 algorithms with/without improved Hessian estimation: bands around the curves represent standard error from $500$ replications. }
+      \label{fig:norlossvssimsspsa-3} 
+\end{figure} 
+
+
+
+%%%%%% Norloss-Quadratic-noisefree %%%%%%%%%%%%%%
+\begin{figure}
+    \centering
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2SPSA-3,,2SPSA-3-IH  },
+        %%legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {quad_norloss_vs_simulations_spsa3.csv};
+			%%%% With IH
+      %2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{5}{6}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=5,col sep=comma] {quad_norloss_vs_simulations_spsa3.csv};
+			%
+      % 2SPSA-3
+      \errorband[blue!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {quad_norloss_vs_simulations_spsa3.csv};
+			%%%% With IH
+      % 2SPSA-3
+      \errorband[magenta!50!white, opacity=0.3]{quad_norloss_vs_simulations.csv}{0}{7}{8}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma]  {quad_norloss_vs_simulations_spsa3.csv};
+
+
+           \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Normalized loss vs. number of simulations for quadratic loss \eqref{eq:quadratic} with $\sigma=0$ for 2SPSA, 2SPSA-3 algorithms with/without improved Hessian estimation. }
+      \label{fig:QuadnorlossvssimsNoiselessspsa3} 
+\end{figure} 
+
+
+\begin{figure}[h]
+    \centering
+		\begin{tabular}{c}
+		\begin{subfigure}{0.5\textwidth}
+\tabl{c}{\scalebox{0.8}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2SPSA-3,,2SPSA-3-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {norloss_vs_simulations_spsa3.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{5}{6}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=5,col sep=comma]  {norloss_vs_simulations_spsa3.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {norloss_vs_simulations_spsa3.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{norloss_vs_simulations.csv}{0}{7}{8}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma]  {norloss_vs_simulations_spsa3.csv};
+
+
+            \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Fourth-order loss \eqref{eq:4thorder} with $\sigma=0$. }
+      \label{fig:norlossvssimsNoiselessspsa3} 
+\end{subfigure} 
+\\
+\\
+%%%%%%% Norloss-Quadratic-noisy %%%%%%%%%%%%%%
+\begin{subfigure}{0.5\textwidth}
+\tabl{c}{\scalebox{0.9}{\begin{tikzpicture}
+      \begin{axis}[
+	xlabel={number of simulations},
+	ylabel={Normalized loss},
+       legend entries={
+	 ,2SPSA,,2SPSA-IH,,2SPSA-3,,2SPSA-3-IH },
+        %legend pos=outer north east,
+			legend style={
+at={(0,0)},
+anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
+      % 2SPSA
+      \errorband[red!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{1}{2}
+      \addplot [thick, red,mark=square*,mark options={scale=0.7}] table [x index=0, y index=1,col sep=comma] {quad_norloss_vs_simulations_noisycase_spsa3.csv};
+			%%% With IH
+      % 2SPSA
+      \errorband[darkgray!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{5}{6}
+      \addplot [thick, darkgray,mark=*,mark options={scale=0.75}] table [x index=0, y index=5,col sep=comma]  {quad_norloss_vs_simulations_noisycase_spsa3.csv};
+			
+      % 2RDSA-Unif
+      \errorband[blue!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{3}{4}
+      \addplot [thick, blue,mark=square*,mark options={scale=0.7}] table [x index=0, y index=3,col sep=comma] {quad_norloss_vs_simulations_noisycase_spsa3.csv};
+			%%% With IH
+      % 2RDSA-Unif
+      \errorband[magenta!50!white, opacity=0.3]{quad_norloss_vs_simulations_noisycase.csv}{0}{7}{8}
+      \addplot [thick, magenta,mark=*,mark options={scale=0.75}] table [x index=0, y index=7,col sep=comma] {quad_norloss_vs_simulations_noisycase_spsa3.csv};
+
+
+            \end{axis}
+      \end{tikzpicture}}\\}
+			\caption{Quadratic loss \eqref{eq:quadratic} with $\sigma=0.1$. }
+      \label{fig:QuadnorlossvssimsNoisyspsa3} 
+\end{subfigure} 
+		\end{tabular}
+			\caption{Normalized loss vs. number of simulations in two different loss settings for  2SPSA, 2SPSA-3 algorithms. }
+      \label{fig:extras} 
+		\end{figure}
 
 
 
