@@ -14,7 +14,7 @@ the feasible region to improve upon the candidate parameter. Stochastic
 approximation algorithms are best suited, most studied and applied
 algorithms for finding solutions when the feasible region is a
 continuously valued set. One can use information on the gradient/Hessian
-of the objective to aid the search process. However, due to the lack of
+of the objective to aid the search process. However, due to lack of
 knowledge of the noise distribution, one needs to estimate the
 gradient/Hessian from noisy samples of the cost function obtained from
 simulation. Simple gradient search schemes take many iterations to
@@ -24,12 +24,12 @@ ill-conditioning of the objective function as they incorporate
 second-order information into the stochastic updates. Stochastic Newton
 methods are often more accurate than simple gradient search schemes.
 
-We propose enhancements to the Hessian estimation scheme used in two recently proposed stochastic Newton methods, based on the ideas of random directions stochastic approximation (2RDSA) \cite{prashanth2015rdsa} and simultaneous perturbation stochastic approximation (2SPSA-3\footnote{The 3 in the abberviation of the algorithm is used to indicate that the algorithms in \cite{bhatnagar2015simultaneous} require 3 function evaluations per iteration.}) \cite{bhatnagar2015simultaneous}, respectively. The proposed scheme, inspired by \cite{spall-jacobian}, reduces the error in the Hessian estimate by 
+We propose enhancements to the Hessian estimation scheme used in two recently proposed stochastic Newton methods, based on the ideas of random directions stochastic approximation (2RDSA) \cite{prashanth2015rdsa} and simultaneous perturbation stochastic approximation (2SPSA-3\footnote{The 3 in the abbereviation of the algorithm is used to indicate that the algorithm in \cite{bhatnagar2015simultaneous} requires 3 function evaluations per iteration.}) \cite{bhatnagar2015simultaneous}, respectively. The proposed scheme, inspired by \cite{spall-jacobian}, reduces the error in the Hessian estimate by 
 \begin{inparaenum}[\bfseries (i)]
 	\item incorporating a zero-mean feedback term; and
 	\item optimizing the step-sizes used in the Hessian recursion.
 \end{inparaenum}
-We prove that 2RDSA and 2SPSA-3 with our Hessian improvement scheme converges asymptotically to the true Hessian.
+We prove that both 2RDSA and 2SPSA-3 with our Hessian improvement scheme converges asymptotically to the true Hessian.
  %Moreover, for the special of a quadratic objective, we provide a convergence rate result for 2RDSA-IH that is of the same order - in the number of iterations of Hessian recursion - as that of 2SPSA with improved Hessian estimation (2SPSA-IH) \cite{spall-jacobian}. 
-The advantage with 2RDSA and 2SPSA-3  is that it requires only 75\% of the simulation cost per-iteration for 2SPSA with improved Hessian estimation (2SPSA-IH) \cite{spall-jacobian}.
+The key advantage with 2RDSA and 2SPSA-3  is that they require only 75\% of the simulation cost per-iteration for 2SPSA with improved Hessian estimation (2SPSA-IH) \cite{spall-jacobian}.
 Numerical experiments show that 2RDSA-IH outperforms both 2SPSA-IH and 2RDSA without the improved Hessian estimation scheme.

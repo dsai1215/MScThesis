@@ -16,13 +16,13 @@ where the perturbations $\{d_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are any i.i.d., 
 %\end{equation}
 %with $\epsilon>0$ being a constant that can be chosen to be arbitrarily small.
 
-The 2RDSA-IH algorithm obtains three function samples $y_n$, $y_n^+$ and $y_n^-$ at $\theta_n$, $\theta_n+\delta_n d_n$ and $\theta_n - \delta_n d_n$, respectively, i.e.,
+The generalised 2RDSA algorithm obtains three function samples $y_n$, $y_n^+$ and $y_n^-$ at $\theta_n$, $\theta_n+\delta_n d_n$ and $\theta_n - \delta_n d_n$, respectively, i.e.,
 $y_n = f(\theta_n) + \xi_n$, $y_n^+ = f(\theta_n+\delta_n d_n) + \xi_n^+$ and 
 $y_n^- = f(\theta_n-\delta_n d_n) + \xi_n^-$,
 where the noise terms $\xi_n, \xi_n^+, \xi_n^-$ satisfy $\E\left[\left.\xi_n^+ + \xi_n^- - 2\xi_n \right| \F_n\right] = 0$ with $\F_n = \sigma(\theta_m,m\le n)$ denoting the underlying sigma-field. 
 
 \section{Generalised RDSA gradient estimate}
-The RDSA estimate of the gradient $\nabla f(\theta_n)$ is given by
+The generalised RDSA estimate of the gradient $\nabla f(\theta_n)$ is given by
 \begin{align}
 \label{eq:grad-gen}
 \widehat\nabla f(\theta_n) = \frac1{\lambda} d_n \left[ \dfrac{y_n^+ - y_n^-}{2\delta_n}\right],
