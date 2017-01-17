@@ -233,7 +233,7 @@ From \eqref{eq:hnhat}, we can infer that
 \begin{align*}
 \E \parallel \widehat H_n \parallel^2 \le \dfrac{C}{\delta_n^4} \text{ for some } C<\infty. 
 \end{align*} 
-This is because the third term in \eqref{eq:hnhat} vanishes asymptotically, while the fourth term there dominates asymptotically. Moreover, the noise factors in the fourth term in \eqref{eq:hnhat} are bounded above due to (C9) and independent of $n$, leaving the $\delta_n^2$ term in the denominator there. 
+This is because the third term in \eqref{eq:hnhat} vanishes asymptotically, while the fourth term there dominates asymptotically. Moreover, the noise factors in the fourth term in \eqref{eq:hnhat} are bounded above due to (A16) and independent of $n$, leaving the $\delta_n^2$ term in the denominator there. 
 
 So, the optimization problem to be solved at instant $n$ is as follows:
 \begin{align}
@@ -281,7 +281,7 @@ The feedback term in \eqref{eq:psinhat} can be easily extended to the case of un
 \section{Convergence analysis}
 \label{sec:2rdsa-results}
 We make the same assumptions as those used in the analysis of \cite{prashanth2015rdsa}, with a few minor alterations. The assumptions are listed below:
-\begin{enumerate}[label=(\textbf{A\arabic*}),resume]
+\begin{pvn}
 \item  The function
 $f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1 i_2 i_3 i_4} f(\theta)$ denotes the $(i_1, i_2, i_3, i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
 
@@ -307,12 +307,12 @@ $$ \limsup_{n\rightarrow \infty} \left| \dfrac{\sum_{i \notin S} (\theta-\theta^
 for all $|(\theta-\theta^*)_i| < \tau$ when $i \notin S$ and $|(\theta-\theta^*)_i| \ge \rho'(\tau,S)$ when $i\in S$.
 \item For some $\alpha_0, \alpha_1>0$ and for all $n$, $\E {\xi_n}^{2} \le \alpha_0$, $\E {\xi_n^{\pm}}^{2} \le \alpha_0$, $\E f(\theta_n)^{2} \le \alpha_1$,  $\E f(\theta_n\pm \delta_n d_n)^{2} \le \alpha_1$ and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
 \item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
-\end{enumerate}
-The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C1)-(C8) are identical to assumptions in \cite{prashanth2015rdsa}, while (C9) and (C10) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
+\end{pvn}
+The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (A8)-(A15) are identical to assumptions in \cite{prashanth2015rdsa}, while (A16) and (A17) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
 
 \begin{lemma}(\textbf{Bias in Hessian estimate})
 \label{lemma:2rdsa-bias}
-Under (C1)-(C10), with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-ber}, we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entries in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+Under (A8)-(A17), with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-ber}, we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entries in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
 \begin{align}
 \left|\E\left[
 \left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).
@@ -324,7 +324,7 @@ See Lemma 4 in \cite{prashanth2015rdsa}.
 
 \begin{theorem}(\textbf{Strong Convergence of Hessian})
 \label{thm:2rdsa-H}
-Under (C1)-(C10), we have that 
+Under (A8)-(A17), we have that 
 $$\theta_n \rightarrow \theta^*, \overline H_n \rightarrow \nabla^2 f(\theta^*) \text{ a.s. as } n\rightarrow \infty.$$ 
 In the above, $\theta_n$ and $\overline H_n$ are updated according to \eqref{eq:e2rdsa} and \eqref{eq:2rdsa-H}, respectively, $\widehat H_n$ is defined according to \eqref{eq:2rdsa-estimate-ber} and the step-sizes $b_n$ are chosen as suggested in \eqref{eq:wieghts}. 
 \end{theorem}

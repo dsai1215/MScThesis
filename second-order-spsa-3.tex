@@ -1,6 +1,6 @@
  \chapter{Second-order SPSA-3 with improved hessian estimation (2SPSA-3-IH)}
 \label{sec:2spsa-3-ih}
-The second-order SPSA-3 with improved Hessian estimate performs an update iteration similar to that of 2RDSA-IH proposed in section \ref{sec:2rdsa-ih} (See \eqref{eq:e2rdsa} and \eqref{eq:2rdsa-H}). The main difference in the iterates is that 2SPSA-3-IH uses gradient and Hessian estimates according to \eqref{eq:grad-spsa} and \eqref{eq:2spsa-ber}. In this section we present the improvements to 2SPSA-3 Hessian recursion \eqref{eq:2spsa-3-ih} by incorporating the zero-mean feedback term and general step-size. Note that though these ideas of improving the Hessian recursion is similar to the ideas presented in section \ref{sec:2rdsa-ih} for 2RDSA-IH, the derivation of feedback term does not follow from it. We show that the proposed improvements to Hessian estimation in 2SPSA-3 are such  that the resulting 2SPSA-3-IH algorithm is provably convergent, in particular, the Hessian estimate $\overline H_n$ of 2SPSA-3-IH converges almost surely to the true Hessian. Moreover, we show, for the special case of a quadratic objective in noise-free setting, that 2SPSA-3 scheme along with proposed improvement to Hessian estimation (henceforth referred to as 2SPSA-3-IH) results in a convergence rate that is on par with the corresponding rate for 2SPSA with Hessian estimation improvements (2SPSA-IH) \cite{spall-jacobian}. The advantage with 2SPSA-3-IH is that it requires only 75\% of the simulation cost per-iteration for 2SPSA-IH.
+The second-order SPSA-3 with improved Hessian estimate performs an update iteration similar to that of 2RDSA-IH proposed in chapter \ref{sec:2rdsa-ih} (See \eqref{eq:e2rdsa} and \eqref{eq:2rdsa-H}). The main difference in the iterates is that 2SPSA-3-IH uses gradient and Hessian estimates according to \eqref{eq:grad-spsa} and \eqref{eq:2spsa-ber}. In this chapter we present the improvements to 2SPSA-3 Hessian recursion \eqref{eq:2spsa-3-ih} by incorporating a zero-mean feedback term and a general step-size. Note that though these ideas of improving the Hessian recursion are similar to the ideas presented in chapter \ref{sec:2rdsa-ih} for 2RDSA-IH, the derivation of the feedback term does not directly follow. We show that the proposed improvements to Hessian estimation in 2SPSA-3 are such  that the resulting 2SPSA-3-IH algorithm is provably convergent, in particular, the Hessian estimate $\overline H_n$ of 2SPSA-3-IH converges almost surely to the true Hessian. Moreover, we show, for the special case of a quadratic objective in noise-free setting, that the 2SPSA-3 scheme along with proposed improvement to Hessian estimation (henceforth referred to as 2SPSA-3-IH) results in a convergence rate that is on par with the corresponding rate for 2SPSA with Hessian estimation improvements (2SPSA-IH) \cite{spall-jacobian}. The advantage with 2SPSA-3-IH is that it requires only 75\% of the simulation cost per-iteration for 2SPSA-IH.
 
 %The recursion \eqref{eq:e2rdsa} is identical to that in 2RDSA, while the Hessian estimation recursion \eqref{eq:2rdsa-H} differs as follows:\\
 %\begin{inparaenum}[\bfseries (i)]
@@ -44,7 +44,7 @@ where $\widehat H_n$ and $\widehat \Psi_n$ are chosen according to \eqref{eq:2sp
 \label{alg:spsa-3-ih-structure}
 \end{algorithm}
 
-Algorithm \ref{alg:spsa-3-ih-structure} presents the pseudocode and we describe the individual component of 2SPSA-3-IH below.
+Algorithm \ref{alg:spsa-3-ih-structure} presents the pseudocode and we describe the individual components of 2SPSA-3-IH below.
 \section{Function evaluations}
 Let $y_n$, $y_n^+$ and $y_n^-$ denote the function evaluations at $\theta_n$, $\theta_n+\delta_n \Delta_n+\delta_n \widehat \Delta_n$ and $\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n$ respectively, i.e., 
 $y_n = f(\theta_n) + \xi_n$, $y_n^+ = f(\theta_n+\delta_n \Delta_n +\delta_n \widehat\Delta_n) + \xi_n^+$ and 
@@ -153,7 +153,7 @@ The solution to \eqref{eq:spsawn-opt} is achieved for $\tilde b_i^* = \delta_i^{
 \section{Convergence analysis for 2SPSA-3-IH}
 \label{sec:2spsa-results}
 We make the same assumptions as those used in the analysis of \cite{prashanth2015rdsa}, with a few minor alterations. The assumptions are listed below:
-\begin{enumerate}[label=(\textbf{A\arabic*}),resume]
+\begin{pvn}
 \item  The function
 $f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1 i_2 i_3 i_4} f(\theta)$ denotes the $(i_1 i_2 i_3 i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
 
@@ -185,7 +185,7 @@ $\E \left[ |f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)/ (\Delt
  $\E\left[\left. (\xi_n^+ + \xi_n^- - 2 \xi_n)^2/(\Delta_{nl}\widehat\Delta_{nm})^2 \right| \F_n \right] \le \alpha_1$ 
 and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
 \item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
-\end{enumerate}
+\end{pvn}
 The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C14)-(C21) are identical to that in \cite{prashanth2015rdsa}, while (C22) and (C23) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired by \cite{spall-jacobian}.
 
 \begin{lemma}(\textbf{2SPSA-3-IH Bias in Hessian estimate})
@@ -212,10 +212,10 @@ This proof is similar to the proof of the theorem \ref{thm:2rdsa-H}
 \end{proof}
 
 We next present a convergence rate result for the special case of a quadratic objective function under the following additional assumptions:
-\begin{enumerate}[label=(\textbf{C\arabic*}),resume]
+\begin{pvn}
 \item  $f$ is quadratic and $\nabla^2 f(x^*) > 0$. 
 \item The operator $\Upsilon$ is chosen such that $\E(\parallel \Upsilon(\overline H_n) - \overline H_n\parallel^2) = o(e^{-2wn^{1-r}/(1-r)})$ and $\parallel \Upsilon(H) - H \parallel^2 / (1+\parallel H \parallel^2)$ is uniformly bounded.
-\end{enumerate}
+\end{pvn}
 \begin{theorem}(\textbf{2SPSA-3-IH Quadratic case - Convergence rate})
 \label{thm:spsaquad-bound}
 Assume (C17), (C23), (C24) and (C25) and also that the setting is noise-free. 

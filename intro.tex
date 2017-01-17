@@ -131,7 +131,7 @@ $y_{ni}^+ = f(\theta_n+\delta_n e_i) + \xi_{ni}^+$, $y_{n} = f(\theta_n) + \xi_n
 \right).
 \end{align}
 It is important to determine conditions under which $\theta_n$ converges to $\theta^*$, when one uses estimates shown in \eqref{eq:twofdsa} or \eqref{eq:onefdsa}. The convergence theory for FDSA algorithm is similar to the convergence theory of Robbins and Monro root finding SA algorithm \cite{rm}. However, difficulties arise due to a bias in gradient approximation, i.e, $\E \left[\widehat{\nabla} f(\theta_{n})|\F_n \right] - \nabla f(\theta_{n}) $, where $\F_n = \sigma(\theta_m, m\le n)$ denotes the underlying sigma-field. The conditions required for showing convergence of this algorithm are as follows:
-\begin{enumerate}[label=(\textbf{A\arabic*})]
+\begin{pvn}
 \item $f:\R^N\rightarrow \R$ is three-times continuously differentiable\footnote{Here $\nabla^3 f(\theta) = \dfrac{\partial^3 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the third derivate of $f$ at $\theta$ and $\nabla^3_{i_1 i_2 i_3} f(\theta)$ denotes the $(i_1 ,i_2, i_3)$th entry of $\nabla^3 f(\theta)$, for $i_1, i_2, i_3=1,\ldots, N$.}  with $\left|\nabla^3_{i_1 i_2 i_3} f(\theta) \right| < \alpha_0 < \infty$, for $i_1, i_2, i_3=1,\ldots, N$ and for all $\theta\in \R^N$. 
 \item $\{\xi_n^+,\xi_n^-, n=1,2,\ldots\}$ satisfy $\E\left[\left.\xi_n^+ - \xi_n^- \right| \F_n\right] = 0$.
 \item For some $\alpha_1, \alpha_2, \zeta >0$ and for all $n,i$, 
@@ -141,7 +141,7 @@ $\E \left|\xi_n^{\pm}\right|^{2+\zeta} \le \alpha_1$, $\E \left|f(\theta_n\pm \d
 $$a_n, \delta_n \rightarrow 0\text{ as } n \rightarrow \infty, 
 \sum_n a_n=\infty \text{ and } \sum_n \left(\frac{a_n}{\delta_n}\right)^2 <\infty.$$
 \item $\sup_n \left\| \theta_n \right\| < \infty$ w.p. $1$.
-\end{enumerate}
+\end{pvn}
 Note that the  two-sided gradient estimation scheme requires $2N$ simulations of the objective function in order to obtain a single gradient estimate, whereas the one-sided gradient estimation scheme requires only $N+1$ simulations, where $N$ is the dimension of the vector $\theta$. A requirement of number of simulations to be proportional to $N$ in order to get one gradient estimate makes this procedure highly computationally expensive when $N$ is large. Hence one requires a gradient estimation procedure that is independent of the dimension of $\theta$.
 \subsection{Simultaneous perturbation stochastic approximation (SPSA)}
 Simultaneous perturbation (SP) methods are a popular and efficient approach for estimating gradient/Hessian from function samples, especially in high dimensional problems - see \cite{bhatnagar-book} for a comprehensive treatment of this subject matter. Simultaneous perturbation stochastic approximation (SPSA) is a popular SP method. The first-order SPSA algorithm, henceforth referred to as 1SPSA, was proposed in \cite{spall2005introduction}. The 1SPSA scheme for approximating gradient requires only two simulations or function measurements irrespective of the parameter dimension. The idea in this scheme is to use two function measurements by perturbing all components of the parameter randomly. The function measurements required for this scheme correspond to $\theta_n + \delta_n \Delta_n$ and $\theta_n - \delta_n \Delta_n$, respectively, where $\Delta_n = (\Delta_{n1},\ldots,\Delta_{nN})\tr$ is any vector consisting of i.i.d, mean-zero, symmetric random variables whose inverse moments are bounded. The simplest and most commonly used perturbation distribution of random variables being used are the symmetric Bernoulli random variables $\Delta_{ni} = \pm 1 \,\,w.p.\,\,1/2$, $i=1,\ldots,N,\,\, n\ge 0$. The gradient estimate of objective function using this scheme is as follows:
@@ -169,9 +169,9 @@ Now the conditional expectation of the 1SPSA gradient estimate is given by
 \end{align}
 
 The asymptotic convergence of 1SPSA algorithm requires one extra assumption other than the conditions specified in the FDSA scheme above. The extra condition for convergence of $\theta_n$ to $\theta^*$  is as follows:
-\begin{enumerate}[label=(\textbf{A\arabic*}),resume]
+\begin{pvn}
 \item $\{\Delta_{ni}, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d., independent of $\F_n$ and for some $\alpha_0 > 0$ and $\forall n$, $\E (\Delta_{ni})^{-2} \le \alpha_0$, for $i = 1,2,\ldots,N$.
-\end{enumerate}
+\end{pvn}
 Since 1SPSA randomly perturbs the parameter vector $\theta$, the number of function measurements required is two, irrespective of the dimension of $\theta$, see that the numerator of \eqref{eq:spsa} is the same in all $N$ components of $\widehat{\nabla} f(\theta_{n})$. However, inspite of the fact that the 1SPSA requires only two function measurements compared to  $2N$  measurements required by FDSA, the asymptotic convergence rate is the same as the FDSA scheme.
 \subsection{Random directions stochastic approximation (RDSA)}
 A closely related algorithm to SPSA is the random directions stochastic approximation (RDSA) \cite[pp.~58-60]{kushcla}. The gradient estimate in RDSA differs from that in SPSA, both in the construction as well as in the choice of random perturbations.  In \cite{kushcla}, the random perturbations for 1RDSA were generated by picking samples uniformly on the surface of a sphere and the resulting 1RDSA scheme was found to be  inferior to 1SPSA from an asymptotic convergence rate viewpoint - see \cite{chin1997comparative}.  
@@ -182,9 +182,9 @@ The RDSA estimate of the gradient is given by
 \end{align}
 where $y_{n}^+ = f(\theta_n+\delta_n d_n) + \xi_{n}^+,\quad y_{n}^- = f(\theta_n-\delta_n d_n) + \xi_{n}^-$, $d_n = (d_n^i,\ldots,d_n^N)\tr$, and $d_n^i$, $ i=1,\ldots,N$ are i.i.d random perturbations distributed uniformly on the $N$-dimensional sphere with radius 1. Like 1SPSA, 1RDSA also requires only two function measurements irrespective of the dimension of parameter $\theta$. 
 The asymptotic convergence of 1RDSA algorithm also requires one extra assumption other than the conditions specified in the FDSA scheme. 
-\begin{enumerate}[label=(\textbf{A\arabic*}),resume]
+\begin{pvn}
 \item $\{ d_{n}^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d., independent of $\F_n$, and $\forall n$, $\E (d_{n} d_{n}\tr) = I_{N \times N}$, and for some $\alpha_0 > 0$, $\E {d_{n}^i}^2 f(\theta_n \pm \delta_n d_n) \le \alpha_0$ for $i=1,2,\ldots,N$.
-\end{enumerate}
+\end{pvn}
 Recent work in \cite{prashanth2015rdsa} attempts to bridge the gap between 1RDSA and 1SPSA in terms of improving the performance by incorporating random perturbations based on a certain asymmetric Bernoulli
 distribution as well as another with the  i.i.d uniform distribution. However,  1SPSA was found to be still marginally better than 1RDSA.  
 % On the other hand, results in \cite{prashanth2015rdsa} show that a second order RDSA approach (referred to as 2RDSA hereafter) can considerably outperform the corresponding higher order SPSA algorithm \cite{spall_adaptive} (referred to as 2SPSA hereafter). 
@@ -194,7 +194,7 @@ Stochastic Newton methods can counter the ill-conditioning problem of the object
 \label{eq:newton}
 \theta_{n+1} = \theta_n - a_n (\overline H_n)^{-1}\widehat\nabla f(\theta_n), 
 \end{align}
-where $a_n$ is the step-size that satisfies standard stochastic approximation conditions (see (C5) in Section \ref{sec:2rdsa-results}), and $\widehat\nabla f(\theta_n)$ and $\overline H_n$ are estimates of the gradient and Hessian, respectively. Thus, \eqref{eq:newton} can be considered as  the stochastic version of the well-known Newton method for optimization. Stochastic Newton methods are often more accurate than simple gradient search schemes.
+where $a_n$ is the step-size that satisfies standard stochastic approximation conditions (see (A12) in Section \ref{sec:2rdsa-results}), and $\widehat\nabla f(\theta_n)$ and $\overline H_n$ are estimates of the gradient and Hessian, respectively. Thus, \eqref{eq:newton} can be considered as  the stochastic version of the well-known Newton method for optimization. Stochastic Newton methods are often more accurate than simple gradient search schemes.
 %which are sensitive to the choice of the constant $a_0$ in the canonical step-size, $a_n= a_0/n$. The optimal (asymptotic) convergence rate is obtained only if $a_0 > 1/3 \lambda_0$, where $\lambda_0$ is the minimum eigenvalue of the Hessian of the objective function (see \cite{fabian1967stochastic}). However, this dependency is problematic, as $\lambda_0$ is unknown in a \textit{simulation optimization} setting. Hessian-based methods get rid of this dependency, while attaining the optimal rate (one can set $a_0=1$). An alternative approach to achieve the same effect is to employ Polyak-Ruppert averaging, which uses larger step-sizes and averages the iterates. However, iterate averaging is optimal only in an asymptotic sense. Finite-sample analysis (see Theorem 2.4 in \cite{fathi2013transport}) shows that the initial error (that depends on the starting point $x_0$ of the algorithm) is not forgotten sub-exponentially fast, but at the rate $1/n$ where $n$ is the number of iterations. 
 %Thus, 
 %the effect of averaging kicks in only after enough iterations have passed and the bulk of the iterates are centered around the optimum. 
@@ -235,7 +235,7 @@ In the above,
  \item $\widehat\nabla f(\theta_n)$ as in \eqref{eq:spsa} is the estimate of $\nabla f(\theta_n)$ and this corresponds to \eqref{eq:spsa} 
   \item $\widehat H_n$ is an estimate of the true Hessian ${\nabla}^2 f(\cdot)$ at $\theta_n$. 
  \item $\overline H_n$ is a smoothed version of $\widehat H_n$, which is crucial to ensure convergence. 
- \item $\Upsilon$ is an operator that projects a matrix onto the set of positive definite matrices. Update \eqref{eq:2spsa-H} does not necessarily ensure that $\overline H_n$ is invertible and without $\Upsilon$, the parameter update \eqref{eq:2spsa} may not move along a descent direction - see conditions (C7)  in Section \ref{sec:2rdsa-results}  for the precise requirements on the matrix projection operator.
+ \item $\Upsilon$ is an operator that projects a matrix onto the set of positive definite matrices. Update \eqref{eq:2spsa-H} does not necessarily ensure that $\overline H_n$ is invertible and without $\Upsilon$, the parameter update \eqref{eq:2spsa} may not move along a descent direction - see conditions (A14)  in Section \ref{sec:2rdsa-results}  for the precise requirements on the matrix projection operator.
 \end{itemize}
 It is important to determine conditions under which $\theta_n$ converges to $\theta^*$ and $\overline H_n \to H(\theta^*)$. Convergence theory for second-order methods varies significantly to that of first-order methods. One can see \cite{spall_adaptive} for detailed convergence results.
 \subsection{Second-order RDSA (2RDSA)}

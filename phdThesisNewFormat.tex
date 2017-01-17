@@ -44,6 +44,11 @@
 %\usepackage{algorithmicx}
 %\usepackage{algpseudocode}
 
+\newlist{pvn}{enumerate}{1}
+\newcommand{\pvnl}{(\textbf{A\arabic*})}
+\setlist[pvn]{resume,label={\pvnl}}
+ 
+\newcommand{\setpvnl}[1]{\renewcommand{\pvnl}{#1}}
 
 
 
