@@ -8,7 +8,7 @@ The second-order RDSA with improved Hessian estimate performs an update iteratio
 \end{align}
 where $\widehat\nabla f(\theta_n)$ is the estimate of $\nabla f(\theta_n)$, 
  %and this corresponds to  the uniform  and   asymmetric Bernoulli variant gradient estimates proposed in \cite{prashanth2015rdsa}.
-$\overline H_n$ is an estimate of the true Hessian ${\nabla}^2 f(\cdot)$, $\Upsilon(\cdot)$ projects any matrix onto the set of positive definite matrices and $\{a_n, n\ge 0\}$ is a step-size sequence that satisfies standard stochastic approximation conditions. There are standard procedures such as Cholesky factorization, see \cite{bert22}, for projecting a given square matrix to set of positive definite matrices. Moreover, in the vicinity of a local minimum, one expects the Hessian to be positive definite. In such a case, $\Upsilon$ will represent the identity operator.
+$\overline H_n$ is an estimate of the true Hessian ${\nabla}^2 f(\cdot)$, $\Upsilon(\cdot)$ projects any matrix onto the set of positive definite matrices and $\{a_n, n\ge 0\}$ is a step-size sequence that satisfies standard stochastic approximation conditions. There are standard procedures such as Cholesky factorization, see \cite{bert22}, for projecting a given square matrix to the set of positive definite matrices. Moreover, in the vicinity of a local minimum, one expects the Hessian to be positive definite. In such a case, $\Upsilon$ will represent the identity operator.
 
 The recursion \eqref{eq:e2rdsa} is identical to that in 2RDSA, while the Hessian estimation recursion \eqref{eq:2rdsa-H} differs as follows:\\
 \begin{inparaenum}[\bfseries (i)]
@@ -16,8 +16,8 @@ The recursion \eqref{eq:e2rdsa} is identical to that in 2RDSA, while the Hessian
 \item $b_n$ is a general step-size that we optimize to improve the Hessian estimate.
 \end{inparaenum}
 
-On the other hand, $\widehat H_n$ is identical to that in 2RDSA, i.e., it estimates the true Hessian in each iteration using $3$ function evaluations. %Further, $\widehat H_0 = I$. 
-For the sake of completeness, we provide below the construction for $\widehat\nabla f(\theta_n)$ and $\widehat H_n$ using asymmetric Bernoulli perturbations, before we present the feedback term that reduces the error in $\widehat H_n$.
+On the other hand, $\widehat H_n$ is identical to that in 2RDSA, i.e., it estimates the true Hessian in each iteration using three function evaluations. %Further, $\widehat H_0 = I$. 
+For the sake of completeness, we first provide below the construction for $\widehat\nabla f(\theta_n)$ and $\widehat H_n$ using asymmetric Bernoulli perturbations, and subsequently we present the feedback term that reduces the error in $\widehat H_n$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -100,7 +100,7 @@ For the sake of completeness, we provide below the construction for $\widehat\na
  \For{$n \gets 0,1,2, \ldots, $} {
  \begin{itemize}
  \item Generate $\{d_n^{i}, i=1,\ldots,N\}$, independent of $\{d_m, m=0,1,\ldots,n-1\}$.  
- \item For any $i=1,\ldots,N$, $d_n^{i}$ is distributed either as an asymmetric Bernoulli (see \eqref{eq:det-proj}) or Uniform $U[-\eta,\eta]$ for some $\eta >0$ (see Remark \ref{remark:unif}).
+ \item For any $i=1,\ldots,N$, $d_n^{i}$ is distributed according to either  asymmetric Bernoulli (see \eqref{eq:det-proj}) or Uniform $U[-\eta,\eta]$ distributions for some $\eta >0$ (see Remark \ref{remark:unif}).
 \begin{itemize}
 \item \textbf{\emph {Function evaluation 1} }\\ \hspace{4em} Obtain $y_n^+ = f(\theta_n+\delta_n d_n) + \xi_n^+$.
 \item \textbf{\emph {Function evaluation 2} }\\ \hspace{4em} Obtain $y_n^- = f(\theta_n-\delta_n d_n) + \xi_n^-$.
@@ -112,7 +112,7 @@ For the sake of completeness, we provide below the construction for $\widehat\na
 %\end{align*}
 \begin{align*} 
 \theta_{n+1} = \,& \theta_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(\theta_n),\\
-\overline H_n =\,& (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n).
+\overline H_n =\,& (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n),
 \end{align*}
 where $\widehat H_n$ and $\widehat \Psi_n$ are chosen according to \eqref{eq:2rdsa-estimate-ber} and \eqref{eq:psinhat}, respectively. 
 \end{itemize}
@@ -126,7 +126,7 @@ where $\widehat H_n$ and $\widehat \Psi_n$ are chosen according to \eqref{eq:2rd
 \label{alg:structure}
 \end{algorithm}
 
-Algorithm \ref{alg:structure} presents the pseudocode and we describe the individual component of 2RDSA-IH below.
+Algorithm \ref{alg:structure} presents the pseudocode and we describe the individual components of 2RDSA-IH below.
 \section{Function evaluations}
 Let $\delta_n, n\geq 0$ denote a sequence of diminishing positive real numbers and $d_n = (d_n^1,\ldots,d_n^N)\tr$ denote a random perturbation vector at instant $n$,
 where the perturbations $\{d_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d. and distributed  as follows: 
@@ -180,9 +180,9 @@ The Hessian estimate $\widehat H_n$ can be simplified as follows:
 \end{align}
 For the first term on the RHS above, note that 
 \begin{align}
-&\E[M_n \left(d_n\tr \nabla^2 f(\theta_n) d_n\right) \mid \F_n] =   \E\left[\left. M_n \times\right.\right.\left.\left.\left(\sum\limits_{i=1}^{N-1} (d_n^i)^2 \nabla^2_{ii} f(\theta_n) + 2\sum\limits_{i=1}^N\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) \right)\right| \F_n\right]. \label{eq:h1}
+&\E[M_n \left(d_n\tr \nabla^2 f(\theta_n) d_n\right) \mid \F_n] =   \E\left[\left. M_n \times\right.\right.\left.\left.\left(\sum\limits_{i=1}^{N-1} (d_n^i)^2 \nabla^2_{ii} f(\theta_n) + 2\sum\limits_{i=1}^N\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n) \right)\right| \F_n\right]. \label{eq:h1-ch2}
 \end{align}
-In analyzing the $l$th diagonal term of the above expression, the following zero-mean term appears (see the proof of Lemma 4 in \cite{prashanth2015rdsa}):
+In analyzing the $l$th diagonal term in the above expression, the following zero-mean term appears (see the proof of Lemma 4 in \cite{prashanth2015rdsa}):
 \begin{align}
 & \E\left[\left. \left([M_n]_{D}\right)_{l,l} \left(2\sum\limits_{i=1}^{N-1}\sum\limits_{j=i+1}^N d_n^i d_n^j \nabla^2_{ij} f(\theta_n)\right)\right| \F_{n}\right] = 0,\label{eq:diagzero}
 \end{align}
@@ -193,7 +193,7 @@ The term on the LHS in \eqref{eq:diagzero}, denoted by $\Psi_{n}^{1}(\nabla^2 f(
 \Psi_{n}^{1}(\nabla^2 f(\theta_n)) = [M_n]_{D}\left(d_{n}\tr \, [\nabla^2 f(\theta_n)]_{N} \, d_{n}\right).
 \end{align}
 
-In analyzing the off-diagonal term ($(k,l)$ where $k < l$) of \eqref{eq:h1}, the following zero-mean term appears:
+In analyzing the off-diagonal term ($(k,l)$ where $k < l$) of \eqref{eq:h1-ch2}, the following zero-mean term appears:
 \begin{align}
 & \E\left[\left.\left([M_n]_{N}\right)_{k,l}   \left(\sum\limits_{i=1}^N (d_n^i)^2 \nabla^2_{ii} f(\theta_n)\right)\right| \F_n \right] = 0. 
 \end{align}
@@ -281,9 +281,9 @@ The feedback term in \eqref{eq:psinhat} can be easily extended to the case of un
 \section{Convergence analysis}
 \label{sec:2rdsa-results}
 We make the same assumptions as those used in the analysis of \cite{prashanth2015rdsa}, with a few minor alterations. The assumptions are listed below:
-\begin{enumerate}[label=(\textbf{C\arabic*})]
+\begin{enumerate}[label=(\textbf{A\arabic*}),resume]
 \item  The function
-$f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1 i_2 i_3 i_4} f(\theta)$ denotes the $(i_1 i_2 i_3 i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
+$f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1 i_2 i_3 i_4} f(\theta)$ denotes the $(i_1, i_2, i_3, i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
 
 %\item  For some $\rho>0$  and almost all $x_n$, the function $f$ is four-times differentiable with a uniformly (in $n$) bounded fourth derivative for all $x$ such that $\left\| x_n - x\right\| \le \rho$. 
 
@@ -298,21 +298,21 @@ $$\hspace{-1.7em} a_n, \delta_n \rightarrow 0\text{ as } n \rightarrow \infty,
 \sum_n a_n=\infty \text{ and } \sum_n \left(\frac{a_n}{\delta_n}\right)^2 <\infty.$$
 
 \item For each $i=1,\ldots,N$ and any $\rho>0$, 
-$P(\{ \bar f_{ni} (\theta_n) \ge 0 \text{ i.o}\} \cap \{ \bar f_{ni} (\theta_n) < 0 \text{ i.o}\} \mid \{ |\theta_{ni} - x^*_i| \ge \rho\quad \forall n\}) =0.$
+$P(\{ \bar f_{ni} (\theta_n) \ge 0 \text{ i.o}\} \cap \{ \bar f_{ni} (\theta_n) < 0 \text{ i.o}\} \mid \{ |\theta_{ni} - \theta^*_i| \ge \rho\quad \forall n\}) =0.$
 
 \item The operator $\Upsilon$ satisfies $\delta_n^2 \Upsilon(H_n)^{-1} \rightarrow 0$ a.s. and  $E(\left\| \Upsilon(H_n)^{-1}\right\|^{2+\zeta}) \le \rho$ for some $\zeta, \rho>0$.
 
 \item For any $\tau >0$ and nonempty $S \subseteq \{1,\ldots,N\}$, there exists a $\rho'(\tau,S)>\tau$ such that 
-$$ \limsup_{n\rightarrow \infty} \left| \dfrac{\sum_{i \notin S} (x-x^*)_i \bar f_{ni}(x)}{\sum_{i \in S} (x-x^*)_i \bar f_{ni}(x)}               \right| < 1 \text{ a.s.}$$
-for all $|(x-x^*)_i| < \tau$ when $i \notin S$ and $|(x-x^*)_i| \ge \rho'(\tau,S)$ when $i\in S$.
+$$ \limsup_{n\rightarrow \infty} \left| \dfrac{\sum_{i \notin S} (\theta-\theta^*)_i \bar f_{ni}(\theta)}{\sum_{i \in S} (\theta-\theta^*)_i \bar f_{ni}(\theta)}               \right| < 1 \text{ a.s.}$$
+for all $|(\theta-\theta^*)_i| < \tau$ when $i \notin S$ and $|(\theta-\theta^*)_i| \ge \rho'(\tau,S)$ when $i\in S$.
 \item For some $\alpha_0, \alpha_1>0$ and for all $n$, $\E {\xi_n}^{2} \le \alpha_0$, $\E {\xi_n^{\pm}}^{2} \le \alpha_0$, $\E f(\theta_n)^{2} \le \alpha_1$,  $\E f(\theta_n\pm \delta_n d_n)^{2} \le \alpha_1$ and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
 \item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
 \end{enumerate}
-The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C1)-(C8) are identical to that in \cite{prashanth2015rdsa}, while (C9) and (C10) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired by \cite{spall-jacobian}.
+The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C1)-(C8) are identical to assumptions in \cite{prashanth2015rdsa}, while (C9) and (C10) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
 
 \begin{lemma}(\textbf{Bias in Hessian estimate})
 \label{lemma:2rdsa-bias}
-Under (C1)-(C10), with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-ber}, we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+Under (C1)-(C10), with $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-ber}, we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entries in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
 \begin{align}
 \left|\E\left[
 \left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).
@@ -326,7 +326,7 @@ See Lemma 4 in \cite{prashanth2015rdsa}.
 \label{thm:2rdsa-H}
 Under (C1)-(C10), we have that 
 $$\theta_n \rightarrow \theta^*, \overline H_n \rightarrow \nabla^2 f(\theta^*) \text{ a.s. as } n\rightarrow \infty.$$ 
-In the above, $\theta_n$ and $\overline H_n$ are updated according to \eqref{eq:e2rdsa} and \eqref{eq:2rdsa-H}, respectively, $\widehat H_n$ defined according to \eqref{eq:2rdsa-estimate-ber} and the step-sizes $b_n$ are chosen as suggested in \eqref{eq:wieghts}. 
+In the above, $\theta_n$ and $\overline H_n$ are updated according to \eqref{eq:e2rdsa} and \eqref{eq:2rdsa-H}, respectively, $\widehat H_n$ is defined according to \eqref{eq:2rdsa-estimate-ber} and the step-sizes $b_n$ are chosen as suggested in \eqref{eq:wieghts}. 
 \end{theorem}
 \begin{proof}
 The first part of the claim regarding $\theta_n$ follows in exactly the same fashion as the proof of Theorem 5 in \cite{prashanth2015rdsa}.  
@@ -337,21 +337,21 @@ The first step is to prove the following:
 \label{eq:step1}
 \end{align}
 
-By a completely parallel argument to that used in the proof of Theorem 1 in \cite{spall-jacobian}, we obtain: For any $i,j = 1,\ldots,N$,
+By a completely similar argument to that used in the proof of Theorem 1 in \cite{spall-jacobian}, we obtain: For any $i,j = 1,\ldots,N$,
 \begin{align*}
 \E \left[\left((\widehat {H}_k)_{i,j} - (\widehat {\Psi}_k)_{i,j} - \E((\widehat {H}_k)_{i,j} \mid \F_k)\right)^2\right] = O(\delta_k^{-4}).
 \end{align*}
 Now \eqref{eq:step1} follows by an application of Kronecker's Lemma along with the martingale convergence theorem (see Theorem 6.2.1 of \cite{lahaprobability}).
 
 From Lemma \ref{lemma:2rdsa-bias}, we have 
-$$ \E[ \widehat H_k \mid \F_k] = \nabla^2 f(\theta_n) + O(\delta_n^2) \text{ a.s.}$$
+$$ \E[ \widehat H_k \mid \F_k] = \nabla^2 f(\theta_k) + O(\delta_k^2) \text{ a.s.}$$
 Since the Hessian is continuous near $\theta_n$ and $\theta_n$ converges almost surely to $\theta^*$, we have
 % \footnote{Since assumptions (C1)-(C10) here are similar to that in \cite{prashanth2015rdsa}, Theorem 5 of \cite{prashanth2015rdsa} holds here as well. In particular, this implies almost sure convergence of $x_n$ to $x^*$.}
 \begin{align*}
 \sum_{k=0}^n \dfrac{\delta_k^4 \left(\E(\widehat H_k \mid \F_k)\right)}{\sum_{i=0}^n \delta_i^4} 
-=&\sum_{k=0}^n \dfrac{\delta_k^4 \left(\nabla^2 f(\theta_n) + O(\delta_n^2)\right)}{\sum_{i=0}^n \delta_i^4}\\
-=&\sum_{k=0}^n \dfrac{\delta_k^4 \left(\nabla^2 f(x^*) + o(1)\right)}{\sum_{i=0}^n \delta_i^4}\\
-&\rightarrow \nabla^2 f(x^*) \text{ a.s. as } n \rightarrow \infty.
+=&\sum_{k=0}^n \dfrac{\delta_k^4 \left(\nabla^2 f(\theta_k) + O(\delta_k^2)\right)}{\sum_{i=0}^n \delta_i^4}\\
+=&\sum_{k=0}^n \dfrac{\delta_k^4 \left(\nabla^2 f(\theta^*) + o(1)\right)}{\sum_{i=0}^n \delta_i^4}\\
+&\rightarrow \nabla^2 f(\theta^*) \text{ a.s. as } n \rightarrow \infty.
 \end{align*}
 The last step above follows from Toeplitz Lemma (see p. 89 of \cite{lahaprobability}) after observing that $\sum_{i=0}^n \delta_i^4 \rightarrow \infty$ due to (C10). 
 The main claim now follows since 
