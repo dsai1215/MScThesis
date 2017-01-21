@@ -18,7 +18,7 @@ The second-order SPSA-3 with improved Hessian estimate performs an update iterat
  \For{$n \gets 0,1,2, \ldots, $} {
  \begin{itemize}
  \item Generate $\{\Delta_n^{i}, i=1,\ldots,N\}$,$\{\widehat\Delta_n^{i}, i=1,\ldots,N\}$ independent of $\{\Delta_m,\widehat\Delta_m, m=0,1,\ldots,n-1\}$.  
- \item For any $i=1,\ldots,N$, $\Delta_n^{i}$,$\widehat\Delta_n^{i}$  satisfy condition (C17) of chapter \ref{sec:2spsa-results},(most popular distribution being used is symmetric Bernoulli distribution, $\pm 1$ w.p. $1/2$).
+ \item For any $i=1,\ldots,N$, $\Delta_n^{i}$,$\widehat\Delta_n^{i}$  satisfy condition (A23) of chapter \ref{sec:2spsa-results},(most popular distribution being used is symmetric Bernoulli distribution, $\pm 1$ w.p. $1/2$).
 \begin{itemize}
 \item \textbf{\emph {Function evaluation 1} }\\ \hspace{4em} Obtain $y_n^+ = f(\theta_n+\delta_n \Delta_n +\delta_n \widehat\Delta_n) + \xi_n^+$.
 \item \textbf{\emph {Function evaluation 2} }\\ \hspace{4em} Obtain $y_n^- = f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) + \xi_n^-$.
@@ -52,7 +52,7 @@ $y_n^- = f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) + \xi_n^-$,
 where the noise terms $\xi_n, \xi_n^+, \xi_n^-$ satisfy $\E\left[\left.\xi_n^+ + \xi_n^- - 2\xi_n \right| \F_n, \Delta_n, \widehat \Delta_n\right] = 0$ with $\F_n = \sigma(\theta_m,m <  n)$ denoting the underlying sigma-field.
 
 Further, $\delta_n, n\geq 0$ is a sequence of diminishing positive real numbers and 
-$\Delta_n = (\Delta_n^1,\ldots,\Delta_n^N)\tr$ , $\widehat\Delta_n = (\widehat\Delta_n^1,\ldots,\widehat\Delta_n^N)\tr$ are the perturbation random vectors at instant $n$ with $\Delta_n^i,i=1,\ldots,N$, and $\widehat\Delta_n^i,i=1,\ldots,N$ being independent identically distributed (i.i.d), mean-zero random variables having finite inverse moments of order greater than 2 and satisfying the condition (C17) of section \ref{sec:2spsa-results}.  
+$\Delta_n = (\Delta_n^1,\ldots,\Delta_n^N)\tr$, $\widehat\Delta_n = (\widehat\Delta_n^1,\ldots,\widehat\Delta_n^N)\tr$ are the perturbation random vectors at instant $n$ with $\Delta_n^i,i=1,\ldots,N$, and $\widehat\Delta_n^i,i=1,\ldots,N$ being independent identically distributed (i.i.d), mean-zero random variables having finite inverse moments of order greater than 2 and satisfying the condition (A23) of section \ref{sec:2spsa-results}.  
 
 \section{Gradient estimate}
 The SPSA estimate of the gradient $\nabla f(\theta_n)$ is given by
@@ -135,7 +135,7 @@ From \eqref{eq:spsahnhat}, we can infer that
 \begin{align*}
 \E \parallel \widehat H_n \parallel^2 \le \dfrac{C}{\delta_n^4} \text{ for some } C<\infty. 
 \end{align*} 
-This is because the third term in \eqref{eq:spsahnhat} vanishes asymptotically, while the fourth term there dominates asymptotically. Moreover, the noise factors in the fourth term in \eqref{eq:spsahnhat} are bounded above due to (C22)  and independent of $n$, leaving the $\delta_n^2$ term in the denominator there. 
+This is because the third term in \eqref{eq:spsahnhat} vanishes asymptotically, while the fourth term there dominates asymptotically. Moreover, the noise factors in the fourth term in \eqref{eq:spsahnhat} are bounded above due to (A28)  and independent of $n$, leaving the $\delta_n^2$ term in the denominator there. 
 
 So, the optimization problem to be solved at instant $n$ is as follows:
 \begin{align}
@@ -187,11 +187,11 @@ $\E \left[ |f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)/ (\Delt
 and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
 \item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
 \end{pvn}
-The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C14)-(C21) are identical to those in \cite{prashanth2015rdsa}, while (C22) and (C23) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n) \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
+The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (A20)-(A27) are identical to those in \cite{prashanth2015rdsa}, while (A28) and (A29) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n) \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
 
 \begin{lemma}(\textbf{2SPSA-3-IH Bias in Hessian estimate})
 \label{lemma:2spsa-bias}
-Under (C14)-(C23), with $\widehat H_n$ defined according to  \eqref{eq:2spsa-ber} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{i,j}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+Under (A20)-(A29), with $\widehat H_n$ defined according to  \eqref{eq:2spsa-ber} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{i,j}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
 \begin{align}
 \left|\E\left[
 \left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).
@@ -204,7 +204,7 @@ See Proposition 4.2 in \cite{bhatnagar2015simultaneous}.
 
 \begin{theorem}(\textbf{2SPSA-3-IH Strong Convergence of Hessian})
 \label{thm:2spsa-H}
-Under (C14)-(C23), we have that 
+Under (A20)-(A29), we have that 
 $$\theta_n \rightarrow \theta^*, \overline H_n \rightarrow \nabla^2 f(\theta^*) \text{ a.s. as } n\rightarrow \infty.$$ 
 In the above, $\theta_n$ and $\overline H_n$ are updated according to \eqref{eq:2spsa-3-theta} and \eqref{eq:2spsa-3-ih}, respectively, $\widehat H_n$ defined according to \eqref{eq:2spsa-ber} and the step-sizes $b_n$ are chosen as suggested in \eqref{eq:spsawieghts}. 
 \end{theorem}
@@ -215,11 +215,11 @@ The proof is similar to the proof of the Theorem \ref{thm:2rdsa-H} and is theref
 We next present a convergence rate result for the special case of a quadratic objective function under the following additional assumptions:
 \begin{pvn}
 \item  $f$ is quadratic and $\nabla^2 f(x^*) > 0$. 
-\item The operator $\Upsilon$ is chosen such that $\E(\parallel \Upsilon(\overline H_n) - \overline H_n\parallel^2) = o(e^{-2wn^{1-r}/(1-r)})$ and $\parallel \Upsilon(H) - H \parallel^2 / (1+\parallel H \parallel^2)$ is uniformly bounded.
+\item The operator $\Upsilon$ is chosen such that $\E(\parallel \Upsilon(\overline H_n) - \overline H_n\parallel^2) = o(e^{-2wn^{1-r}/(1-r)})$ and \\$\parallel \Upsilon(H) - H \parallel^2 / (1+\parallel H \parallel^2)$ is uniformly bounded.
 \end{pvn}
 \begin{theorem}(\textbf{2SPSA-3-IH Quadratic case - Convergence rate})
 \label{thm:spsaquad-bound}
-Assume (C17), (C23), (C24) and (C25) and also that the setting is noise-free. 
+Assume (A23), (A29), (A30) and (A31) and also that the setting is noise-free. 
 Let $b_n = b_0/n^r$, $n=1,2,\ldots,k$, where $1/2 < r < 1$ and $0 < b_0 \leq 1$. For notational simplicity, let $H^*=\nabla^2 f(x^*)$. Letting $\Lambda_k = \overline H_k - H^*$, we have 
 \begin{align}
 \text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}}).
@@ -240,6 +240,12 @@ The proof involves the following steps:
 \end{description}
 \noindent\textbf{Step 1: MSE convergence of $\overline H_n$} \\
 This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jacobian}.\\
+By rewriting the \eqref{eq:2spsa-3-ih} in the following form
+\begin{align}\label{eq:hhatexpanded}
+\overline H_{n} &= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - \widehat H_n + \widehat \Psi_n)\nonumber\\
+&= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - H^* + \widehat \Psi_n - \Psi_n (H^*))
+\end{align}
+The above equation can be thought as a stochastic approximation analogue of \eqref{eq:2spsa-3-ih}.
 \noindent\textbf{Step 2: Representation of $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$} \\
  From \eqref{eq:2spsa-3-ih} and \eqref{eq:spsahnhat-ext},  we have
  \begin{align}
@@ -359,7 +365,7 @@ Now consider the second case where $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} =
 &\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + \frac{d(i_n)}{{i_n}^{2r}}\right].
 \label{eq:spsaquad-bigocont5}
 \end{align}
-From the equation \eqref{eq:spsaquad-bigocont}, the  LHS of \eqref{eq:thmwts} is $d(i_n) e^{-2b_0 i_n^{1-r} / {1-r}}$. By substituting \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont5}, in $\frac{RHS{i_n}}{LHS{i_n}}$ then $\frac{RHS{i_n}}{LHS{i_n}} \to 0$ as $n \to \infty$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$. Hence the claim $\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}})$ follows.
+From the equation \eqref{eq:spsaquad-bigocont}, the  LHS of \eqref{eq:thmwts} is $d(i_n) e^{-2b_0 i_n^{1-r} / {1-r}}$. By substituting \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont5}, in $\frac{RHS(i_n)}{LHS(i_n)}$ then $\frac{RHS(i_n)}{LHS(i_n)} \to 0$ as $n \to \infty$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$. Hence the claim $\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}})$ follows.
 \end{proof}
 
 
