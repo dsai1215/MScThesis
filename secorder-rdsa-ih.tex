@@ -308,7 +308,7 @@ for all $|(\theta-\theta^*)_i| < \tau$ when $i \notin S$ and $|(\theta-\theta^*)
 \item For some $\alpha_0, \alpha_1>0$ and for all $n$, $\E {\xi_n}^{2} \le \alpha_0$, $\E {\xi_n^{\pm}}^{2} \le \alpha_0$, $\E f(\theta_n)^{2} \le \alpha_1$,  $\E f(\theta_n\pm \delta_n d_n)^{2} \le \alpha_1$ and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
 \item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
 \end{pvn}
-The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (A8)-(A15) are identical to assumptions in \cite{prashanth2015rdsa}, while (A16) and (A17) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
+The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (A8)-(A15) are identical to assumptions in \cite{prashanth2015rdsa}, while (A16) and (A17) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n )\right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
 
 \begin{lemma}(\textbf{Bias in Hessian estimate})
 \label{lemma:2rdsa-bias}
@@ -353,7 +353,7 @@ Since the Hessian is continuous near $\theta_n$ and $\theta_n$ converges almost 
 =&\sum_{k=0}^n \dfrac{\delta_k^4 \left(\nabla^2 f(\theta^*) + o(1)\right)}{\sum_{i=0}^n \delta_i^4}\\
 &\rightarrow \nabla^2 f(\theta^*) \text{ a.s. as } n \rightarrow \infty.
 \end{align*}
-The last step above follows from Toeplitz Lemma (see p. 89 of \cite{lahaprobability}) after observing that $\sum_{i=0}^n \delta_i^4 \rightarrow \infty$ due to (C10). 
+The last step above follows from Toeplitz Lemma (see p. 89 of \cite{lahaprobability}) after observing that $\sum_{i=0}^n \delta_i^4 \rightarrow \infty$ due to (A17). 
 The main claim now follows since 
 $$ \overline H_n = \sum_{k=0}^n \dfrac{\delta_k^4 \left(\widehat H_k - \Psi_k \right)}{\sum_{i=0}^n \delta_i^4}.$$
 \end{proof}

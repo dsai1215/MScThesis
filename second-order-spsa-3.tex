@@ -18,7 +18,7 @@ The second-order SPSA-3 with improved Hessian estimate performs an update iterat
  \For{$n \gets 0,1,2, \ldots, $} {
  \begin{itemize}
  \item Generate $\{\Delta_n^{i}, i=1,\ldots,N\}$,$\{\widehat\Delta_n^{i}, i=1,\ldots,N\}$ independent of $\{\Delta_m,\widehat\Delta_m, m=0,1,\ldots,n-1\}$.  
- \item For any $i=1,\ldots,N$, $\Delta_n^{i}$,$\widehat\Delta_n^{i}$  satisfy condition (C17) of section \ref{sec:2spsa-results},(most popular distribution being used is symmetric Bernoulli distribution, $\pm 1$ w.p. $1/2$).
+ \item For any $i=1,\ldots,N$, $\Delta_n^{i}$,$\widehat\Delta_n^{i}$  satisfy condition (C17) of chapter \ref{sec:2spsa-results},(most popular distribution being used is symmetric Bernoulli distribution, $\pm 1$ w.p. $1/2$).
 \begin{itemize}
 \item \textbf{\emph {Function evaluation 1} }\\ \hspace{4em} Obtain $y_n^+ = f(\theta_n+\delta_n \Delta_n +\delta_n \widehat\Delta_n) + \xi_n^+$.
 \item \textbf{\emph {Function evaluation 2} }\\ \hspace{4em} Obtain $y_n^- = f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) + \xi_n^-$.
@@ -30,7 +30,7 @@ The second-order SPSA-3 with improved Hessian estimate performs an update iterat
 %\end{align*}
 \begin{align} \label{eq:2spsa-3-theta}
 \theta_{n+1} = \,& \theta_n - a_n \Upsilon(\overline H_n)^{-1}\widehat\nabla f(\theta_n),\\
-\overline H_n =\,& (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n).\label{eq:2spsa-3-ih}
+\overline H_n =\,& (1-b_{n})  \overline H_{n-1} + b_{n} ( \widehat H_n - \widehat \Psi_n),\label{eq:2spsa-3-ih}
 \end{align}
 where $\widehat H_n$ and $\widehat \Psi_n$ are chosen according to \eqref{eq:2spsa-ber} and \eqref{eq:psinhatspsa3}, respectively. 
 \end{itemize}
@@ -51,7 +51,8 @@ $y_n = f(\theta_n) + \xi_n$, $y_n^+ = f(\theta_n+\delta_n \Delta_n +\delta_n \wi
 $y_n^- = f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) + \xi_n^-$,
 where the noise terms $\xi_n, \xi_n^+, \xi_n^-$ satisfy $\E\left[\left.\xi_n^+ + \xi_n^- - 2\xi_n \right| \F_n, \Delta_n, \widehat \Delta_n\right] = 0$ with $\F_n = \sigma(\theta_m,m <  n)$ denoting the underlying sigma-field.
 
-Further, $\delta_n, n\geq 0$ is a sequence of diminishing positive real numbers and $\Delta_n = (\Delta_n^1,\ldots,\Delta_n^N)\tr$ , $\widehat\Delta_n = (\widehat\Delta_n^1,\ldots,\widehat\Delta_n^N)\tr$ are the perturbation random vector at instant $n$ with $\Delta_n^i,i=1,\ldots,N$, and $\widehat\Delta_n^i,i=1,\ldots,N$ are independent identically distributed (i.i.d), mean-zero random varibles having finite inverse movements of order greater than 2 and satisfy the condition (C17) of section \ref{sec:2spsa-results}.  
+Further, $\delta_n, n\geq 0$ is a sequence of diminishing positive real numbers and 
+$\Delta_n = (\Delta_n^1,\ldots,\Delta_n^N)\tr$ , $\widehat\Delta_n = (\widehat\Delta_n^1,\ldots,\widehat\Delta_n^N)\tr$ are the perturbation random vectors at instant $n$ with $\Delta_n^i,i=1,\ldots,N$, and $\widehat\Delta_n^i,i=1,\ldots,N$ being independent identically distributed (i.i.d), mean-zero random variables having finite inverse moments of order greater than 2 and satisfying the condition (C17) of section \ref{sec:2spsa-results}.  
 
 \section{Gradient estimate}
 The SPSA estimate of the gradient $\nabla f(\theta_n)$ is given by
@@ -64,14 +65,14 @@ where the perturbations $\Delta_n^i$, $i=1,\ldots,N$ are i.i.d. and as mentioned
 %Note that $E d_n^i = 0$, $E (d_n^i)^2 = 1+\epsilon$ and $E (d_n^i)^4 = \dfrac{(1+\epsilon)(1+(1+\epsilon)^3)}{(2+\epsilon)}$.
 
 \section{Hessian estimate}
-The $i,j$th entry of the Hessian estimate in this case is given by
+The $(i,j)$th entry of the Hessian estimate in this case is given by
 \begin{align}
 \label{eq:2spsa-ber}
-&\left(\widehat H_n\right)_{ij} =  \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{2\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}}\right), 
+&\left(\widehat H_n\right)_{ij} =  \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{2\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}}\right).
 \end{align}
 %%%%%% Feedback
 \section{Feedback term $\widehat \Psi_n$}
-The $i,j$th term of the Hessian estimate $\widehat H_n$ can be simplified as follows: 
+The $(i,j)$th term of the Hessian estimate $\widehat H_n$ can be simplified as follows: 
 \begin{align}
 \left(\widehat H_n \right)_{ij} & =  \left(\dfrac{y_n^+ + y_n^- - 2 y_n}{2\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}}\right) \nonumber \\
 %& =  \left[\left(\dfrac{f(\theta_n+\delta_n \Delta_n+\delta_n \widehat \Delta_n) + f(\theta_n -\delta_n\Delta_n-\delta_n\widehat\Delta_n) - 2 f(\theta_n)}{\delta_n^2 \Delta_n^{(i)} \widehat \Delta_n^{(j)}}\right) \right.\nonumber \\&\hspace{10em}+\left. \left(\dfrac{\xi_n^+ + \xi_n^- - 2 \xi_n}{\delta_n^2}\right)\right] \nonumber \\
@@ -80,33 +81,33 @@ The $i,j$th term of the Hessian estimate $\widehat H_n$ can be simplified as fol
 \end{align}
 For the first term on the RHS above, note that
 \begin{align}
-\E\left[\left.  \frac{(\Delta_n+ \widehat \Delta_n)\tr \nabla^2 f(\theta_n) (\Delta_n+ \widehat \Delta_n)}{2\Delta_n^{(i)} \widehat \Delta_n^{(j)}}  \right | \F_n\right] &=\E\left[\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \Delta_n^m}{2\Delta_n^i \widehat\Delta_n^j} + \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j}  \right.\nonumber \\&\hspace{2.5cm}+\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \left. \frac{\widehat\Delta_n^l \nabla^2_{lm} f(\theta_n)\widehat \Delta_n^m}{2\Delta_n^i \widehat\Delta_n^j}\right| \F_n\right].\label{eq:2spsaexp}
+&\E\left[\left.  \frac{(\Delta_n+ \widehat \Delta_n)\tr \nabla^2 f(\theta_n) (\Delta_n+ \widehat \Delta_n)}{2\Delta_n^{(i)} \widehat \Delta_n^{(j)}}  \right | \F_n\right] =\E\left[\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^{(l)} \nabla^2_{lm} f(\theta_n) \Delta_n^{(m)}}{2\Delta_n^{(i)} \widehat\Delta_n^{(j)}} \right.\nonumber \\&\hspace{2.5cm}+\left. \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^{(l)} \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^{(m)}}{\Delta_n^{(i)} \widehat\Delta_n^{(j)}} +\sum\limits_{l=1}^N\sum\limits_{m=1}^N \left. \frac{\widehat\Delta_n^{(l)} \nabla^2_{lm} f(\theta_n)\widehat \Delta_n^{(m)}}{2\Delta_n^{(i)} \widehat\Delta_n^{(j)}}\right| \F_n\right].\label{eq:2spsaexp}
 \end{align}
-In analysing the RHS of the above expression, the first an the third terms are mean-zero (See Proposition 4.2 in \cite{bhatnagar2015simultaneous}):
+In analysing the RHS of the above expression, the first and the third terms are mean-zero (See Proposition 4.2 in \cite{bhatnagar2015simultaneous}):
 \begin{align}
-\E\left[\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \Delta_n^m}{\Delta_n^i \widehat\Delta_n^j} \right | \F_n\right] = 0 \hspace{0.2cm} and \hspace{0.2cm}\E\left[\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\widehat\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j }\right | \F_n\right] = 0.
+\E\left[\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^{(l)} \nabla^2_{lm} f(\theta_n) \Delta_n^{(m)}}{\Delta_n^{(i)} \widehat\Delta_n^{(j)}} \right | \F_n\right] = 0 \hspace{0.2cm} and \hspace{0.2cm}\E\left[\left.\sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\widehat\Delta_n^{(l)} \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^{(m)}}{\Delta_n^{(i)} \widehat\Delta_n^{(j)} }\right | \F_n\right] = 0.
 \end{align}
 %\begin{align}
 %\E\left[\left. \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j} \right | \F_n\right] = \nabla^2_{ij} f(\theta_n) \hspace{0.3cm}a.s..
 %\end{align}
 From the above equations the  terms that are in expectation, denoted by  $\Psi_n^1(\nabla^2 f(\theta_n))$, can be written in matrix form as follows:
 \begin{align}
-\Psi_n^1(\nabla^2 f(\theta_n)) =\frac{1}{2} M_n \left[\Delta_n\tr \nabla^2 f(\theta_n) \Delta_n + \widehat\Delta_n\tr \nabla^2 f(\theta_n) \widehat\Delta_n\right].
+\Psi_n^1(\nabla^2 f(\theta_n)) =\frac{1}{2} M_n \left[\Delta_n\tr \nabla^2 f(\theta_n) \Delta_n + \widehat\Delta_n\tr \nabla^2 f(\theta_n) \widehat\Delta_n\right],
 \end{align}
-where $M_n = [1/\Delta_n^1, \ldots ,1/\Delta_n^N]\tr [1/\Delta_n^1, \ldots ,1/\Delta_n^N]$.
-Now consider the second term in RHS of the \eqref{eq:2spsaexp}. It can be re-written as follows:
+where $M_n = [1/\Delta_n^{(1)}, \ldots ,1/\Delta_n^{(N)}]\tr [1/\Delta_n^{(1)}, \ldots ,1/\Delta_n^{(N)}]$.
+Now consider the second term in the RHS of \eqref{eq:2spsaexp}. It can be re-written as follows:
 \begin{align}
-\E\left[\left. \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m}{\Delta_n^i \widehat\Delta_n^j} \right | \F_n\right] = \E\left[\left.\nabla^2_{ij} f(\theta_n) + \frac{1}{\Delta_n^i \widehat\Delta_n^j} \mathop{\sum_{l=1}^N \sum_{m=1}^{N}}_{lm \neq ij} \Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m \right | \F_n\right]
+\E\left[\left. \sum\limits_{l=1}^N\sum\limits_{m=1}^N \frac{\Delta_n^{(l)} \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^{(m)}}{\Delta_n^{(i)} \widehat\Delta_n^{(j)}} \right | \F_n\right] = \E\left[\left.\nabla^2_{ij} f(\theta_n) + \frac{1}{\Delta_n^{(i)} \widehat\Delta_n^{(j)}} \mathop{\sum_{l=1}^N \sum_{m=1}^{N}}_{lm \neq ij} \Delta_n^{(l)} \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^{(m)} \right | \F_n\right]
 \end{align}
 In analysing the RHS of the above expression, the second term in the expectation  is mean-zero term:  
 \begin{align}
-\E\left[\left. \frac{1}{\Delta_n^i \widehat\Delta_n^j} \mathop{\sum_{l=1}^N \sum_{m=1}^{N}}_{lm \neq ij} \Delta_n^l \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^m \right | \F_n\right] = 0.
+\E\left[\left. \frac{1}{\Delta_n^{(i)} \widehat\Delta_n^{(j)}} \mathop{\sum_{l=1}^N \sum_{m=1}^{N}}_{lm \neq ij} \Delta_n^{(l)} \nabla^2_{lm} f(\theta_n) \widehat\Delta_n^{(m)} \right | \F_n\right] = 0.
 \end{align}
-The term on the LHS above, can be denoted by $\Psi_n^2(\nabla^2 f(\theta_n))$, can be written in the matrix form as follows:
+The term on the LHS above, can be denoted by $\Psi_n^2(\nabla^2 f(\theta_n))$, and can be written in  matrix form as follows:
 \begin{align}
 \Psi_n^2(\nabla^2 f(\theta_n)) = \widehat N_n\tr \nabla^2 f(\theta_n) N_n  + \widehat N_n\tr \nabla^2 f(\theta_n) + \nabla^2 f(\theta_n) N_n.
 \end{align}
-where $N_n,\widehat N_n$ are defined as follows $N_n = \Delta_n \left[\frac{1}{\Delta_n^1},\ldots,\frac{1}{\Delta_n^N}\right] - I_N$ and $\widehat N_n = \widehat \Delta_n \left [\frac{1}{\widehat\Delta_n^1},\ldots,\frac{1}{\widehat \Delta_n^N}\right] - I_N$ and $I_N$ is  identity matrix of size $N \times N$.
+where $N_n,\widehat N_n$ are defined as follows: $N_n = \Delta_n \left[\frac{1}{\Delta_n^{(1)}},\ldots,\frac{1}{\Delta_n^{(N)}}\right] - I_N$ and $\widehat N_n = \widehat \Delta_n \left [\frac{1}{\widehat\Delta_n^{(1)}},\ldots,\frac{1}{\widehat \Delta_n^{(N)}}\right] - I_N$ and $I_N$ is  identity matrix of size $N \times N$.
 From the foregoing, the per-iteration Hessian estimate $\widehat H_n$ can be re-written as follows:
 \begin{align}
 \widehat H_n = & \nabla^2 f(\theta_n) + \Psi_{n}(\nabla^2 f(\theta_n)) +  O(\delta_n^2) + O(\delta_n^{-2})  \label{eq:spsahnhat}
@@ -138,13 +139,13 @@ This is because the third term in \eqref{eq:spsahnhat} vanishes asymptotically, 
 
 So, the optimization problem to be solved at instant $n$ is as follows:
 \begin{align}
-\sum \limits_{i=0}^{n} (\tilde b_k)^2 \delta_i^{-4}, \text{ subject to} \label{eq:spsawn-opt}\\
+\sum \limits_{i=0}^{n} (\tilde b_i)^2 \delta_i^{-4}, \text{ subject to} \label{eq:spsawn-opt}\\
 \tilde b_i \geq 0 ~\forall i \text{ and }\sum \limits_{i=0}^{n} \tilde b_i = 1.
 \end{align}
 The optimization variable $\tilde b_i$ from the above is related to the Hessian recursion \eqref{eq:2spsa-3-ih} as follows:
 \begin{align}
 \label{eq:spsahess}
-\overline H_n = \sum\limits_{i=0}^{n} \tilde b_k(\widehat H_i -\widehat \Psi_i).
+\overline H_n = \sum\limits_{i=0}^{n} \tilde b_i(\widehat H_i -\widehat \Psi_i).
 \end{align}
 The solution to \eqref{eq:spsawn-opt} is achieved for $\tilde b_i^* = \delta_i^{4}/\sum \limits_{j=0}^{n} \delta_j^{4}, i=1,\ldots,n$. The optimal choice $\tilde b_i^*$ can be translated to the step-sizes $b_i$, leading to \eqref{eq:spsawieghts}.
 
@@ -155,13 +156,13 @@ The solution to \eqref{eq:spsawn-opt} is achieved for $\tilde b_i^* = \delta_i^{
 We make the same assumptions as those used in the analysis of \cite{prashanth2015rdsa}, with a few minor alterations. The assumptions are listed below:
 \begin{pvn}
 \item  The function
-$f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1 i_2 i_3 i_4} f(\theta)$ denotes the $(i_1 i_2 i_3 i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
+$f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\partial^4 f (\theta)}{\partial \theta\tr \partial \theta\tr \partial \theta\tr \partial \theta\tr}$ denotes the fourth derivate of $f$ at $\theta$ and $\nabla^4_{i_1, i_2, i_3, i_4} f(\theta)$ denotes the $(i_1, i_2, i_3, i_4)$th entry of $\nabla^4 f(\theta)$, for $i_1, i_2, i_3,i_4=1,\ldots, N$.} with $\left|\nabla^4_{i_1 i_2 i_3 i_4} f(\theta) \right| < \infty$, for $i_1, i_2, i_3,i_4=1,\ldots, N$ and for all $\theta\in \R^N$. 
 
 %\item  For some $\rho>0$  and almost all $\theta_n$, the function $f$ is four-times differentiable with a uniformly (in $n$) bounded fourth derivative for all $x$ such that $\left\| \theta_n - x\right\| \le \rho$. 
 
-\item For each $n$ and all $x$, there exists a $\rho>0$ not dependent on $n$ and $\theta$, such that $(\theta-\theta^*)\tr \bar f_n(\theta) \ge \rho \left\| \theta_n - \theta\right\|$, where $\bar f_n(\theta) = \Upsilon(\overline H_n)^{-1} \nabla f(\theta)$.
+\item For each $n$ and all $\theta$, there exists a $\rho>0$ not dependent on $n$ and $\theta$, such that $(\theta-\theta^*)\tr \bar f_n(\theta) \ge \rho \left\| \theta_n - \theta\right\|$, where $\bar f_n(\theta) = \Upsilon(\overline H_n)^{-1} \nabla f(\theta)$.
 
-\item $\{\xi_n, \xi_n^+,\xi_n^-, n=1,2,\ldots\}$ are such that, for all $n$, $\E\left[\left. \xi_n^+ + \xi_n^- - 2 \xi_n \right| \F_n, \Delta_n, \widehat \Delta_n \right] = 0$, where $\mathcal{F}_n = \sigma(\theta_m,m < n)$ denotes the underlying sigma-field.. 
+\item $\{\xi_n, \xi_n^+,\xi_n^-, n=1,2,\ldots\}$ are such that, for all $n$, $\E\left[\left. \xi_n^+ + \xi_n^- - 2 \xi_n \right| \F_n, \Delta_n, \widehat \Delta_n \right] = 0$, where $\mathcal{F}_n = \sigma(\theta_m,m < n)$ denotes the underlying sigma-field.
 
 \item $\{\Delta_n^i,\widehat\Delta_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d independent of $\F_n$ and for some $\alpha_0 > 0$ and for all $n,l$ $|\Delta_{nl}|\le \alpha_0$, $\Delta_{nl}$ is symmetrically distributed about 0, $\Delta_{nl}$ are mutually independent across $n$ and $l$ and they satisfy $\E (\Delta_{nl}^{-2})$,$\E (\widehat\Delta_{nl}^{-2}) \le \alpha_0$.
 
@@ -186,11 +187,11 @@ $\E \left[ |f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)/ (\Delt
 and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
 \item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
 \end{pvn}
-The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C14)-(C21) are identical to that in \cite{prashanth2015rdsa}, while (C22) and (C23) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n \right\|^2$ and $\delta_n$, respectively and these are inspired by \cite{spall-jacobian}.
+The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (C14)-(C21) are identical to those in \cite{prashanth2015rdsa}, while (C22) and (C23) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n) \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
 
 \begin{lemma}(\textbf{2SPSA-3-IH Bias in Hessian estimate})
 \label{lemma:2spsa-bias}
-Under (C14)-(C23), with $\widehat H_n$ defined according to  \eqref{eq:2spsa-ber} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{ij}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
+Under (C14)-(C23), with $\widehat H_n$ defined according to  \eqref{eq:2spsa-ber} , we have a.s. that\footnote{Here $\widehat H_n(i,j)$ and $\nabla^2_{i,j}f(\cdot)$ denote the $(i,j)$th entry in the Hessian estimate $\widehat H_n$ and the true Hessian $\nabla^2 f(\cdot)$, respectively.}, for $i,j = 1,\ldots,N$,
 \begin{align}
 \left|\E\left[
 \left. \widehat H_n(i,j) \right| \F_n \right] - \nabla^2_{ij} f(\theta_n)\right| = O(\delta_n^2).
@@ -208,7 +209,7 @@ $$\theta_n \rightarrow \theta^*, \overline H_n \rightarrow \nabla^2 f(\theta^*) 
 In the above, $\theta_n$ and $\overline H_n$ are updated according to \eqref{eq:2spsa-3-theta} and \eqref{eq:2spsa-3-ih}, respectively, $\widehat H_n$ defined according to \eqref{eq:2spsa-ber} and the step-sizes $b_n$ are chosen as suggested in \eqref{eq:spsawieghts}. 
 \end{theorem}
 \begin{proof}
-This proof is similar to the proof of the theorem \ref{thm:2rdsa-H}
+The proof is similar to the proof of the Theorem \ref{thm:2rdsa-H} and is therefore omitted.
 \end{proof}
 
 We next present a convergence rate result for the special case of a quadratic objective function under the following additional assumptions:
@@ -234,15 +235,131 @@ where $\Psi_n(H)$ is defined in \eqref{eq:psinhatspsa3}.
 The proof involves the following steps:
 \begin{description}
   \item[Step 1:] Here we prove the MSE convergence of $\overline H_k$, i.e., $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0$ a.s. as $n\rightarrow \infty$.
-  \item[Step 2:] We unroll the recursion \eqref{eq:2spsa-3-ih} and then derive convenient representation for $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$.
+  \item[Step 2:] We unroll the recursion \eqref{eq:2spsa-3-ih} and then derive a convenient representation for the  $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$.
   \item[Step 3:] We derive the main result in \eqref{eq:spsaquad-bigo} using a proof by contradiction. 
 \end{description}
 \noindent\textbf{Step 1: MSE convergence of $\overline H_n$} \\
 This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jacobian}.\\
 \noindent\textbf{Step 2: Representation of $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$} \\
-This part in exactly the same manner as part (ii) in Theorem 3 of \cite{spall-jacobian}.\\
+ From \eqref{eq:2spsa-3-ih} and \eqref{eq:spsahnhat-ext},  we have
+ \begin{align}
+ \Lambda_n &= \Lambda_{n-1} - b_n ( \overline H_{n-1} - \hat H_n + \hat \Psi_n) \nonumber\\
+&= (1-b_n) \Lambda_{n-1} - b_n (H^* + \hat \Psi_n - \hat H_n ) \nonumber\\&= (1-b_n) \Lambda_{n-1} - b_n (\hat \Psi_n - \Psi_n(H^*)) \nonumber\\&= (1-b_n) \Lambda_{n-1} - b_n \Psi_n(\Upsilon(\overline H_{n-1})) + b_n \Psi_n(H^*) \nonumber\\
+&= (1-b_n) \Lambda_{n-1} - b_n\Psi_n(\Lambda_{n-1}'),\label{eq:step1last}
+ \end{align}
+where $\Lambda_n' = \Upsilon(\overline H_n) - H^*$.
+The equality in \eqref{eq:step1last} follows from \eqref{eq:psi}. 
+Unrolling the recursion \eqref{eq:step1last}, we obtain 
+ \begin{align}\label{lambda-exp}
+  \Lambda_n  = \left[ \prod_{k=1}^n (1-b_k) \right]\Lambda_0 
+&- \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right] b_k \Psi_k(\Lambda_{k-1}')  \hspace{0.2cm} a.s.
+ \end{align}
+ %%(note : $\prod_{j=n+1}^n (1-b_j) = 1$ for all n).
+ %%Let us  characterise $trace[\E(\Lambda_n\tr \Lambda_n)]$ using \eqref{lambda-exp}. From independence of $d_k$ along k, \eqref{lambda-exp} represent martingale difference sequence, leading to 
+Squaring on both sides and taking expectations, we obtain
+ \begin{align}
+  \E (\Lambda_n \tr \Lambda_n) =  &\left[ \prod_{k=1}^n (1-b_k) \right]^2 \E (\Lambda_0 \tr \Lambda_0) + \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2   \E (\Psi_k(\Lambda_{k-1}') \tr \Psi_k(\Lambda_{k-1}')).\label{eq:exp-lambda2}
+ \end{align}
+The equality above uses the fact that $\E(\Psi_k(\Lambda_{k-1}'))=0$, which get rid of the corresponding cross terms with the first term on RHS of \eqref{lambda-exp}. % %
+We now characterize $\text{trace}[\E(\Lambda_n\tr \Lambda_n)]$ using \eqref{eq:exp-lambda2} as follows:
+%From the independence of $d_k$'s and $\Lambda_{k-1}'$ and using Cauchy-Schwartz inequality we get 
+ \begin{align}\label{eq:trace}
+ \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] = &\left[ \prod_{k=1}^n (1-b_k) \right]^2 \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  + \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right).
+ \end{align}
+ % \begin{align}\label{eq:trace}
+% & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] \leq \left[ \prod_{k=1}^n (1-b_k) \right]^2 \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \nonumber\\&  \hspace{0.5cm}\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] + \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2   \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2} \nonumber\\&  \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]^{1/2}.
+% \end{align}
+Where, as in the proof of Theorem 3 of \cite{spall-jacobian}, $\tau(\cdot)$ transforms the $\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')$ in a  fashion and then returns the trace of the resulting $N\times N$ matrix.
+As in the proof of Theorem 3 of \cite{spall-jacobian}, observe that $1-b_k = e^{-b_k}(1-O(b_k^2))$ and since $0 < b_k <1$, we have that the $O(b_k^2)$ term is strictly positive. 
+Letting $\Gamma_{ij} = \sum_{k=i}^j b_k$ with $\Gamma_{nn} = 1$ and $\beta_{kn} = \left[\prod_{i=k+1}^n (1- O(b_i^2))\right]^2$, we can simplify \eqref{eq:trace} as follows:
+\begin{align}\label{eq:wij}
+ \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] = &e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  + e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right).
+ \end{align} 
+% \begin{align}\label{eq:wij}
+% & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] \leq e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ &+ e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ &+ e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \nonumber\\&  \hspace{0.5cm}\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] \nonumber\\ &+ e^{-2 \Gamma_{1n}} \sum_{k=1}^n e^{2 \Gamma_{1k}} \beta_{kn} b_k^2  \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2} \nonumber\\&  \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]^{1/2}.
+% \end{align} 
+Comparing the sum with integrals, we obtain
+\begin{align*}
+\Gamma_{ij} = \int_i^j \frac{b_0}{x^r} dx + O(1) &= \left(\frac{b_0}{1-r}\right)(j^{1-r}-i^{1-r}) +O(1),
+\end{align*}
+where we have used the facts that $0 < b_k < 1, \forall k \ge 2$ and 
+$\sum_{k=i}^j b_k \to \infty$ as $j-i \to \infty$ since 
+$b_k = b_0/k^r$ with $r > 0.5$.
+Observing that $\beta_{kn}$ are uniformly upper-bounded, say by $\bar \beta_n$, we have
+\begin{align}\label{eq:thmwts}
+ & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] =  e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ 
+&\hspace{3cm}+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right).
+\end{align} 
+%\begin{align}\label{eq:thmcomb}
+%& \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] =  e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ 
+%&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ 
+%&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \text{trace}\left[\E [((\Phi_k(H^*) - H^*) - 2 \Psi_k(\Lambda_{k-1}))\tr  (\Phi_k(H^*) - H^*)]\right] .
+%\end{align} 
+%
+%%\begin{align}\label{eq:thmwts}
+%% & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] =  e^{-2 \Gamma_{1n}} \beta_{0n} \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ 
+%%&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}} \nonumber\\
+%%& \hspace{3.5cm} \times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ 
+%%&+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \nonumber\\
+%%&  \hspace{0.5cm}\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] \nonumber\\ &+ \bar \beta_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \times \frac{b_0^2}{k^{2 r}}  \nonumber\\&\hspace{3.5cm}\times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2}\nonumber\\&\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]^{1/2}.
+%%\end{align}
+%\noindent\textbf{Step 3: The big-O result on $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$ convergence} \\
+%In comparison to Eq. (7.6) in \cite{spall-jacobian} that corresponds to \eqref{eq:thmwts} for the N-SPSA-4 setting, there are two extra terms - the third and the fourth - in the RHS of \eqref{eq:thmwts}. 
+%Consider the third term on the RHS of \eqref{eq:thmwts}. As a consequence of (C9) and the construction of random perturbations $d_k$, it can be seen that $\text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]$ is uniformly bounded above, say by $\top$, independent of $k$. Thus, the third term is equivalent to the following:
+%\begin{align}
+% \bar c_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \frac{b_0^2}{k^{2 r}} \top.
+%\label{eq:term3}
+%\end{align}
+%Now by moving out side exponential term to inside and changing the summation to integration, we can rewrite the above equation as follows
+%\begin{align}
+%  \overline{\overline{c_n}}  \int_1^n  \frac{1}{k^{2 r}} .
+%\label{eq:term3}
+%\end{align}
+%Where $\overline{\overline{c_n}}$ is a constant. By above equation we can conclude that the third term is of $O(\frac{1}{k^{2 r -1}})$
+%%Now, observe that $\lim_{n\rightarrow \infty} \sum_{k=1}^n \frac{1}{k^{2 r}} < \infty$ as $1/2 < r < 1$ and $e^{2 b_0 k^{1-r}/(1-r)}$ diverges as $n\rightarrow \infty$ and hence, by Kronecker's Lemma, the term in \eqref{eq:term3} vanishes asymptotically. 
+%%
+%%Now consider the fourth term. By using the uniform upper-bound $\top$ on $\text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]$, we can rewrite  the fourth term in \eqref{eq:thmwts} as follows: 
+%% \begin{align}\label{eq:fourthterm}
+%% \bar c_n e^{-2 b_0 n^{1-r}/(1-r)} \sum_{k=1}^n e^{2 b_0 k^{1-r}/(1-r)}  \frac{b_0^2}{k^{2 r}} \sqrt{\top} \nonumber \\ \hspace{3cm}\times \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2},
+%% \end{align}
+%%where, as in the proof of Theorem 3 of \cite{spall-jacobian}, $\tau(\cdot)$ transforms the $\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')$ in a  fashion and then returns the trace of the resulting $N\times N$ matrix.
+
+
 \noindent\textbf{Step 3: The big-O result on $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$ convergence} \\
-This part in exactly the same manner as part (iii) in Theorem 3 of \cite{spall-jacobian}.\\
+We will use similar argument in part (iii) in Theorem 3 of \cite{spall-jacobian} to show the claim \eqref{eq:spsaquad-bigo}. The idea here is to show that the contradiction exists if RHS of \eqref{eq:spsaquad-bigo} exhibits  any slower rate of decay. Let us assume the following slower rate of decay for the LHS of the \eqref{eq:spsaquad-bigo}.
+\begin{align}
+\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = d(n) e^{-2b_0n^{1-r} / {1-r}}.
+\label{eq:spsaquad-bigocont}
+\end{align}
+Where $d(n) = o(e^{2b_0n^{1-r} / {1-r}})$. Now we need to show that there is contradiction to show the claim. By using the series of arguments used in part (iii) in Theorem 3 of \cite{spall-jacobian} and applying the condition (A31) we get the following 
+\begin{align}
+\E (\Lambda_{n}' \otimes \Lambda_{n}') = \E (\Lambda_{n} \otimes \Lambda_{n}) + o(d(n) e^{-2b_0n^{1-r} / {1-r}}).
+\label{eq:spsaquad-bigocont2}
+\end{align}
+Now from the above equation we can write 
+\begin{align}
+\E (\Lambda_{n-1}' \otimes \Lambda_{n-1}') = O (\text{trace}[\E (\Lambda_{n-1} \tr \Lambda_{n-1})]). 
+\label{eq:spsaquad-bigocont3}
+\end{align}
+
+Now we can use the this result in RHS of the equation \eqref{eq:thmwts} to show the contradiction. We consider the two cases to show the contradiction. One is where $\frac{d(n)}{n^{2r}} = O(1)$ and another is $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} = \infty$. We show contradiction for the both cases separately. Let us consider the first case $\frac{d(n)}{n^{2r}} = O(1)$, then
+\begin{align}
+\text{RHS of \eqref{eq:thmwts}} &= O(1) e^{-2 \Gamma_{1n}} +  O(1) e^{-2 b_0 n^{1-r}/(1-r)} \sum_{i=1}^n \frac{d(i)}{i^{p}} \frac{b_0^2}{i^{2r-p}}\nonumber \\
+&= e^{-2b_0n^{1-r} / {1-r}} \left[ O(1) + O(1) \sum_{i =1}^n \frac{1}{i^{2r-p}}\right].
+\label{eq:spsaquad-bigocont4}
+\end{align}
+where there exist  $0 < p \le 2r$, $0 < \epsilon < 2r -1$ such that $\frac{d(n)}{i^{p}} = O(1)$ and $lim sup_{n \to \infty} \frac{d(n)}{n^{p-\epsilon}} = \infty$. In \eqref{eq:spsaquad-bigocont4}, the first equality uses \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont3}.
+
+Now there exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_n^{p-\epsilon}} = \infty$ as $n \to \infty$. Now LHS of \eqref{eq:thmwts} satisfies $LHS(i_n) \ge C i_n^{p-\epsilon} e^{-2b_0 i_n^{1-r} / {1-r}}$ for some $C > 0$. Now we have $\frac{LHS(i_n)}{RHS(i_n)} \to 0$ because  $0 < \epsilon < 2r -1$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$.
+
+Now consider the second case where $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} = \infty$. There exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_n^{2r}} \ge \frac{d(i)}{i^{2r}}$ as $i \le i_n$. Then for some $C >0$ the RHS of \eqref{eq:thmwts} satisfies the following 
+\begin{align}
+\text{RHS}(i_n)  \text{of}  \eqref{eq:thmwts} &= O(1) e^{-2 \Gamma_{1i_n}} +  O(1) e^{-2 b_0 i_n^{1-r}/(1-r)} \left[\sum_{i=1}^{i_n} e^{2 b_0 i^{1-r}/(1-r)} \frac{b_0^2}{i^{2r}} \E (\Lambda_{n} \otimes \Lambda_{n}) \right]\nonumber \\
+&\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + O(1) \sum_{i =1}^{i_n} \frac{d(i)}{i^{2r}}\right]\nonumber \\
+&\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + \frac{d(i_n)}{{i_n}^{2r}}\right].
+\label{eq:spsaquad-bigocont5}
+\end{align}
+From the equation \eqref{eq:spsaquad-bigocont}, the  LHS of \eqref{eq:thmwts} is $d(i_n) e^{-2b_0 i_n^{1-r} / {1-r}}$. By substituting \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont5}, in $\frac{RHS{i_n}}{LHS{i_n}}$ then $\frac{RHS{i_n}}{LHS{i_n}} \to 0$ as $n \to \infty$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$. Hence the claim $\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}})$ follows.
 \end{proof}
 
 
