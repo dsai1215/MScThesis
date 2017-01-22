@@ -230,7 +230,7 @@ Let $b_n = b_0/n^r$, $n=1,2,\ldots,k$, where $1/2 < r < 1$ and $0 < b_0 \leq 1$.
 Since the setting is noise-free with a quadratic objective, we can rewrite \eqref{eq:spsahnhat} as follows:
 \begin{align}
  \widehat H_n &=    \nabla^2 f(\theta_n) +\Psi_{n}(\nabla^2 f(\theta_n))\nonumber\\
- &=    \nabla^2 f(\theta^*) +\Psi_{n}(\nabla^2 f(\theta_n))\nonumber\\
+ &=    \nabla^2 f(\theta^*) +\Psi_{n}(\nabla^2 f(\theta^*))\nonumber\\
  &=    H^* +\Psi_{n}(H^* ),\label{eq:spsahnhat-ext}
 \end{align}
 where $\Psi_n(H)$ is defined in \eqref{eq:psinhatspsa3}.
@@ -245,9 +245,9 @@ This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jac
 By rewriting the \eqref{eq:2spsa-3-ih} in the following form
 \begin{align}\label{eq:hhatexpanded}
 \overline H_{n} &= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - \widehat H_n + \widehat \Psi_n)\nonumber\\
-&= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - H^* + \widehat \Psi_n - \Psi_n (H^*))
+&= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - H^* + \widehat \Psi_n - \Psi_n (H^*)).
 \end{align}
-The above equation can be thought as a stochastic approximation analogue of \eqref{eq:2spsa-3-ih}. The above stochastic approximation algorithm aimed at finding the roots of the equation $H-H^*=0$. In \eqref{eq:hhatexpanded}, $\E (\widehat \Psi_n - \Psi_n (H^*) | \F_n) = 0 \,\,\ a.s$.  Given a Lyapunov function, by showing the conditions required to show   the mean square convergence of the \eqref{eq:hhatexpanded} from the \cite{nevel1973stochastic}, pp. 92-94. From part (i) in Theorem 3 of \cite{spall-jacobian}, one can check that our algorithm indeed satisfy those conditions,  which in turn implies the $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0$ a.s. as $n\rightarrow \infty$. 
+The above equation can be thought as a stochastic approximation analogue of \eqref{eq:2spsa-3-ih}. The above stochastic approximation algorithm aimed at finding the roots of the equation $H-H^*=0$. In \eqref{eq:hhatexpanded}, $\E (\widehat \Psi_n - \Psi_n (H^*) | \F_n) = 0 \,\,\ a.s$.  Given a Lyapunov function, one can  the conditions required to show  the mean square convergence of the \eqref{eq:hhatexpanded} from the \cite{nevel1973stochastic}, pp.92-94. It is easy to see that $V(H) = \frac{1}{2} (H-H^*)\tr(H-H^*)$ indeed serves as Lyapunov function. From part (i) in Theorem 3 of \cite{spall-jacobian}, one can check that our algorithm indeed satisfy those conditions,  which in turn implies the $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0 \,\,\,a.s.$ as $n\rightarrow \infty$. 
 
 
 \noindent\textbf{Step 2: Representation of $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$} \\
@@ -364,12 +364,12 @@ Now there exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_
 
 Now consider the second case where $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} = \infty$. There exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_n^{2r}} \ge \frac{d(i)}{i^{2r}}$ as $i \le i_n$. Then for some $C >0$ the RHS of \eqref{eq:thmwts} satisfies the following 
 \begin{align}
-\text{RHS}(i_n)  \text{of}  \eqref{eq:thmwts} &= O(1) e^{-2 \Gamma_{1i_n}} +  O(1) e^{-2 b_0 i_n^{1-r}/(1-r)} \left[\sum_{i=1}^{i_n} e^{2 b_0 i^{1-r}/(1-r)} \frac{b_0^2}{i^{2r}} \E (\Lambda_{n} \otimes \Lambda_{n}) \right]\nonumber \\
+\text{RHS}(i_n)\,\,\,  \text{of}  \,\,\,\eqref{eq:thmwts} &= O(1) e^{-2 \Gamma_{1i_n}} +  O(1) e^{-2 b_0 i_n^{1-r}/(1-r)} \left[\sum_{i=1}^{i_n} e^{2 b_0 i^{1-r}/(1-r)} \frac{b_0^2}{i^{2r}} \E (\Lambda_{n} \otimes \Lambda_{n}) \right]\nonumber \\
 &\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + O(1) \sum_{i =1}^{i_n} \frac{d(i)}{i^{2r}}\right]\nonumber \\
 &\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + \frac{d(i_n)}{{i_n}^{2r}}\right].
 \label{eq:spsaquad-bigocont5}
 \end{align}
-From the equation \eqref{eq:spsaquad-bigocont}, the  LHS of \eqref{eq:thmwts} is $d(i_n) e^{-2b_0 i_n^{1-r} / {1-r}}$. By substituting \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont5}, in $\frac{RHS(i_n)}{LHS(i_n)}$ then $\frac{RHS(i_n)}{LHS(i_n)} \to 0$ as $n \to \infty$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$. Hence the claim $\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}})$ follows.
+Where $\text{RHS}(i_n)$ denotes, RHS after the algorithm is iterated for $i_n$ times. From the equation \eqref{eq:spsaquad-bigocont}, the  LHS of \eqref{eq:thmwts} after $i_n$ iterations is $d(i_n) e^{-2b_0 i_n^{1-r} / {1-r}}$. By substituting \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont5}, in $\frac{RHS(i_n)}{LHS(i_n)}$ then $\frac{RHS(i_n)}{LHS(i_n)} \to 0$ as $n \to \infty$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$. Hence the claim $\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}})$ follows.
 \end{proof}
 
 
