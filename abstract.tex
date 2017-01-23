@@ -1,0 +1,145 @@
+
+
+
+%\documentclass[oneside,8pt,onecolumn,openright]{IIScthesisPSnPDF}
+\documentclass[12pt]{article}
+
+\usepackage{paralist}
+\let\labelindent\relax
+\usepackage{adjustbox}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{hyperref}
+
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.12}
+\usepackage{todonotes}
+\usepackage{nicefrac}
+\usetikzlibrary{positioning,arrows,calc,patterns,backgrounds}
+\usetikzlibrary{shapes}
+\usetikzlibrary{fit}
+\usepackage{multirow}
+
+\usepackage{makecell}
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage[numbers]{natbib}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{cancel}
+\usepackage{mathrsfs}
+% \usepackage{sfgame}
+\usepackage{color}
+\usepackage[compact]{titlesec}
+\usepackage{mdwlist}
+\usepackage{varwidth}
+\usepackage[vertfit]{breakurl}
+\usepackage{datetime}
+\usepackage{pdfpages}
+% \usepackage{biblatex}
+\usepackage{setspace}
+\title{\textbf{ABSTRACT}}
+\author{}
+\date{}
+\begin{document}
+%\Huge
+%\begin{center}
+%Panel of Experts
+%\end{center}
+\maketitle
+\begin{tabular}{ll}
+Name of the Candidate & \textbf{Danda Sai Koti Reddy}\\ 
+SR Number &\textbf{04-04-00-10-21-14-1-11609} \\
+Title of the Thesis & \textbf{Stochastic Newton methods with   } \\
+ & \textbf{ enhanced Hessian estimation.}\\
+ Research Supervisor  & \textbf{Prof. Shalabh Bhatnagar} \\
+Degree Registered  &  \textbf{M.Sc(engg)} \\
+Department  & \textbf{Computer Science and Automation} \\
+Institute  & \textbf{Indian Institute of Science, Bangalore }
+\end{tabular}
+
+\vspace{1.5cm}
+
+
+
+Optimization problems involving uncertainties are common in a variety
+of engineering disciplines such as transportation systems, manufacturing,
+communication networks, healthcare and finance. The large number of input
+variables and the lack of a system model prohibit a precise analytical
+solution and a viable alternative is to employ simulation-based
+optimization. The idea here is to simulate a few times the stochastic
+system under consideration while updating the system parameters until a
+good enough solution is obtained.\\
+
+
+Formally, given only noise-corrupted measurements of an
+objective function, we wish to find a parameter which minimises the
+objective function. Iterative algorithms using statistical methods search
+the feasible region to improve upon the candidate parameter. Stochastic
+approximation algorithms are best suited, most studied and applied
+algorithms for finding solutions when the feasible region is a
+continuously valued set. One can use information on the gradient/Hessian
+of the objective to aid the search process. However, due to lack of
+knowledge of the noise distribution, one needs to estimate the
+gradient/Hessian from noisy samples of the cost function obtained from
+simulation. Simple gradient search schemes take many iterations to
+converge to a local minimum and are heavily dependent on the choice of
+step-sizes. Stochastic Newton methods, on the other hand, can counter the
+ill-conditioning of the objective function as they incorporate
+second-order information into the stochastic updates. Stochastic Newton
+methods are often more accurate than simple gradient search schemes.\\
+
+
+We propose enhancements to the Hessian estimation scheme used in two recently proposed stochastic Newton methods, based on the ideas of random directions stochastic approximation (2RDSA) \cite{prashanth2015rdsa} and simultaneous perturbation stochastic approximation (2SPSA-3\footnote{The 3 in the abbereviation of the algorithm is used to indicate that the algorithm in \cite{bhatnagar2015simultaneous} requires 3 function evaluations per iteration.}) \cite{bhatnagar2015simultaneous}, respectively. The proposed scheme, inspired by \cite{spall-jacobian}, reduces the error in the Hessian estimate by 
+\begin{inparaenum}[\bfseries (i)]
+	\item incorporating a zero-mean feedback term; and
+	\item optimizing the step-sizes used in the Hessian recursion.
+\end{inparaenum}
+We prove that both 2RDSA and 2SPSA-3 with our Hessian improvement scheme converges asymptotically to the true Hessian.
+ %Moreover, for the special of a quadratic objective, we provide a convergence rate result for 2RDSA-IH that is of the same order - in the number of iterations of Hessian recursion - as that of 2SPSA with improved Hessian estimation (2SPSA-IH) \cite{spall-jacobian}. 
+The key advantage with 2RDSA and 2SPSA-3  is that they require only 75\% of the simulation cost per-iteration for 2SPSA with improved Hessian estimation (2SPSA-IH) \cite{spall-jacobian}.
+Numerical experiments show that 2RDSA-IH outperforms both 2SPSA-IH and 2RDSA without the improved Hessian estimation scheme.
+
+
+\bibliographystyle{plain}
+\bibliography{refThesis}
+
+
+\end{document}

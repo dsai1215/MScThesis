@@ -1,6 +1,6 @@
 \chapter{Generalised RDSA }
 \label{sec:2rdsa-gen}
-Our work in this chapter  is centred on generalising the 2RDSA scheme of \cite{prashanth2015rdsa}. In \cite{prashanth2015rdsa}, the RDSA scheme involving only two perturbation distributions was proposed, those are uniform and asymmetric Bernoulli distributions. We propose gradient and Hessian estimation schemes which are independent of the perturbation distributions. However, perturbations have to satisfy the i.i.d, mean-zero assumptions. Apart from these common assumptions,  an additional assumption required is that the difference between the squared second moment  and fourth moment should be non zero for the Hessian estimation. This generalisation of distributions of random variables for perturbations is important because it enhances the scope of improving the performance of the 1RDSA and 2RDSA schemes by incorporating several other distributions. Some well known distribution that can be used for these schemes as a result of the generalisation are Normal (0,1) and Cauchy distributions. We will prove that  the  gradient and Hessian estimates as a result of the generalisation are indeed asymptotically unbiased.
+Our work in this chapter  is centred on generalising the 2RDSA scheme of \cite{prashanth2015rdsa}. In \cite{prashanth2015rdsa}, the RDSA scheme involving only two perturbation distributions was proposed, those are uniform and asymmetric Bernoulli distributions. We propose gradient and Hessian estimation schemes which are independent of the perturbation distributions. However, perturbations have to satisfy the i.i.d, mean-zero assumptions. Apart from these common assumptions,  an additional assumption required is that the difference between the squared second moment  and fourth moment should be non zero for the Hessian estimation. This generalisation of distributions of random variables for perturbations is important because it enhances the scope of improving the performance of the 1RDSA and 2RDSA schemes by incorporating several other distributions. Some well known distribution that can be used for these schemes as a result of the generalisation are Normal (0,1) and truncated Cauchy distributions. We will prove that  the  gradient and Hessian estimates as a result of the generalisation are indeed asymptotically unbiased.
  The improved Hessian estimation scheme proposed in chapter \ref{sec:2rdsa-ih} for the  2RDSA algorithm with uniform and asymmetric Bernoulli distributions can be easily extended to the generalised RDSA scheme.
 
 \section{Function evaluations}
@@ -60,7 +60,7 @@ $\E \left|\xi_n^{\pm}\right|^{2+\zeta} \le \alpha_1$, $\E \left|f(\theta_n\pm \d
 \begin{lemma}(\textbf{Bias in the gradient estimate})
 \label{lemma:1rdsa-bias}
 %Almost surely, as $\delta_n \rightarrow 0$, we have that
-Under (A1),(A2),(A4),(A5),(A18),(A19) for $\widehat\nabla f(\theta_n)$ defined according to  \eqref{eq:grad-gen} , we have a.s. that\footnote{Here $\widehat\nabla_i f(\theta_n)$ and $\nabla_i f(\theta_n)$ denote the $i$th coordinates in the gradient estimate $\widehat\nabla f(\theta_n)$ and true gradient $\nabla f(\theta_n)$, respectively.}
+Under (A1),(A4),(A5),(A18),(A19) for $\widehat\nabla f(\theta_n)$ defined according to  \eqref{eq:grad-gen} , we have a.s. that\footnote{Here $\widehat\nabla_i f(\theta_n)$ and $\nabla_i f(\theta_n)$ denote the $i$th coordinates in the gradient estimate $\widehat\nabla f(\theta_n)$ and true gradient $\nabla f(\theta_n)$, respectively.}
 \begin{align}
  \left| \E\left[\left.\widehat\nabla_i f(\theta_n)\right| \F_n \right] - \nabla_i f(\theta_n)\right| = O(\delta_n^2),  \quad \text{ for } i=1,\ldots,N.
 \end{align} 
@@ -71,23 +71,23 @@ We use the proof techniques of \cite{spall},\cite{prashanth2015rdsa} (see Lemma 
  
 Notice that
 \begin{align*}
-&\E\left[\left.\dfrac{y_n^+ - y_n^-}{2\delta_n} \right| \F_n\right] \\
+\E\left[\left. d_n\left(\dfrac{y_n^+ - y_n^-}{2\delta_n}\right) \right| \F_n\right] 
 %= &\E\left[d_n\left.\left(\dfrac{f(\theta_n+\delta_n d_n) - f(\theta_n-\delta_n d_n)}{2\delta_n}\right) \right| \F_n\right] + \E\left[  d_n\left.\left(\dfrac{\xi_n^+ - \xi_n^-}{2\delta_n}\right) \right| \F_n\right]\\
-= & \E\left[d_n\left.\left(\dfrac{f(\theta_n+\delta_n d_n) - f(\theta_n-\delta_n d_n)}{2\delta_n}\right) \right| \F_n\right].
+=  \E\left[d_n\left.\left(\dfrac{f(\theta_n+\delta_n d_n) - f(\theta_n-\delta_n d_n)}{2\delta_n}\right) \right| \F_n\right].
 \end{align*}
 The last equality above follows from the fact that $\E\left[  d_n\left.\left(\dfrac{\xi_n^+ - \xi_n^-}{2\delta_n}\right) \right| \F_n\right]=0$ from (A2) and (A18). We now analyse the term on the RHS above.
 Let $\nabla^2 f(\cdot)$ denote the Hessian of $f$.
 By Taylor's series expansions, we obtain, a.s.,
 \begin{align*}
-f(\theta_n \pm \delta_n d_n) =& f(\theta_n) \pm \delta_n d_n\tr \nabla f(\theta_n) + \frac{\delta_n^2}{2} d_n\tr \nabla^2 f(\theta_n) d_n \\
-& \pm  \frac{\delta_n^3}{6} \nabla^3 f(\tilde  \theta_n^+)(d_n \otimes d_n \otimes d_n),
+f(\theta_n \pm \delta_n d_n) = f(\theta_n) \pm \delta_n d_n\tr \nabla f(\theta_n) + \frac{\delta_n^2}{2} d_n\tr \nabla^2 f(\theta_n) d_n 
+ \pm  \frac{\delta_n^3}{6} \nabla^3 f(\tilde  \theta_n^+)(d_n \otimes d_n \otimes d_n),
 \end{align*}
 where $\otimes$ denotes the Kronecker product and $\tilde \theta_n^+$ (resp. $\tilde \theta_n^-$) are on the line segment between $\theta_n$ and $(\theta_n + \delta_n d_n)$ (resp. $(\theta_n - \delta_n d_n)$).
 Hence,
 \begin{align}
-&\E\left[d_n\left.\left(\dfrac{f(\theta_n+\delta_n d_n) - f(\theta_n-\delta_n d_n)}{2\delta_n}\right)\right| \F_n \right] \nonumber\\
-&= \E\left[d_n d_n\tr \left.\nabla f(\theta_n)\right| \F_n\right]\nonumber \\
-& +   \E\left[\left.\frac{\delta_n^2}{12} d_n (\nabla^3 f(\tilde  \theta_n^+)+\nabla^3 f(\tilde  \theta_n^-))(d_n \otimes d_n \otimes d_n)\right| \F_n\right]. \label{eq:l1}
+&\E\left[d_n\left.\left(\dfrac{f(\theta_n+\delta_n d_n) - f(\theta_n-\delta_n d_n)}{2\delta_n}\right)\right| \F_n \right] 
+= \E\left[d_n d_n\tr \left.\nabla f(\theta_n)\right| \F_n\right]\nonumber \\
+& \hspace{5.5cm}+   \E\left[\left.\frac{\delta_n^2}{12} d_n (\nabla^3 f(\tilde  \theta_n^+)+\nabla^3 f(\tilde  \theta_n^-))(d_n \otimes d_n \otimes d_n)\right| \F_n\right]. \label{eq:l1}
 \end{align}
 The first term on the RHS above can be simplified as follows:
 \begin{align}
@@ -105,8 +105,7 @@ In the above, the first equality follows from (A19) and the last equality in \eq
 
 Now, the $l$th coordinate of the second term in the RHS of \eqref{eq:l1} can be upper-bounded as follows:
 \begin{align}
-&\E\left[\left.\frac{\delta_n^2}{12} d_n^l (\nabla^3 f(\tilde  \theta_n^+)+\nabla^3 f(\tilde  \theta_n^-))(d_n \otimes d_n \otimes d_n)\right| \F_n\right]\nonumber\\
-\le & \dfrac{\alpha_0 \delta_n^2}{6} \sum_{i_1=1}^N\sum_{i_2=1}^N\sum_{i_3=1}^N \E\left( d_n^l d_n^{i_1} d_n^{i_2} d_n^{i_3}\right)\nonumber\\
+\left|\E\left[\left.\frac{\delta_n^2}{12} d_n^l (\nabla^3 f(\tilde  \theta_n^+)+\nabla^3 f(\tilde  \theta_n^-))(d_n \otimes d_n \otimes d_n)\right| \F_n\right] \right| \le& \dfrac{\alpha_0 \delta_n^2}{6} \sum_{i_1=1}^N\sum_{i_2=1}^N\sum_{i_3=1}^N \E \left|\left( d_n^l d_n^{i_1} d_n^{i_2} d_n^{i_3}\right)\right|\nonumber\\
 \le & \dfrac{\alpha_0 \delta_n^2\eta N^3}{6}.\label{eq:l2}
 \end{align}
 The first inequality above follows from (A1), while the second inequality follows from (A19) and considering $\eta = \max \{\eta_1^2, \eta_2\}$. The claim follows by plugging \eqref{eq:l1-a} and \eqref{eq:l2} into \eqref{eq:l1} .\\

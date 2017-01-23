@@ -1,0 +1,261 @@
+%\documentclass[oneside,8pt,onecolumn,openright]{IIScthesisPSnPDF}
+\documentclass[12pt]{article}
+
+
+
+\usepackage{paralist}
+\let\labelindent\relax
+
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{colortbl}
+%\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.12}
+\usepackage{todonotes}
+\usepackage{nicefrac}
+\usetikzlibrary{positioning,arrows,calc,patterns,backgrounds}
+\usetikzlibrary{shapes}
+\usetikzlibrary{fit}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newcommand{\tabl}[2]{\begin{tabular}{#1} #2 \end{tabular}}
+\newcommand{\ith}[2][th]{$#2^{\text{#1}}$}
+
+
+%\newcommand{\cP}{\mathcal{P}}
+%\newcommand{\cS}{\mathcal{S}}
+%\newcommand{\R}{\mathbb{R}}
+%\newcommand{\E}{\mathbb{E}}
+%\renewcommand{\S}{\mathcal{S}}
+%\newcommand{\D}{\mathcal{D}}
+%\newcommand{\A}{\mathcal{A}}
+%\newcommand{\B}{\mathcal{B}}
+%\newcommand{\X}{\mathcal{X}}
+\newcommand{\F}{\mathcal{F}}
+%\newcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+%\newcommand{\Z}{\mathcal{Z}}
+%\newcommand{\T}{\mathcal{T}}
+%\renewcommand{\O}{\mathcal{O}}
+%\renewcommand{\P}{\mathbb{P}}
+
+\newcommand{\tr}{^\mathsf{\scriptscriptstyle T}}
+\newcommand{\tpi}{\Pi}
+\newcommand{\tgamma}{\tilde{\gamma}}
+\newcommand{\ttheta}{\tilde{\theta}}
+\newcommand{\tz}{\tilde{z}}
+
+\renewcommand{\l}{\left\|}
+\renewcommand{\r}{\right\|}
+\newcommand{\vml}{\left\|}
+\newcommand{\vmr}{\right\| _{\Psi}}
+\newcommand{\ml}{\left\|}
+\newcommand{\mr}{\right\|_2}
+
+\newcommand{\e}{\exp}
+
+
+
+
+
+
+
+
+
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage[numbers]{natbib}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{enumerate}
+\usepackage{cancel}
+\usepackage{mathrsfs}
+% \usepackage{sfgame}
+\usepackage{color}
+\usepackage[compact]{titlesec}
+\usepackage{mdwlist}
+\usepackage{varwidth}
+\usepackage[vertfit]{breakurl}
+\usepackage{datetime}
+\usepackage{pdfpages}
+% \usepackage{biblatex}
+\usepackage{setspace}
+\title{\textbf{SYNOPSIS}}
+\author{}
+\date{}
+\begin{document}
+%\Huge
+%\begin{center}
+%Panel of Experts
+%\end{center}
+\maketitle
+\begin{tabular}{ll}
+Name of the Candidate & \textbf{Danda Sai Koti Reddy}\\ 
+SR Number &\textbf{04-04-00-10-21-14-1-11609} \\
+Title of the Thesis & \textbf{Stochastic Newton methods with   } \\
+ & \textbf{ enhanced Hessian estimation.}\\
+ Research Supervisor  & \textbf{Prof. Shalabh Bhatnagar} \\
+Degree Registered  &  \textbf{M.Sc(engg)} \\
+Department  & \textbf{Computer Science and Automation} \\
+Institute  & \textbf{Indian Institute of Science, Bangalore }
+\end{tabular}
+
+
+\vspace{2cm}
+
+\begin{center}
+
+\textbf{\large{Introduction}}
+\end{center}
+
+
+
+Optimization problems involving uncertainties are common in a variety
+of engineering disciplines such as transportation systems, manufacturing,
+communication networks, healthcare and finance. The large number of input
+variables and the lack of a system model prohibit a precise analytical
+solution and a viable alternative is to employ simulation-based
+optimization. The idea here is to simulate a few times the stochastic
+system under consideration while updating the system parameters until a
+good enough solution is obtained.\\
+
+
+Formally, given only noise-corrupted measurements of an
+objective function, we wish to find a parameter which minimises the
+objective function. Iterative algorithms using statistical methods search
+the feasible region to improve upon the candidate parameter. Stochastic
+approximation algorithms are best suited, most studied and applied
+algorithms for finding solutions when the feasible region is a
+continuously valued set. One can use information on the gradient/Hessian
+of the objective to aid the search process. However, due to lack of
+knowledge of the noise distribution, one needs to estimate the
+gradient/Hessian from noisy samples of the cost function obtained from
+simulation. Simple gradient search schemes take many iterations to
+converge to a local minimum and are heavily dependent on the choice of
+step-sizes. Stochastic Newton methods, on the other hand, can counter the
+ill-conditioning of the objective function as they incorporate
+second-order information into the stochastic updates. Stochastic Newton
+methods are often more accurate than simple gradient search schemes.\\
+
+
+We propose enhancements to the Hessian estimation scheme used in two recently proposed stochastic Newton methods, based on the ideas of random directions stochastic approximation (2RDSA) \cite{prashanth2015rdsa} and simultaneous perturbation stochastic approximation (2SPSA-3\footnote{The 3 in the abbereviation of the algorithm is used to indicate that the algorithm in \cite{bhatnagar2015simultaneous} requires 3 function evaluations per iteration.}) \cite{bhatnagar2015simultaneous}, respectively. The proposed scheme, inspired by \cite{spall-jacobian}, reduces the error in the Hessian estimate by 
+\begin{inparaenum}[\bfseries (i)]
+	\item incorporating a zero-mean feedback term; and
+	\item optimizing the step-sizes used in the Hessian recursion.
+\end{inparaenum}
+We prove that both 2RDSA and 2SPSA-3 with our Hessian improvement scheme converges asymptotically to the true Hessian.
+ %Moreover, for the special of a quadratic objective, we provide a convergence rate result for 2RDSA-IH that is of the same order - in the number of iterations of Hessian recursion - as that of 2SPSA with improved Hessian estimation (2SPSA-IH) \cite{spall-jacobian}. 
+The key advantage with 2RDSA and 2SPSA-3  is that they require only 75\% of the simulation cost per-iteration for 2SPSA with improved Hessian estimation (2SPSA-IH) \cite{spall-jacobian}.
+Numerical experiments show that 2RDSA-IH outperforms both 2SPSA-IH and 2RDSA without the improved Hessian estimation scheme.
+
+
+
+\vspace{1cm}
+
+\begin{center}
+
+\textbf{\large{Outline and Contributions of the Thesis}}
+\end{center}
+
+
+
+
+\textit{Chapter 1: Introduction} \\
+
+This chapter introduces the problems we address in the thesis.
+\vspace{0.5cm}
+
+
+\textit{Chapter 2: Second-order RDSA with improved hessian estimation (2RDSA-IH) } \\
+
+
+Our work in this chapter  is centred on improving the 2RDSA scheme of \cite{prashanth2015rdsa} by 
+\begin{enumerate}
+\item reducing the error in the Hessian estimate through a feedback term; and
+\item optimizing the step-sizes used in the Hessian estimation recursion, again with the objective of improving the quality of the Hessian estimate.
+\end{enumerate}
+
+Items (1) and (2) are inspired by the corresponding improvements to the Hessian estimation recursion in the enhanced 2SPSA from \cite{spall-jacobian}. We shall refer to the latter algorithm as 2SPSA-IH. While item (2) above is a relatively straightforward migration to the 2RDSA setting, item (1) is a non-trivial contribution, primarily because the Hessian estimate in 2RDSA is entirely different from that in 2SPSA and the feedback term that we incorporate in 2RDSA to improve the Hessian estimate neither correlates with that in 2SPSA nor follows from the analysis in \cite{spall-jacobian}. 
+The advantage with 2RDSA scheme along with proposed improvement to Hessian estimation (henceforth referred to as 2RDSA-IH) is that it requires only 75\% of the simulation cost per-iteration for 2SPSA-IH.
+
+We establish that the proposed improvements to Hessian estimation in 2RDSA are such  that the resulting 2RDSA-IH algorithm is provably convergent, in particular, the Hessian estimate $\overline H_n$ of 2RDSA-IH converges almost surely to the true Hessian. 
+%Moreover, we show, for the special case of a quadratic objective, that	2RDSA-IH results in a convergence rate that is on par with the corresponding rate for 2SPSA with Hessian estimation improvements (2SPSA-IH) \cite{spall-jacobian}. 
+Further, we show empirically that 2RDSA-IH outperforms both 2SPSA-IH of \cite{spall-jacobian} and regular 2RDSA of \cite{prashanth2015rdsa}. Our contribution is important because 2RDSA-IH, like 2RDSA, has lower simulation cost per iteration than 2SPSA and unlike 2RDSA, has an improved Hessian estimation scheme.\\
+
+
+
+
+\textit{Chapter 3: Generalised RDSA}\\
+
+
+
+Our work in this chapter is centred on generalising the 2RDSA scheme of \cite{prashanth2015rdsa}. In \cite{prashanth2015rdsa}, 2RDSA scheme involving only two perturbation distributions was proposed, those are uniform and asymmetric Bernoulli distributions. In this chapter, we have proposed gradient and Hessian estimation schemes which are independent of the perturbation distributions. However, perturbations have to satisfy the i.i.d, mean-zero assumptions. Apart from these common assumptions  one additional assumption, which is the difference between the squared second moment  and fourth moment should be non-zero for Hessian estimation is also required. This generalisation of distributions of random variables for perturbations is important because it enhances the scope of improving the performance of the 1RDSA and 2RDSA schemes by incorporating several other distributions. Some well known distribution that can be used for these schemes as a result of the generalization are Normal (0,1) and truncated Cauchy distributions.\\
+ 
+
+ 
+ 
+ 
+ \textit{Chapter 4: Second-order SPSA-3 with improved hessian estimation (2SPSA-3-IH)}\\
+ 
+ 
+ 
+Our work in this chapter is centred on improving the second order SPSA scheme with three simulations (referred to as 2SPSA-3 hereafter), which was proposed in  \cite{bhatnagar2015simultaneous}. These improvements arise as a result of incorporating the zero-mean feedback term in Hessian estimate and optimizing the step-sizes used in the Hessian estimate recursion. Though these ideas are same as the ideas presented in this section for 2RDSA scheme, the contribution is non-trivial because the derivation of feedback term and Hessian estimate is entirely different from 2SPSA, 2RDSA improvements. Moreover, we show, for the special case of a quadratic objective and when there is no noise, that 2SPSA-3 scheme along with proposed improvement to Hessian estimation (henceforth referred to as 2SPSA-3-IH) results in a convergence rate that is on par with the corresponding rate for 2SPSA with Hessian estimation improvements (2SPSA-IH) \cite{spall-jacobian}. The advantage with 2SPSA-3-IH is that it requires only 75\% of the simulation cost per-iteration for 2SPSA-IH. \\
+
+
+\textit{Chapter 5: Simulation experiments}\\
+
+Our work in this chapter is centred on testing the performance of the several algorithms proposed in earlier chapters along with the existing algorithms. For the empirical evaluations, we use the two loss functions. The first one is quadratic  loss  function and the other is Fourth-order loss function. We perform experiments for both the noisy and noise-less settings. We use normalized loss and normalized MSE (NMSE) as performance metrics for evaluating the algorithms. NMSE is the ratio $\l \theta_{n_\text{end}} - \theta^* \r^2 / \l \theta_0 - \theta^*\r^2$, while normalized loss is the ratio $f(\theta_{n_\text{end}})/f(\theta_0)$. Here $n_\text{end}$ denotes the iteration number when the algorithm stopped updating its parameter. From the results, we make the following observations:
+ 
+ \textit{\textbf{Observation 1:} Schemes with improved Hessian estimation perform better than their respective regular schemes.}
+ 
+\textit{\textbf{Observation 2:} 2RDSA-IH variants outperform both 2SPSA and 2SPSA-IH.}
+
+\textit{\textbf{Observation 3:} 2SPSA-3-IH variants outperform both 2SPSA and 2SPSA-IH.}
+
+\textit{\textbf{Observation 4:} 2RDSA-IH-AsymBer perform the best overall.}\\
+ 
+ \textit{Chapter 6: Conclusions and Future work}\\
+ 
+Finally, we summarize our contributions of the thesis and present a few interesting directions for future work.
+
+ 
+ 
+
+
+ 
+\bibliographystyle{plain}
+\bibliography{refThesis}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

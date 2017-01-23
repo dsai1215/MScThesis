@@ -164,7 +164,7 @@ $f$ is four-times differentiable\footnote{Here $\nabla^4 f(\theta) = \dfrac{\par
 
 \item $\{\xi_n, \xi_n^+,\xi_n^-, n=1,2,\ldots\}$ are such that, for all $n$, $\E\left[\left. \xi_n^+ + \xi_n^- - 2 \xi_n \right| \F_n, \Delta_n, \widehat \Delta_n \right] = 0$, where $\mathcal{F}_n = \sigma(\theta_m,m < n)$ denotes the underlying sigma-field.
 
-\item $\{\Delta_n^i,\widehat\Delta_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d independent of $\F_n$ and for some $\alpha_0 > 0$ and for all $n,l$ $|\Delta_{nl}|\le \alpha_0$, $\Delta_{nl}$ is symmetrically distributed about 0, $\Delta_{nl}$ are mutually independent across $n$ and $l$ and they satisfy $\E (\Delta_{nl}^{-2})$,$\E (\widehat\Delta_{nl}^{-2}) \le \alpha_0$.
+\item $\{\Delta_n^i,\widehat\Delta_n^i, i=1,\ldots,N, n=1,2,\ldots\}$ are i.i.d independent of $\F_n$ and for some $\alpha_3 > 0$ and for all $n,l$ $|\Delta_{nl}|\le \alpha_3$, $\Delta_{nl}$ is symmetrically distributed about 0, $\Delta_{nl}$ are mutually independent across $n$ and $l$ and they satisfy $\E (\Delta_{nl}^{-2})$, $\E (\widehat\Delta_{nl}^{-2}) \le \alpha_3$.
 
 \item  The step-sizes $a_n$ and perturbation constants $\delta_n$ are positive, for all $n$ and satisfy
 $$\hspace{-1.7em} a_n, \delta_n \rightarrow 0\text{ as } n \rightarrow \infty, 
@@ -178,13 +178,13 @@ $P(\{ \bar f_{ni} (\theta_n) \ge 0 \text{ i.o}\} \cap \{ \bar f_{ni} (\theta_n) 
 \item For any $\tau >0$ and nonempty $S \subseteq \{1,\ldots,N\}$, there exists a $\rho'(\tau,S)>\tau$ such that 
 $$ \limsup_{n\rightarrow \infty} \left| \dfrac{\sum_{i \notin S} (\theta-\theta^*)_i \bar f_{ni}(\theta)}{\sum_{i \in S} (\theta-\theta^*)_i \bar f_{ni}(\theta)}               \right| < 1 \text{ a.s.}$$
 for all $|(\theta-\theta^*)_i| < \tau$ when $i \notin S$ and $|(\theta-\theta^*)_i| \ge \rho'(\tau,S)$ when $i\in S$.
-\item For some $\alpha_0, \alpha_1, \alpha_2 >0$ and for all $n,l,m$, $\E {\xi_n}^{2} \le \alpha_0$, $\E {\xi_n^{\pm}}^{2} \le \alpha_0$, $\E f(\theta_n)^{2} \le \alpha_1$,  $\E f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)^{2},\E f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)^{2} \le \alpha_1$, 
+\item For some $\alpha_7, \alpha_8, \alpha_9 >0$ and for all $n,l,m$, $\E {\xi_n}^{2} \le \alpha_7$, $\E {\xi_n^{\pm}}^{2} \le \alpha_7$, $\E f(\theta_n)^{2} \le \alpha_8$,  $\E f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)^{2},\E f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)^{2} \le \alpha_8$, 
 %$\E \left[ f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)^{2}/ (\Delta_{nl}\widehat\Delta_{nm})^2 \mid \F_n\right]$,
-$\E \left[| f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)/ (\Delta_{nl}\widehat\Delta_{nm})|^{2+\alpha_2} \mid \F_n\right]$,
+$\E \left[| f(\theta_n + \delta_n \Delta_n + \delta_n \widehat \Delta_n)/ (\Delta_{nl}\widehat\Delta_{nm})|^{2+\alpha_9} \mid \F_n\right]$,
 %$\E \left[ f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)^{2}/ (\Delta_{nl}\widehat\Delta_{nm})^2 \mid \F_n\right]$,
-$\E \left[ |f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)/ (\Delta_{nl}\widehat\Delta_{nm})|^{2+\alpha_2} \mid \F_n\right]$,
- $\E\left[\left. (\xi_n^+ + \xi_n^- - 2 \xi_n)^2/(\Delta_{nl}\widehat\Delta_{nm})^2 \right| \F_n \right] \le \alpha_1$ 
-and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_1$. 
+$\E \left[ |f(\theta_n - \delta_n \Delta_n - \delta_n \widehat \Delta_n)/ (\Delta_{nl}\widehat\Delta_{nm})|^{2+\alpha_9} \mid \F_n\right]$,
+ $\E\left[\left. (\xi_n^+ + \xi_n^- - 2 \xi_n)^2/(\Delta_{nl}\widehat\Delta_{nm})^2 \right| \F_n \right] \le \alpha_8$ 
+and $\E \left(\left\| \Upsilon(\overline H_n) \right\|^2 \mid \F_n\right) \le \alpha_8$. 
 \item  $\delta_n = \frac{\delta_0}{(n+1)^{\varsigma}}$, where $\delta_0 > 0$ and $0 < \varsigma \le 1/8$.
 \end{pvn}
 The reader is referred to Section II-B of \cite{prashanth2015rdsa} for a detailed discussion of the above assumptions. We remark here that (A20)-(A27) are identical to those in \cite{prashanth2015rdsa}, while (A28) and (A29) introduce minor additional requirements on $\left\| \Upsilon(\overline H_n) \right\|^2$ and $\delta_n$, respectively and these are inspired from \cite{spall-jacobian}.
@@ -214,13 +214,13 @@ The proof is similar to the proof of the Theorem \ref{thm:2rdsa-H} and is theref
 
 We next present a convergence rate result for the special case of a quadratic objective function under the following additional assumptions:
 \begin{pvn}
-\item  $f$ is quadratic and $\nabla^2 f(x^*) > 0$. 
+\item  $f$ is quadratic and $\nabla^2 f(\theta^*) > 0$. 
 \item The operator $\Upsilon$ is chosen such that $\E(\parallel \Upsilon(\overline H_n) - \overline H_n\parallel^2) = o(e^{-2wn^{1-r}/(1-r)})$ and \\$\parallel \Upsilon(H) - H \parallel^2 / (1+\parallel H \parallel^2)$ is uniformly bounded.
 \end{pvn}
 \begin{theorem}(\textbf{2SPSA-3-IH Quadratic case - Convergence rate})
 \label{thm:spsaquad-bound}
 Assume (A23), (A29), (A30) and (A31) and also that the setting is noise-free. 
-Let $b_n = b_0/n^r$, $n=1,2,\ldots,k$, where $1/2 < r < 1$ and $0 < b_0 \leq 1$. For notational simplicity, let $H^*=\nabla^2 f(x^*)$. Letting $\Lambda_k = \overline H_k - H^*$, we have 
+Let $b_n = b_0/n^r$, $n=1,2,\ldots,k$, where $1/2 < r < 1$ and $0 < b_0 \leq 1$. For notational simplicity, let $H^*=\nabla^2 f(\theta^*)$. Letting $\Lambda_k = \overline H_k - H^*$, we have 
 \begin{align}
 \text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}}).
 \label{eq:spsaquad-bigo}
@@ -241,13 +241,13 @@ The proof involves the following steps:
   \item[Step 3:] We derive the main result in \eqref{eq:spsaquad-bigo} using a proof by contradiction. 
 \end{description}
 \noindent\textbf{Step 1: MSE convergence of $\overline H_n$} \\
-%This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jacobian}.\\
+This part of the proof follows along similar lines as  part (i) in Theorem 3 of \cite{spall-jacobian}.\\
 By rewriting the \eqref{eq:2spsa-3-ih} in the following form
 \begin{align}\label{eq:hhatexpanded}
 \overline H_{n} &= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - \widehat H_n + \widehat \Psi_n)\nonumber\\
 &= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - H^* + \widehat \Psi_n - \Psi_n (H^*)).
 \end{align}
-The above equation can be thought as a stochastic approximation analogue of \eqref{eq:2spsa-3-ih}. The above stochastic approximation algorithm aimed at finding the roots of the equation $H-H^*=0$. In \eqref{eq:hhatexpanded}, $\E (\widehat \Psi_n - \Psi_n (H^*) | \F_n) = 0 \,\,\ a.s$.  Given a Lyapunov function, one can  get the conditions required to show  the mean square convergence of the \eqref{eq:hhatexpanded} from the \cite{nevel1973stochastic}, pp.92-94. It is easy to see that $V(H) = \frac{1}{2} (H-H^*)\tr(H-H^*)$ indeed serves as Lyapunov function. From part (i) in Theorem 3 of \cite{spall-jacobian}, one can check that our algorithm indeed satisfy those conditions,  which in turn implies the $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0 \,\,\,a.s.$ as $n\rightarrow \infty$. 
+The above equation can be thought as a stochastic approximation analogue of \eqref{eq:2spsa-3-ih}. The above stochastic approximation algorithm is aimed at finding the roots of the equation $H-H^*=0$. In \eqref{eq:hhatexpanded}, $\E (\widehat \Psi_n - \Psi_n (H^*) | \F_n) = 0 \,\,\ a.s$.  Given a Lyapunov function, one can  get the conditions required to show  the mean square convergence of the \eqref{eq:hhatexpanded} from \cite{nevel1973stochastic}, pp.92-94. It is easy to see that $V(H) = \frac{1}{2} (H-H^*)\tr(H-H^*)$ indeed serves as Lyapunov function. From part (i) in Theorem 3 of \cite{spall-jacobian}, one can check that our algorithm indeed satisfies those conditions,  which in turn implies that $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0 \,\,\,a.s.$ as $n\rightarrow \infty$. 
 
 
 \noindent\textbf{Step 2: Representation of $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$} \\
@@ -266,11 +266,11 @@ Unrolling the recursion \eqref{eq:step1last}, we obtain
  \end{align}
  %%(note : $\prod_{j=n+1}^n (1-b_j) = 1$ for all n).
  %%Let us  characterise $trace[\E(\Lambda_n\tr \Lambda_n)]$ using \eqref{lambda-exp}. From independence of $d_k$ along k, \eqref{lambda-exp} represent martingale difference sequence, leading to 
-Squaring on both sides and taking expectations, we obtain
+It follows from \eqref{lambda-exp} that 
  \begin{align}
   \E (\Lambda_n \tr \Lambda_n) =  &\left[ \prod_{k=1}^n (1-b_k) \right]^2 \E (\Lambda_0 \tr \Lambda_0) + \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2   \E (\Psi_k(\Lambda_{k-1}') \tr \Psi_k(\Lambda_{k-1}')).\label{eq:exp-lambda2}
  \end{align}
-The equality above uses the fact that $\E(\Psi_k(\Lambda_{k-1}'))=0$, which get rid of the corresponding cross terms with the first term on RHS of \eqref{lambda-exp}. % %
+The equality above uses the fact that $\E(\Psi_k(\Lambda_{k-1}'))=0$, which gets rid of the corresponding cross terms with the first term on RHS of \eqref{lambda-exp}. % %
 We now characterize $\text{trace}[\E(\Lambda_n\tr \Lambda_n)]$ using \eqref{eq:exp-lambda2} as follows:
 %From the independence of $d_k$'s and $\Lambda_{k-1}'$ and using Cauchy-Schwartz inequality we get 
  \begin{align}\label{eq:trace}
@@ -279,7 +279,7 @@ We now characterize $\text{trace}[\E(\Lambda_n\tr \Lambda_n)]$ using \eqref{eq:e
  % \begin{align}\label{eq:trace}
 % & \text{trace} \left[\E (\Lambda_n \tr \Lambda_n)\right] \leq \left[ \prod_{k=1}^n (1-b_k) \right]^2 \text{trace} \left[\E (\Lambda_0 \tr \Lambda_0)\right]  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \,\,\tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)  \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2  \nonumber\\&  \hspace{0.5cm}\times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right] + \nonumber\\ &+ \sum_{k=1}^n \left[\prod_{j=k+1}^n (1-b_j)\right]^2 b_k^2   \tau\left(\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')\right)^{1/2} \nonumber\\&  \times \text{trace}\left[\E ((\Phi_k(H^*) - H^*) \tr  (\Phi_k(H^*) - H^*))\right]^{1/2}.
 % \end{align}
-Where, as in the proof of Theorem 3 of \cite{spall-jacobian}, $\tau(\cdot)$ transforms the $\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')$ in a  fashion and then returns the trace of the resulting $N\times N$ matrix.
+whereas in the proof of Theorem 3 of \cite{spall-jacobian}, $\tau(\cdot)$ transforms the $\E (\Lambda_{k-1}' \otimes \Lambda_{k-1}')$ in a  fashion and then returns the trace of the resulting $N\times N$ matrix.
 As in the proof of Theorem 3 of \cite{spall-jacobian}, observe that $1-b_k = e^{-b_k}(1-O(b_k^2))$ and since $0 < b_k <1$, we have that the $O(b_k^2)$ term is strictly positive. 
 Letting $\Gamma_{ij} = \sum_{k=i}^j b_k$ with $\Gamma_{nn} = 1$ and $\beta_{kn} = \left[\prod_{i=k+1}^n (1- O(b_i^2))\right]^2$, we can simplify \eqref{eq:trace} as follows:
 \begin{align}\label{eq:wij}
@@ -336,12 +336,12 @@ Observing that $\beta_{kn}$ are uniformly upper-bounded, say by $\bar \beta_n$, 
 
 
 \noindent\textbf{Step 3: The big-O result on $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$ convergence} \\
-We will use similar argument in part (iii) in Theorem 3 of \cite{spall-jacobian} to show the claim \eqref{eq:spsaquad-bigo}. The idea here is to show that the contradiction exists if RHS of \eqref{eq:spsaquad-bigo} exhibits  any slower rate of decay. Let us assume the following slower rate of decay for the LHS of the \eqref{eq:spsaquad-bigo}.
+We will use similar argument in part (iii) in Theorem 3 of \cite{spall-jacobian} to show the claim \eqref{eq:spsaquad-bigo}. The idea here is to show that the contradiction exists if RHS of \eqref{eq:spsaquad-bigo} exhibits  any slower rate of decay. Let us assume the following slower rate of decay for the LHS of \eqref{eq:spsaquad-bigo}.
 \begin{align}
-\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = d(n) e^{-2b_0n^{1-r} / {1-r}}.
+\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = d(n) e^{-2b_0n^{1-r} / {1-r}},
 \label{eq:spsaquad-bigocont}
 \end{align}
-Where $d(n) = o(e^{2b_0n^{1-r} / {1-r}})$. Now we need to show that there is contradiction to show the claim. By using the series of arguments used in part (iii) in Theorem 3 of \cite{spall-jacobian} and applying the condition (A31) we get the following 
+where $d(n) = o(e^{2b_0n^{1-r} / {1-r}})$. Now we will to show that there is a contradiction. By using the series of arguments used in part (iii) in Theorem 3 of \cite{spall-jacobian} and applying the condition (A31) we get the following: 
 \begin{align}
 \E (\Lambda_{n}' \otimes \Lambda_{n}') = \E (\Lambda_{n} \otimes \Lambda_{n}) + o(d(n) e^{-2b_0n^{1-r} / {1-r}}).
 \label{eq:spsaquad-bigocont2}
@@ -352,24 +352,24 @@ Now from the above equation we can write
 \label{eq:spsaquad-bigocont3}
 \end{align}
 
-Now we can use the this result in RHS of the equation \eqref{eq:thmwts} to show the contradiction. We consider the two cases to show the contradiction. One is where $\frac{d(n)}{n^{2r}} = O(1)$ and another is $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} = \infty$. We show contradiction for the both cases separately. Let us consider the first case $\frac{d(n)}{n^{2r}} = O(1)$, then
+Now we can use the result in the RHS of equation \eqref{eq:thmwts} to show the contradiction. We consider two cases to show the contradiction. The first is where $\frac{d(n)}{n^{2r}} = O(1)$ and the other is $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} = \infty$. We show contradiction for the both cases separately. Let us consider the first case, i.e., $\frac{d(n)}{n^{2r}} = O(1)$, Then
 \begin{align}
 \text{RHS of \eqref{eq:thmwts}} &= O(1) e^{-2 \Gamma_{1n}} +  O(1) e^{-2 b_0 n^{1-r}/(1-r)} \sum_{i=1}^n \frac{d(i)}{i^{p}} \frac{b_0^2}{i^{2r-p}}\nonumber \\
-&= e^{-2b_0n^{1-r} / {1-r}} \left[ O(1) + O(1) \sum_{i =1}^n \frac{1}{i^{2r-p}}\right].
+&= e^{-2b_0n^{1-r} / {1-r}} \left[ O(1) + O(1) \sum_{i =1}^n \frac{1}{i^{2r-p}}\right],
 \label{eq:spsaquad-bigocont4}
 \end{align}
 where there exist  $0 < p \le 2r$, $0 < \epsilon < 2r -1$ such that $\frac{d(n)}{i^{p}} = O(1)$ and $lim sup_{n \to \infty} \frac{d(n)}{n^{p-\epsilon}} = \infty$. In \eqref{eq:spsaquad-bigocont4}, the first equality uses \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont3}.
 
-Now there exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_n^{p-\epsilon}} = \infty$ as $n \to \infty$. Now LHS of \eqref{eq:thmwts} satisfies $LHS(i_n) \ge C i_n^{p-\epsilon} e^{-2b_0 i_n^{1-r} / {1-r}}$ for some $C > 0$. Now we have $\frac{LHS(i_n)}{RHS(i_n)} \to 0$ because  $0 < \epsilon < 2r -1$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$.
+Now there exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_n^{p-\epsilon}} = \infty$ as $n \to \infty$. Now LHS of \eqref{eq:thmwts} satisfies $LHS(i_n) \ge C i_n^{p-\epsilon} e^{-2b_0 i_n^{1-r} / {1-r}}$ for some $C > 0$. Now we have $\frac{LHS(i_n)}{RHS(i_n)} \to 0$ because  $0 < \epsilon < 2r -1$. This leads to a contradiction since $LHS(n) = RHS(n)$ for all $n$.
 
-Now consider the second case where $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} = \infty$. There exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_n^{2r}} \ge \frac{d(i)}{i^{2r}}$ as $i \le i_n$. Then for some $C >0$ the RHS of \eqref{eq:thmwts} satisfies the following 
+Now consider the second case where $lim sup_{n \to \infty} \frac{d(n)}{n^{2r}} = \infty$. There exists a subsequence $\{i_1,\ldots,i_n\}$ such that $ \frac{d(i_n)}{i_n^{2r}} \ge \frac{d(i)}{i^{2r}}$ as $i \le i_n$. Then for some $C >0$ the RHS of \eqref{eq:thmwts} satisfies the following:
 \begin{align}
 \text{RHS}(i_n)\,\,\,  \text{of}  \,\,\,\eqref{eq:thmwts} &= O(1) e^{-2 \Gamma_{1i_n}} +  O(1) e^{-2 b_0 i_n^{1-r}/(1-r)} \left[\sum_{i=1}^{i_n} e^{2 b_0 i^{1-r}/(1-r)} \frac{b_0^2}{i^{2r}} \E (\Lambda_{n} \otimes \Lambda_{n}) \right]\nonumber \\
 &\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + O(1) \sum_{i =1}^{i_n} \frac{d(i)}{i^{2r}}\right]\nonumber \\
-&\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + \frac{d(i_n)}{{i_n}^{2r}}\right].
+&\le C e^{-2b_0n^{1-r} / {1-r}} \left[ 1 + \frac{d(i_n)}{{i_n}^{2r}}\right],
 \label{eq:spsaquad-bigocont5}
 \end{align}
-Where $\text{RHS}(i_n)$ denotes, RHS after the algorithm is iterated for $i_n$ times. From the equation \eqref{eq:spsaquad-bigocont}, the  LHS of \eqref{eq:thmwts} after $i_n$ iterations is $d(i_n) e^{-2b_0 i_n^{1-r} / {1-r}}$. By substituting \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont5}, in $\frac{RHS(i_n)}{LHS(i_n)}$ then $\frac{RHS(i_n)}{LHS(i_n)} \to 0$ as $n \to \infty$. It is contradiction since $LHS(n) = RHS(n)$ for all $n$. Hence the claim $\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}})$ follows.
+where $\text{RHS}(i_n)$ denotes, RHS after the algorithm is iterated for $i_n$ times. From the equation \eqref{eq:spsaquad-bigocont}, the  LHS of \eqref{eq:thmwts} after $i_n$ iterations is $d(i_n) e^{-2b_0 i_n^{1-r} / {1-r}}$. By substituting \eqref{eq:spsaquad-bigocont} and \eqref{eq:spsaquad-bigocont5}, in $\frac{RHS(i_n)}{LHS(i_n)}$, it turns out that $\frac{RHS(i_n)}{LHS(i_n)} \to 0$ as $n \to \infty$. This results in a contradiction since $LHS(n) = RHS(n)$ for all $n$. Hence the claim $\text{trace}[\E (\Lambda_n \tr \Lambda_n)] = O(e^{-2b_0n^{1-r} / {1-r}})$ follows.
 \end{proof}
 
 
