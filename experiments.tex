@@ -15,7 +15,7 @@ The optimum $\theta^*$ for the above $f$ is such that each coordinate of $\theta
 \begin{align} 
 f(x) = \theta\tr A\tr A \theta + 0.1 \sum_{j=1}^N (A\theta)^3_j + 0.01 \sum_{j=1}^N (A\theta)^4_j.\label{eq:4thorder}
  \end{align} 
-The optimum $\theta^*$ for above $f$ is $\theta^*=0$, with $f(\theta^*) = 0$. 
+The optimum $\theta^*$ for the above $f$ is $\theta^*=0$, with $f(\theta^*) = 0$. 
 
 In both functions, $A$ is such that $NA$ is an upper triangular matrix with each entry one, $b$ is the $N$-dimensional vector of ones and the noise structure is similar to that used in \cite{spall_adaptive}. For any $\theta$, the noise is $[\theta\tr, 1]z$, where $z \approx \N(0,\sigma^2 I_{11\times11})$. We perform experiments for noisy as well as noise-less settings, with $\sigma=0.1$ for the noisy case. 
 
@@ -29,7 +29,7 @@ NMSE is the ratio $\l \theta_{n_\text{end}} - \theta^* \r^2 / \l \theta_0 - \the
 
 \begin{table}
 \centering
- \caption{Normalized loss values for fourth-order  objective \eqref{eq:4thorder} with and without noise: standard error from $500$ replications shown after $\pm$}
+ \caption{Normalized loss values for fourth-order  objective \eqref{eq:4thorder} with and without noise: standard error from $500$ is replications shown after $\pm$.}
 \label{tab:norloss-4thf}
 \scalebox{0.8}{
 \begin{tabular}{|c|c|c|}
@@ -73,7 +73,7 @@ NMSE is the ratio $\l \theta_{n_\text{end}} - \theta^* \r^2 / \l \theta_0 - \the
 %%%%%%%%%%%%%%%%%%%%%%%%% Quadratic
 \begin{table}
 \centering
- \caption{Normalized loss values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications shown after $\pm$}
+ \caption{Normalized loss values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications is shown after $\pm$.}
 \label{tab:norloss-quadratic}
 \scalebox{0.8}{
 \begin{tabular}{|c|c|c|}
@@ -325,7 +325,7 @@ anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
 %%%%%%%%%%%%%% NMSE for quadratic
 \begin{table}
 \centering
- \caption{NMSE values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications shown after $\pm$}
+ \caption{NMSE values for quadratic objective \eqref{eq:quadratic} with and without noise: standard error from $500$ replications is shown after $\pm$.}
 \label{tab:nmse-quadratic}
 %\scalebox{0.8}{
 \begin{tabular}{|c|c|c|}
@@ -364,18 +364,18 @@ anchor=north,at={(axis description cs:0.5,-0.2)},legend columns=2}	]
 \end{tabular}
 \end{table}
 
-Tables \ref{tab:norloss-4thf}--\ref{tab:norloss-quadratic} present the normalized loss values observed for the four algorithms - 2SPSA, 2SPSA-3, 2RDSA-Unif and 2RDSA-AsymBer - with/without improved Hessian estimation scheme and for the fourth-order and quadratic loss functions, respectively. Table \ref{tab:nmse-quadratic} presents the NMSE values obtained for the aforementioned algorithms with the quadratic loss. The results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} are obtained after running all the algorithms with a budget of $10000$ function evaluations.
+Tables \ref{tab:norloss-4thf}--\ref{tab:norloss-quadratic} present the normalized loss values observed for the four algorithms - 2SPSA, 2SPSA-3, 2RDSA-Unif and 2RDSA-AsymBer - with/without improved Hessian estimation scheme and for the fourth-order and quadratic loss functions, respectively. Table \ref{tab:nmse-quadratic} presents the NMSE values obtained for the aforementioned algorithms with the quadratic loss. The results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} are obtained after running all the algorithms with a budget of $10,000$ function evaluations.
 
- Figures \ref{fig:norlossvssims}, \ref{fig:norlossvssimsspsa-3} plots the normalized loss as a function of the simulation budget with the fourth-order loss objective with $\sigma=0.1$ for algorithms 2RDSA and 2SPSA-3 respectively when compared with 2SPSA. Figures \ref{fig:QuadnorlossvssimsNoiseless}, \ref{fig:QuadnorlossvssimsNoiselessspsa3} plots the normalized loss as a function of the simulation budget with the quadratic loss objective with $\sigma=0$ for algorithms 2RDSA and 2SPSA-3 respectively when compared with 2SPSA. See Figures \ref{fig:norlossvssimsNoiseless}-- \ref{fig:QuadnorlossvssimsNoisy} and \ref{fig:norlossvssimsNoiselessspsa3}-- \ref{fig:QuadnorlossvssimsNoisyspsa3} for similar results with $\sigma = 0$ for fourth-order loss and $\sigma=0.1$ for quadratic loss. 
+ Figures \ref{fig:norlossvssims}, \ref{fig:norlossvssimsspsa-3} plot the normalized loss as a function of the simulation budget with the fourth-order loss objective with $\sigma=0.1$ for algorithms 2RDSA and 2SPSA-3 respectively when compared with 2SPSA. Figures \ref{fig:QuadnorlossvssimsNoiseless}, \ref{fig:QuadnorlossvssimsNoiselessspsa3} plot the normalized loss as a function of the simulation budget with the quadratic loss objective with $\sigma=0$ for algorithms 2RDSA and 2SPSA-3 respectively when compared with 2SPSA. See Figures \ref{fig:norlossvssimsNoiseless}-- \ref{fig:QuadnorlossvssimsNoisy} and \ref{fig:norlossvssimsNoiselessspsa3}-- \ref{fig:QuadnorlossvssimsNoisyspsa3} for similar results with $\sigma = 0$ for fourth-order loss and $\sigma=0.1$ for quadratic loss. 
  From the results in Tables \ref{tab:norloss-4thf}--\ref{tab:nmse-quadratic} and Figures, we make the following observations:
  
- \textit{\textbf{Observation 1:} Schemes with improved Hessian estimation performs better than their respective regular schemes.}
+ \textit{\textbf{Observation 1:} Schemes with improved Hessian estimation perform better than their respective regular schemes.}
  
 \textit{\textbf{Observation 2:} 2RDSA-IH variants outperform both 2SPSA and 2SPSA-IH.}
 
 \textit{\textbf{Observation 3:} 2SPSA-3-IH variants outperform both 2SPSA and 2SPSA-IH.}
 
-\textit{\textbf{Observation 4:} 2RDSA-IH-AsymBer performing the best overall.}
+\textit{\textbf{Observation 4:} 2RDSA-IH-AsymBer perform the best overall.}
 
 
 

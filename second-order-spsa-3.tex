@@ -241,13 +241,13 @@ The proof involves the following steps:
   \item[Step 3:] We derive the main result in \eqref{eq:spsaquad-bigo} using a proof by contradiction. 
 \end{description}
 \noindent\textbf{Step 1: MSE convergence of $\overline H_n$} \\
-This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jacobian}.\\
+%This part in exactly the same manner as part (i) in Theorem 3 of \cite{spall-jacobian}.\\
 By rewriting the \eqref{eq:2spsa-3-ih} in the following form
 \begin{align}\label{eq:hhatexpanded}
 \overline H_{n} &= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - \widehat H_n + \widehat \Psi_n)\nonumber\\
 &= \overline H_{n-1} - b_{n} ( \overline H_{n-1} - H^* + \widehat \Psi_n - \Psi_n (H^*)).
 \end{align}
-The above equation can be thought as a stochastic approximation analogue of \eqref{eq:2spsa-3-ih}. The above stochastic approximation algorithm aimed at finding the roots of the equation $H-H^*=0$. In \eqref{eq:hhatexpanded}, $\E (\widehat \Psi_n - \Psi_n (H^*) | \F_n) = 0 \,\,\ a.s$.  Given a Lyapunov function, one can  the conditions required to show  the mean square convergence of the \eqref{eq:hhatexpanded} from the \cite{nevel1973stochastic}, pp.92-94. It is easy to see that $V(H) = \frac{1}{2} (H-H^*)\tr(H-H^*)$ indeed serves as Lyapunov function. From part (i) in Theorem 3 of \cite{spall-jacobian}, one can check that our algorithm indeed satisfy those conditions,  which in turn implies the $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0 \,\,\,a.s.$ as $n\rightarrow \infty$. 
+The above equation can be thought as a stochastic approximation analogue of \eqref{eq:2spsa-3-ih}. The above stochastic approximation algorithm aimed at finding the roots of the equation $H-H^*=0$. In \eqref{eq:hhatexpanded}, $\E (\widehat \Psi_n - \Psi_n (H^*) | \F_n) = 0 \,\,\ a.s$.  Given a Lyapunov function, one can  get the conditions required to show  the mean square convergence of the \eqref{eq:hhatexpanded} from the \cite{nevel1973stochastic}, pp.92-94. It is easy to see that $V(H) = \frac{1}{2} (H-H^*)\tr(H-H^*)$ indeed serves as Lyapunov function. From part (i) in Theorem 3 of \cite{spall-jacobian}, one can check that our algorithm indeed satisfy those conditions,  which in turn implies the $\E [\Lambda_n\tr \Lambda_n] \rightarrow 0 \,\,\,a.s.$ as $n\rightarrow \infty$. 
 
 
 \noindent\textbf{Step 2: Representation of $\text{trace}[\E (\Lambda_n \tr \Lambda_n)]$} \\
