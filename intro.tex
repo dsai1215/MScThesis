@@ -56,7 +56,7 @@ Consider the basic optimization problem in \eqref{eq:opt}. The problem depends c
 The corresponding optimization problems are called discrete, continuous or hybrid optimization problems. These classifications are common to both deterministic and stochastic optimization problems presented in section \ref{sc:objclass}. 
 
 \section{Optimization methods via simulation }\label{sc:dis}
-Optimization via simulation is a fast developing area for both researchers and practioners. As mentioned before, for stochastic optimization problems, simulation is a viable approach compared. Multiple simulation replications must be performed in order to get a good estimate of $E_{\xi}[h(\theta_i,\xi)]$, which is the function value at parameter $\theta_i$. The standard approach to estimate this is via the sample mean
+Optimization via simulation is a fast developing area for both researchers and practioners. As mentioned before, for stochastic optimization problems, simulation is a viable approach. Multiple simulation replications must be performed in order to get a good estimate of $E_{\xi}[h(\theta_i,\xi)]$, which is the function value at parameter $\theta_i$. The standard approach to estimate this is via the sample mean
 \begin{align}\label{eq:sm}
 \overline {f_n} (\theta_i) = \frac{1}{n} ~  \sum_{j=1}^{n} h(\theta,\xi_j),
 \end{align}
