@@ -1,0 +1,149 @@
+%\documentclass[oneside,8pt,onecolumn,openright]{IIScthesisPSnPDF}
+\documentclass[12pt]{article}
+
+
+
+\usepackage{paralist}
+\let\labelindent\relax
+
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{colortbl}
+%\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.12}
+\usepackage{todonotes}
+\usepackage{nicefrac}
+\usetikzlibrary{positioning,arrows,calc,patterns,backgrounds}
+\usetikzlibrary{shapes}
+\usetikzlibrary{fit}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newcommand{\tabl}[2]{\begin{tabular}{#1} #2 \end{tabular}}
+\newcommand{\ith}[2][th]{$#2^{\text{#1}}$}
+
+
+%\newcommand{\cP}{\mathcal{P}}
+%\newcommand{\cS}{\mathcal{S}}
+%\newcommand{\R}{\mathbb{R}}
+%\newcommand{\E}{\mathbb{E}}
+%\renewcommand{\S}{\mathcal{S}}
+%\newcommand{\D}{\mathcal{D}}
+%\newcommand{\A}{\mathcal{A}}
+%\newcommand{\B}{\mathcal{B}}
+%\newcommand{\X}{\mathcal{X}}
+\newcommand{\F}{\mathcal{F}}
+%\newcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+%\newcommand{\Z}{\mathcal{Z}}
+%\newcommand{\T}{\mathcal{T}}
+%\renewcommand{\O}{\mathcal{O}}
+%\renewcommand{\P}{\mathbb{P}}
+
+\newcommand{\tr}{^\mathsf{\scriptscriptstyle T}}
+\newcommand{\tpi}{\Pi}
+\newcommand{\tgamma}{\tilde{\gamma}}
+\newcommand{\ttheta}{\tilde{\theta}}
+\newcommand{\tz}{\tilde{z}}
+
+\renewcommand{\l}{\left\|}
+\renewcommand{\r}{\right\|}
+\newcommand{\vml}{\left\|}
+\newcommand{\vmr}{\right\| _{\Psi}}
+\newcommand{\ml}{\left\|}
+\newcommand{\mr}{\right\|_2}
+
+\newcommand{\e}{\exp}
+
+
+
+
+
+
+
+
+
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage[numbers]{natbib}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{enumerate}
+\usepackage{cancel}
+\usepackage{mathrsfs}
+% \usepackage{sfgame}
+\usepackage{color}
+\usepackage[compact]{titlesec}
+\usepackage{mdwlist}
+\usepackage{varwidth}
+\usepackage[vertfit]{breakurl}
+\usepackage{datetime}
+\usepackage{pdfpages}
+% \usepackage{biblatex}
+\usepackage{setspace}
+\title{\textbf{Response to Reviewer Comments}}
+\author{}
+\date{}
+\begin{document}
+%\Huge
+%\begin{center}
+%Panel of Experts
+%\end{center}
+\maketitle
+\begin{tabular}{ll}
+Name of the Candidate & \textbf{Danda Sai Koti Reddy}\\ 
+SR Number &\textbf{04-04-00-10-21-14-1-11609} \\
+Title of the Thesis & \textbf{Stochastic Newton methods with   } \\
+ & \textbf{ enhanced Hessian estimation.}\\
+ Research Supervisor  & \textbf{Prof. Shalabh Bhatnagar} \\
+Degree Registered  &  \textbf{M.Sc(engg)} \\
+Department  & \textbf{Computer Science and Automation} \\
+Institute  & \textbf{Indian Institute of Science, Bangalore }
+\end{tabular}
+
+
+\vspace{2cm}
+
+\section{Reviewer Suggestions}
+The questions are presented in \textit{italicized} font and the answers in normal font. The response to the reviewer questions are as under.\\
+
+\textit{\textbf{Suggestion (i): } A key early work in this direction merits mention: \\  \\Anbar, Dan. ``A stochastic Newton-Raphson method." Journal of Statistical Planning and Inference 2.2 (1978): 153-163.\\ \\ A sleeker `ODE' based convergent argument might be facilitated by:\\ \\  Smale, Steve. ``A convergent process of price adjustment and global Newton methods." Journal of Mathematical Economics 3.2 (1976): 107-120.\\ \\}
+ \textbf{Response:}\\
+We have mentioned the references given in suggestion in the section 1.5, titled ``Hessian estimation". Which is given as below \\ \\
+\textbf{1.5 Hessian estimation} \\
+Stochastic Newton methods can counter the ill-conditioning problem of the objective $f$ as they incorporate second-order information into the update iteration given by   
+\begin{align}
+\label{eq:newton}
+\theta_{n+1} = \theta_n - a_n (\overline H_n)^{-1}\widehat\nabla f(\theta_n), 
+\end{align}
+where $a_n$ is the step-size that satisfies standard stochastic approximation conditions (see (A12) in Section 2.6), and $\widehat\nabla f(\theta_n)$ and $\overline H_n$ are estimates of the gradient and Hessian, respectively. Thus, \eqref{eq:newton} can be considered as  the stochastic version of the well-known Newton method for optimization. Stochastic Newton methods are often more accurate than simple gradient search schemes. A key early work in stochastic Newton methods  is given in \cite{anbar1978stochastic} and a sleek `ODE' based convergence argument is provided in \cite{smale1976convergent}.\\ \\
+\textit{\textbf{Suggestion (ii):} I would also appreciate any comments on the following issue: Even in the deterministic scenario, Newton scheme is not popular due to the expensive matrix inversion, and quasi-Newton schemes given by the Broyden family are used instead. Why not develope stochastic approximation versions of the latter?  }\\ \\
+ \textbf{Response:}\\
+ We have mentioned this as an interesting future direction in chapter 6, titled ``Conclusions and Future work". Which is given below \\
+ 3. Newton scheme is not popular due to expensive matrix inversion at each parameter update step even in deterministic scenario. Quasi-Newton schemes given by the Broyden family may be used instead. As a future work, it would be interesting to develop stochastic approximation versions of the quasi-Newton schemes.  
+
+
+
+\bibliographystyle{plain}
+\bibliography{refThesis}
+
+
+\end{document}
